@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -77,6 +80,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    // just XBOX testing for now
+
   }
 
   /** This function is called periodically during operator control. */
