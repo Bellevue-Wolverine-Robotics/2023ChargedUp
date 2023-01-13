@@ -18,6 +18,14 @@ public class ArcadeDriveCommand extends CommandBase {
     @Override
     public void execute()
     {
-        driveSubsystem.arcadeDrive(input.getX(1), input.getY(1));        
+        System.out.println(" here ^2 at arcade");
+        //istream ??
+        //driveSubsystem.arcadeDrive(input.getX(1), input.getY(1));   
+        //driveSubsystem.arcadeDrive(0.5, 0.5);        
+        //drive subsystem 
+       // driveSubsystem.arcadeDrive(0.5, 0.5);
+       driveSubsystem.tankDrive(0.5, 0.5);        
+        
+     
     }
 }

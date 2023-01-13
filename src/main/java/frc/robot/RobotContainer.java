@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -14,6 +13,7 @@ import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
+import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -28,7 +28,8 @@ public class RobotContainer {
   private final XboxStream m_xboxStream = new XboxStream();
   private final IStreamBundle istream = new IStreamBundle(m_xboxStream, m_joysticksStream, IStreamMode.JoysticksMode);
 
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  // PLEASE CHANGE THIS BACK
+  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   public IStreamBundle GetIStream(){
     return this.istream;
@@ -43,6 +44,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     // configureBindings();
+
+    // JUST TESTING 
+    System.out.println(" here");
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
+
   }
 
   /**
