@@ -17,9 +17,9 @@ import frc.robot.Constants.MotorConstants;
 public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_leftBack = new CANSparkMax(MotorConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(MotorConstants.LEFT_FRONT, MotorType.kBrushless);
-  private CANSparkMax m_rightFront = new CANSparkMax(MotorConstants.RIGHT_FRONT, MotorType.kBrushless);  
+  private CANSparkMax m_rightFront = new CANSparkMax(MotorConstants.RIGHT_FRONT, MotorType.kBrushless);
   private CANSparkMax m_rightBack = new CANSparkMax(MotorConstants.RIGHT_BACK, MotorType.kBrushless);
- 
+
   private MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
   private MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
 
@@ -62,9 +62,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
-   
-  
+    // TESTING
+
     // This method will be called once per scheduler run
   }
 
@@ -77,7 +76,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double y1, double y2){
-    this.m_drive.tankDrive(y1, y2);
+    System.out.println("tank");
+    this.m_drive.tankDrive(0.5, 0.5);
   }
 
+  public void testDrive()
+  {
+    // System.out.println("TEST DRIVE");
+    m_leftBack.set(0.1);
+    m_rightBack.set(0.1);
+    m_leftFront.set(0.1);
+    m_rightFront.set( 0.1);
+  }    
 }

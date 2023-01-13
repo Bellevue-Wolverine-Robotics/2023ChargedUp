@@ -81,17 +81,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // just XBOX testing for now
-
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
-
-    
-
+    m_robotContainer.m_driveSubsystem.testDrive();  
   }
 
   @Override

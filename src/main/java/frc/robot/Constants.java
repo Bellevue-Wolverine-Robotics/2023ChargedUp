@@ -19,6 +19,8 @@ public final class Constants {
     public static final int JOYSTICK_1 = 0;
     public static final int JOYSTICK_2 = 1;
     public static final int JOYSTICK_3 = 2;
+
+    public static final int Xbox = 3;
   }
 
   public static class MotorConstants {
