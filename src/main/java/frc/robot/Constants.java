@@ -23,12 +23,16 @@ public final class Constants {
     public static final int Xbox = 3;
   }
 
-  public static class MotorConstants {
+  public static class CANConstants {
       // CAN IDs
       public static final int LEFT_FRONT = 1;
       public static final int LEFT_BACK = 2;
       public static final int RIGHT_FRONT = 3;
       public static final int RIGHT_BACK = 4;
+  }
+
+  public static class PhysicalConstants {
+    public static final double WHEEL_CIRCUMFERENCE_METERS = 1;
   }
 
     //   // Inputs
