@@ -31,7 +31,14 @@ public final class Constants {
       public static final int RIGHT_BACK = 4;
   }
 
+  public static class PneumaticsConstants {
+    // to be changed
+    public static final int INTAKE_FORWARD_CHANNEL = 0;
+    public static final int INTAKE_REVERSE_CHANNEL = 1;
+  }
+
   public static class PhysicalConstants {
+    // to be changed
     public static final double WHEEL_CIRCUMFERENCE_METERS = 1;
   }
 
