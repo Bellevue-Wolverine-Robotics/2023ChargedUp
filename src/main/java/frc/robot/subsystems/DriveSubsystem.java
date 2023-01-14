@@ -119,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
   } 
 
   public void arcadeDrive(double x, double y){
-    // System.out.println("Arcade Drive: " + x + "  " + y);
+    System.out.println("Arcade Drive: " + x + "  " + y);
     this.m_drive.arcadeDrive(x, y);
   }
 
