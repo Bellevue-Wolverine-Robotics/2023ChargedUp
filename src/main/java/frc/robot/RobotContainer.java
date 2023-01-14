@@ -75,8 +75,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // TODO: make these constants later
-    m_operatorController.button(ButtonConstants.INTAKE_GRAB_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_RELEASE_BUTTON).onTrue(new IntakeReleaseCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
   }
 
   /**
