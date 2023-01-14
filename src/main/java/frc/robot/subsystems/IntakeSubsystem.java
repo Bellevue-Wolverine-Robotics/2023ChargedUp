@@ -17,6 +17,17 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         m_intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
+
+    public void toggleIntake()
+    {
+        // TODO: need to handle initial undetermined state of solenoid
+
+        System.out.println("Before: " + m_intakeSolenoid.get());
+        DoubleSolenoid.Value toggledValue = m_intakeSolenoid.get() == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward;
+
+        m_intakeSolenoid.set(toggledValue);
+        System.out.println(toggledValue);
+    }
 }
 
 
