@@ -46,7 +46,6 @@ public class RobotContainer {
     // configureBindings();
 
     // JUST TESTING 
-    System.out.println(" here");
     m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
 
   }

@@ -4,13 +4,22 @@
 
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import frc.robot.Constants;
 
 import frc.robot.Constants.MotorConstants;
 
@@ -23,7 +32,20 @@ public class DriveSubsystem extends SubsystemBase {
   private MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
   private MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
 
+
+
   private DifferentialDrive m_drive = new DifferentialDrive(m_leftGroup, m_rightGroup);
+  private final Gyro m_gyro = new ADXRS450_Gyro();
+
+
+  private RelativeEncoder m_leftEncoder =  m_leftFront.getEncoder();
+  private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
+
+
+  private DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
+    m_gyro.getRotation2d(), m_leftEncoder.getPosition(),
+    m_rightEncoder.getPosition(),
+    new Pose2d());
 
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
@@ -32,7 +54,25 @@ public class DriveSubsystem extends SubsystemBase {
     this.m_rightFront.restoreFactoryDefaults();
     this.m_rightBack.restoreFactoryDefaults();
 
-    this.m_rightGroup.setInverted(true);
+    this.m_leftGroup.setInverted(true);
+
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
+
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
+
+  }
+
+
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  public double getX(){
+    return getPose().getX();
+  }
+  public double getY(){
+    return getPose().getY();
   }
 
   /**
@@ -63,11 +103,13 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // TESTING
-
+    m_odometry.update(m_gyro.getRotation2d(), this.m_leftEncoder.getPosition(), this.m_rightEncoder.getPosition());
     // This method will be called once per scheduler run
-  }
+  } 
 
   public void arcadeDrive(double x, double y){
+
+   // System.out.println(x + "  " + y);
     this.m_drive.arcadeDrive(x, y);
   }
 
@@ -76,16 +118,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double y1, double y2){
-    System.out.println("tank");
-    this.m_drive.tankDrive(0.5, 0.5);
+    //System.out.println("tank");
+    this.m_drive.tankDrive(y1, y2);
   }
 
   public void testDrive()
   {
-    // System.out.println("TEST DRIVE");
+    System.out.println("TEST DRIVE");
     m_leftBack.set(0.1);
     m_rightBack.set(0.1);
     m_leftFront.set(0.1);
     m_rightFront.set( 0.1);
-  }    
+  }
+
+
 }
