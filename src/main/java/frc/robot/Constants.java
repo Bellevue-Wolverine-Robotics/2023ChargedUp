@@ -43,6 +43,11 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS = 1;
   }
 
+  public static class ButtonConstants {
+    public static final int INTAKE_GRAB_BUTTON = 4;
+    public static final int INTAKE_RELEASE_BUTTON = 5;
+  }
+
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;
   

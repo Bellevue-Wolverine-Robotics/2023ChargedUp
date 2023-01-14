@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Constants.ButtonConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
@@ -74,8 +75,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // TODO: make these constants later
-    m_operatorController.button(4).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
-    m_operatorController.button(5).onTrue(new IntakeReleaseCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_GRAB_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_RELEASE_BUTTON).onTrue(new IntakeReleaseCommand(m_intakeSubsystem));
   }
 
   /**
