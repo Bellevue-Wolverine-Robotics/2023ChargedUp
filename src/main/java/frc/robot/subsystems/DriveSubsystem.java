@@ -110,16 +110,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("Gyro: " + m_gyro.getRotation2d().getDegrees());
-    System.out.println("Left Encoder: " + m_leftEncoder.getPosition() + " | Right Encoder: " + m_rightEncoder.getPosition());
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), this.m_leftEncoder.getPosition(), this.m_rightEncoder.getPosition());
-    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
 
 
   } 
 
   public void arcadeDrive(double x, double y){
-    System.out.println("Arcade Drive: " + x + "  " + y);
     this.m_drive.arcadeDrive(x, y);
   }
 
@@ -128,7 +124,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double y1, double y2){
-    //System.out.println("tank");
     this.m_drive.tankDrive(y1, y2);
   }
 

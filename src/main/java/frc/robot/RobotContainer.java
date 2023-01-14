@@ -5,6 +5,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,7 +15,10 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.IntakeGrabCommand;
+import frc.robot.commands.IntakeReleaseCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,25 +32,28 @@ public class RobotContainer {
   private final XboxStream m_xboxStream = new XboxStream();
   private final IStreamBundle istream = new IStreamBundle(m_xboxStream, m_joysticksStream, IStreamMode.JoysticksMode);
 
-  // PLEASE CHANGE THIS BACK
-  public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
+
 
   public IStreamBundle GetIStream(){
     return this.istream;
   }
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandJoystick m_driverController =
+      new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+  private final CommandJoystick m_operatorController =
+      new CommandJoystick(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    // configureBindings();
+    configureDefaultCommands();
+    configureBindings();
 
-    // JUST TESTING 
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
 
   }
 
@@ -59,15 +66,17 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
   //  */
-  // private void configureBindings() {
-  //   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  //   new Trigger(m_exampleSubsystem::exampleCondition)
-  //       .onTrue(new ExampleCommand(m_exampleSubsystem));
+  
+  private void configureDefaultCommands()
+  {
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
+  }
 
-  //   // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-  //   // cancelling on release.
-  //   m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  // }
+  private void configureBindings() {
+    // TODO: make these constants later
+    m_operatorController.button(4).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
+    m_operatorController.button(5).onTrue(new IntakeReleaseCommand(m_intakeSubsystem));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
