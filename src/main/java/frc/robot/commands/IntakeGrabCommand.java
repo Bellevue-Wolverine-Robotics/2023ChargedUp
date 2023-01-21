@@ -9,6 +9,8 @@ public class IntakeGrabCommand extends CommandBase {
     public IntakeGrabCommand(IntakeSubsystem intakeSubsystem)
     {
         m_intakeSubsystem = intakeSubsystem;
+
+        addRequirements(intakeSubsystem);
     }
 
     @Override

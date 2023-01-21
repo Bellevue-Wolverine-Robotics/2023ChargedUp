@@ -9,6 +9,8 @@ public class IntakeToggleCommand extends CommandBase {
     public IntakeToggleCommand(IntakeSubsystem intakeSubsystem)
     {
         m_intakeSubsystem = intakeSubsystem;
+
+        addRequirements(intakeSubsystem);
     }
 
     @Override

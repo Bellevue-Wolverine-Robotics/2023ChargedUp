@@ -39,10 +39,6 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
 
-  private final Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-
-
-
   public IStreamBundle GetIStream(){
     return this.istream;
   }
@@ -60,8 +56,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureDefaultCommands();
     configureBindings();
-
-
   }
 
   /**

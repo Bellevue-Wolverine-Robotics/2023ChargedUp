@@ -9,6 +9,8 @@ public class IntakeReleaseCommand extends CommandBase {
     public IntakeReleaseCommand(IntakeSubsystem intakeSubsystem)
     {
         m_intakeSubsystem = intakeSubsystem;
+
+        addRequirements(intakeSubsystem);
     }
 
     @Override
