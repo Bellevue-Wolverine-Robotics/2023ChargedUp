@@ -7,15 +7,18 @@ import frc.robot.Constants.PneumaticsConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.INTAKE_FORWARD_CHANNEL, PneumaticsConstants.INTAKE_REVERSE_CHANNEL);
+    
+    private DoubleSolenoid.Value EXTEND_ENUM = DoubleSolenoid.Value.kReverse;
+    private DoubleSolenoid.Value RETRACT_ENUM = DoubleSolenoid.Value.kForward;
 
     public void extendIntake()
     {
-        m_intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+        m_intakeSolenoid.set(EXTEND_ENUM);
     }
 
     public void retractIntake()
     {
-        m_intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+        m_intakeSolenoid.set(RETRACT_ENUM);
     }
 
     public void toggleIntake()

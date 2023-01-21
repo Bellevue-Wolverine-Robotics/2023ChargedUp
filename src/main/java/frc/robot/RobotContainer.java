@@ -18,8 +18,8 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.IntakeGrabCommand;
-import frc.robot.commands.IntakeReleaseCommand;
+import frc.robot.commands.IntakeExtendCommand;
+import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -77,6 +77,9 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeToggleCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new IntakeExtendCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new IntakeRetractCommand(m_intakeSubsystem));
+
   }
 
   /**

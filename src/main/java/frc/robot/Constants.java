@@ -45,6 +45,8 @@ public final class Constants {
 
   public static class ButtonConstants {
     public static final int INTAKE_TOGGLE_BUTTON = 1;
+    public static final int INTAKE_EXTEND_BUTTON = 5;
+    public static final int INTAKE_RETRACT_BUTTON = 4;
   }
 
     //   // Inputs
