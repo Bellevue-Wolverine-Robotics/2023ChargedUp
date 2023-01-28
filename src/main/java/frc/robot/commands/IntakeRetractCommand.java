@@ -15,8 +15,6 @@ public class IntakeRetractCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // don't know yet which one to call
-        System.out.println("Release");
         m_intakeSubsystem.retractIntake();
     }
 

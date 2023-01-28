@@ -15,8 +15,6 @@ public class IntakeExtendCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // don't know yet which one to call
-        System.out.println("Grabb");
         m_intakeSubsystem.extendIntake();
     }
 
