@@ -18,6 +18,7 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.IntakeToggleCommand;
@@ -71,6 +72,7 @@ public class RobotContainer {
   private void configureDefaultCommands()
   {
     m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
+    m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, m_operatorController));
   }
 
   private void configureBindings() {
