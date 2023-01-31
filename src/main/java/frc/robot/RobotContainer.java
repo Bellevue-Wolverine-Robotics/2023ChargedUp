@@ -18,6 +18,7 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeRetractCommand;
@@ -43,7 +44,7 @@ public class RobotContainer {
   public IStreamBundle GetIStream(){
     return this.istream;
   }
-
+//GrabRotateCommand
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
       new CommandJoystick(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -72,7 +73,7 @@ public class RobotContainer {
   private void configureDefaultCommands()
   {
     m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
-    m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, m_operatorController));
+    m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
@@ -81,7 +82,8 @@ public class RobotContainer {
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeToggleCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new IntakeExtendCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new IntakeRetractCommand(m_intakeSubsystem));
-
+    m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.CLOCKWISE));
+    m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.COUNTERCLOCKWISE));
   }
 
   /**

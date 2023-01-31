@@ -48,6 +48,8 @@ public final class Constants {
     public static final int INTAKE_TOGGLE_BUTTON = 1;
     public static final int INTAKE_EXTEND_BUTTON = 5;
     public static final int INTAKE_RETRACT_BUTTON = 4;
+    public static final int GRAB_CLOCKWISE_BUTTON = 6;
+    public static final int GRAB_COUNTER_CLOCKWISE_BUTTON = 7;
   }
 
     //   // Inputs

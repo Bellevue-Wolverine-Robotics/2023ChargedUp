@@ -9,10 +9,14 @@ import frc.robot.Constants.PneumaticsConstants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.ControlMode.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.INTAKE_FORWARD_CHANNEL, PneumaticsConstants.INTAKE_REVERSE_CHANNEL);
-    private WPI_TalonSRX m_grabMotor = new WPI_TalonSRX(CANConstants.GRAB_THING);
+    // private WPI_TalonSRX m_grabMotor = new WPI_TalonSRX(CANConstants.GRAB_THING);
+    private CANSparkMax m_grabMotor = new CANSparkMax(5, MotorType.kBrushless);
+
     private DoubleSolenoid.Value EXTEND_ENUM = DoubleSolenoid.Value.kReverse;
     private DoubleSolenoid.Value RETRACT_ENUM = DoubleSolenoid.Value.kForward;
 
@@ -30,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         // TODO: need to handle initial undetermined state of solenoid
 
-        System.out.println("Before: " + m_intakeSolenoid.get());
+        System.out.println("TESTBefore: " + m_intakeSolenoid.get());
         DoubleSolenoid.Value toggledValue = m_intakeSolenoid.get() == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward;
 
         m_intakeSolenoid.set(toggledValue);
@@ -38,6 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void rotateGrab(double speed) {
+        System.out.println(speed);
         m_grabMotor.set(speed); 
     }
 }

@@ -5,6 +5,7 @@ package frc.robot.Istream;
  * so ig we can have like wrappers around the joystick input method and the xbox inptu method
  * 
  */
+//do interface after being able to do handoff
 public interface IStream {
     
 }

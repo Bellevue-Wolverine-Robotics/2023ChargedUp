@@ -2,24 +2,27 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.Istream.IStream;
+import frc.robot.Istream.IStreamBundle;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class GrabRotateCommand extends CommandBase {
     private IntakeSubsystem m_intakeSubsystem;
-    private CommandJoystick m_joystick;
+    private IStreamBundle input;
 
-    public GrabRotateCommand(IntakeSubsystem intakeSubsystem, CommandJoystick joystick)
+    public GrabRotateCommand(IntakeSubsystem intakeSubsystem, IStreamBundle input)
     {
-        m_intakeSubsystem = intakeSubsystem;
-        m_joystick = joystick;
+        this.input = input;
 
+        m_intakeSubsystem = intakeSubsystem;
         addRequirements(intakeSubsystem);
     }
 
     @Override
     public void execute()
     {
-        m_intakeSubsystem.rotateGrab(m_joystick.getY());        
+        System.out.println("grabrotatecommand");
+        m_intakeSubsystem.rotateGrab(input.getY(2));        
     }
 
 }
