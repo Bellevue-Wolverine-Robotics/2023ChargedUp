@@ -18,7 +18,8 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.AutonomousTestCommand;
+import frc.robot.commands.AutonomousDriveForwardCommand;
+import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.IntakeExtendCommand;
@@ -94,6 +95,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new AutonomousTestCommand(m_driveSubsystem);
+    // return new AutonomousDriveForwardCommand(m_driveSubsystem);
+    return new AutonomousTurnCommand(m_driveSubsystem);
   }
 }

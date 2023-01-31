@@ -72,7 +72,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
   }
 
-
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
@@ -82,6 +81,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
   public double getY(){
     return getPose().getY();
+  }
+
+  public Rotation2d getRotation2d()
+  {
+    return m_gyro.getRotation2d();
   }
 
   /**
@@ -111,24 +115,24 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // negating right encoder before passing in because opposite side
-
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), this.m_leftEncoder.getPosition(), this.m_rightEncoder.getPosition());
-    System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
-    System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
-    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
+    // System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
+    // System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
+    // System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
+
+    System.out.println("Degrees: " + m_gyro.getAngle());
   } 
 
-  public void arcadeDrive(double x, double y){
-    this.m_drive.arcadeDrive(x, y);
+  public void arcadeDrive(double xSpeed, double zRotation){
+    this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 
-  public void arcadeDriveSquared(double x, double y){
-    this.m_drive.arcadeDrive(x, y, true);
+  public void arcadeDriveSquared(double xSpeed, double zRotation){
+    this.m_drive.arcadeDrive(xSpeed, zRotation, true);
   }
 
-  public void tankDrive(double y1, double y2){
-    this.m_drive.tankDrive(y1, y2);
+  public void tankDrive(double leftSpeed, double rightSpeed){
+    this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void testDrive()
