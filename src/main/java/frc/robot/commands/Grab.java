@@ -16,7 +16,6 @@ public class Grab extends CommandBase {
 
 
     public Grab (IntakeSubsystem intakeSubsystem, direction dir) {
-        System.out.println("beer beer");
         m_intakeSubsystem = intakeSubsystem;
 
 
@@ -35,7 +34,6 @@ public class Grab extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println(grab_power);
         m_intakeSubsystem.rotateGrab(this.grab_power);
     }
 }

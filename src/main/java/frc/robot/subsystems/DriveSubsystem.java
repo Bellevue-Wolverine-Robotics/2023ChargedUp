@@ -53,12 +53,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
 
-    m_leftEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS);
-    m_rightEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS);
+    m_leftEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
+
+    m_rightEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
 
     // WPILIB expects encoder rate to be in M/S while REV returns M/Min
-    m_leftEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / 60);
-    m_rightEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / 60);
+    m_leftEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
+    m_rightEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
 
     m_gyro.reset();
     m_gyro.calibrate();
@@ -110,9 +111,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // negating right encoder before passing in because opposite side
+
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), this.m_leftEncoder.getPosition(), this.m_rightEncoder.getPosition());
-
-
+    System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
+    System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
+    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
   } 
 
   public void arcadeDrive(double x, double y){

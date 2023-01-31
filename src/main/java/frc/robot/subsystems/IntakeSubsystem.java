@@ -34,15 +34,12 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         // TODO: need to handle initial undetermined state of solenoid
 
-        System.out.println("TESTBefore: " + m_intakeSolenoid.get());
         DoubleSolenoid.Value toggledValue = m_intakeSolenoid.get() == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward;
 
         m_intakeSolenoid.set(toggledValue);
-        System.out.println(toggledValue);
     }
 
     public void rotateGrab(double speed) {
-        System.out.println(speed);
         m_grabMotor.set(speed); 
     }
 }

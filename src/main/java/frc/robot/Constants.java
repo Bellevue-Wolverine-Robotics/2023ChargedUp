@@ -41,7 +41,11 @@ public final class Constants {
 
   public static class PhysicalConstants {
     // to be changed
-    public static final double WHEEL_CIRCUMFERENCE_METERS = 1;
+    public static final double INCHES_TO_METERS = 0.0254;
+
+    public static final double DRIVE_GEAR_RATIO = 8.45;
+    public static final double WHEEEL_CIRCUMFERENCE_INCHES = 6 * Math.PI;
+    public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEEL_CIRCUMFERENCE_INCHES * INCHES_TO_METERS;
   }
 
   public static class ButtonConstants {
