@@ -83,9 +83,9 @@ public class DriveSubsystem extends SubsystemBase {
     return getPose().getY();
   }
 
-  public Rotation2d getRotation2d()
+  public double getGyroDegrees()
   {
-    return m_gyro.getRotation2d();
+    return m_gyro.getAngle();
   }
 
   /**
@@ -120,10 +120,11 @@ public class DriveSubsystem extends SubsystemBase {
     // System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
     // System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
 
-    System.out.println("Degrees: " + m_gyro.getAngle());
+    System.out.println("Degrees: " + getGyroDegrees());
   } 
 
   public void arcadeDrive(double xSpeed, double zRotation){
+    System.out.println("Joystick y: " + xSpeed);
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 
@@ -137,11 +138,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void testDrive()
   {
-    System.out.println("TEST DRIVE");
-    m_leftBack.set(0.1);
-    m_rightBack.set(0.1);
-    m_leftFront.set(0.1);
-    m_rightFront.set( 0.1);
+    m_leftGroup.set(0.1);
+    m_rightGroup.set(0.1);
   }
 
 

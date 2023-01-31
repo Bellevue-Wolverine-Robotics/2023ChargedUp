@@ -5,13 +5,15 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousTurnCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
-    private double m_initialHeadingDegrees;
-    private double m_degreesToTurn = 90;
+    private double m_targetAngle;
+    private boolean m_aboveAngle;
     
-    public AutonomousTurnCommand(DriveSubsystem driveSubsystem)
+    public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
         m_driveSubsystem = driveSubsystem;
-        m_initialHeadingDegrees = driveSubsystem.getRotation2d().getDegrees();
+
+        m_targetAngle = driveSubsystem.getGyroDegrees() + degreesToTurn;
+        m_aboveAngle = driveSubsystem.getGyroDegrees() > m_targetAngle;
 
         addRequirements(m_driveSubsystem);
     }
@@ -26,8 +28,15 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public boolean isFinished()
     {
-        double currentHeadingDegrees = m_driveSubsystem.getRotation2d().getDegrees();
+        double currentHeadingDegrees = m_driveSubsystem.getGyroDegrees();
 
-        return currentHeadingDegrees - m_initialHeadingDegrees > m_degreesToTurn;
+        if (m_aboveAngle)
+        {
+            return currentHeadingDegrees < m_targetAngle;
+        }
+        else
+        {
+            return currentHeadingDegrees > m_targetAngle;
+        }
     }
 }
