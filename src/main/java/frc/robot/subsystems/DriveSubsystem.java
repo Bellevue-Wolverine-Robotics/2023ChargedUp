@@ -48,13 +48,14 @@ public class DriveSubsystem extends SubsystemBase {
     this.m_rightFront.restoreFactoryDefaults();
     this.m_rightBack.restoreFactoryDefaults();
 
-    this.m_leftGroup.setInverted(true);
+    this.m_rightGroup.setInverted(true);
 
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
 
     m_leftEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
 
+    // inverting right encoder because i guess motor controller inversion doesn't change encoder inversion
     m_rightEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
 
     // WPILIB expects encoder rate to be in M/S while REV returns M/Min
@@ -66,10 +67,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry = new DifferentialDriveOdometry(
       m_gyro.getRotation2d(), 
-      m_leftEncoder.getPosition(), m_rightEncoder.getPosition(),
+      m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(),
       new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
   }
 
   public Pose2d getPose() {
@@ -115,16 +116,27 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), this.m_leftEncoder.getPosition(), this.m_rightEncoder.getPosition());
+    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
     // System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
     // System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
-    // System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ")");
 
+    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
     System.out.println("Degrees: " + getGyroDegrees());
+
   } 
 
+  public void resetPose()
+  {
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
+
+    m_gyro.reset();
+
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
+  }
+
   public void arcadeDrive(double xSpeed, double zRotation){
-    System.out.println("Joystick y: " + xSpeed);
+    System.out.println("Joystick y: " + xSpeed + " Joystick x: " + zRotation);
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 

@@ -12,7 +12,7 @@ public class AutonomousTurnCommand extends CommandBase {
     {
         m_driveSubsystem = driveSubsystem;
 
-        m_targetAngle = driveSubsystem.getGyroDegrees() + degreesToTurn;
+        m_targetAngle = degreesToTurn;
         m_aboveAngle = driveSubsystem.getGyroDegrees() > m_targetAngle;
 
         addRequirements(m_driveSubsystem);
@@ -22,7 +22,15 @@ public class AutonomousTurnCommand extends CommandBase {
     public void execute()
     {
         System.out.println("Auto turn command");
-        m_driveSubsystem.tankDrive(0.3, -0.3);
+
+        if (m_aboveAngle)
+        {
+            m_driveSubsystem.tankDrive(-0.3, 0.3);
+        }
+        else
+        {
+            m_driveSubsystem.tankDrive(0.3, -0.3);
+        }
     }
 
     @Override
@@ -38,5 +46,11 @@ public class AutonomousTurnCommand extends CommandBase {
         {
             return currentHeadingDegrees > m_targetAngle;
         }
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        m_driveSubsystem.resetPose();
     }
 }

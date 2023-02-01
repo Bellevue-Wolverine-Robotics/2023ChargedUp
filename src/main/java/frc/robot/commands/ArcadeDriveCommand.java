@@ -20,7 +20,7 @@ public class ArcadeDriveCommand extends CommandBase {
     public void execute()
     {
         // TODO: pass in the joystick to constructor
-        driveSubsystem.arcadeDrive(input.getY(1), input.getX(1));   
+        driveSubsystem.arcadeDrive(-input.getY(1), -input.getX(1));   
 
     }
 }

@@ -6,13 +6,11 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousDriveForwardCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
-    private Pose2d m_initialPose;
+    private double m_distance;
 
-    private double DISTANCE_METERS = 1.8288;
-
-    public AutonomousDriveForwardCommand (DriveSubsystem driveSubsystem) {
+    public AutonomousDriveForwardCommand (DriveSubsystem driveSubsystem, double distance) {
         m_driveSubsystem = driveSubsystem;
-        m_initialPose = m_driveSubsystem.getPose();
+        m_distance = distance;
 
         addRequirements(m_driveSubsystem);
     }
@@ -22,16 +20,18 @@ public class AutonomousDriveForwardCommand extends CommandBase {
         System.out.println("Drive forward");
 
         // todo: FIX ALL THE INVERTED STUFF
-        m_driveSubsystem.tankDrive(-0.3,0.3);
-        System.out.println("Initial Pose: " + m_initialPose);
+        m_driveSubsystem.tankDrive(0.3,0.3);
         System.out.println("Current pose: " + m_driveSubsystem.getPose());
     }
 
     @Override
     public boolean isFinished() {
-        double poseX = m_driveSubsystem.getPose().getX();
-        double poseY = m_driveSubsystem.getPose().getX();
+        return m_driveSubsystem.getPose().getX() > m_distance;
+    }
 
-        return Math.sqrt((Math.pow(poseX - m_initialPose.getX(), 2)) + Math.pow(poseY - m_initialPose.getY(), 2)) > DISTANCE_METERS;
+    @Override
+    public void end(boolean interrupted)
+    {
+        m_driveSubsystem.resetPose();
     }
 }
