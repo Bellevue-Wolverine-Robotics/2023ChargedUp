@@ -20,6 +20,7 @@ import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutonomousDriveForwardCommand;
+import frc.robot.commands.AutonomousStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
@@ -105,7 +106,7 @@ public class RobotContainer {
     //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
 
     // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
-    return new SequentialCommandGroup(new AutonomousTurnCommand(m_driveSubsystem, 45));
+    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, 7));
 
   }
 }

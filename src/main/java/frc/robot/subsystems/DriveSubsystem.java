@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import frc.robot.Constants;
 
 import frc.robot.Constants.CANConstants;
@@ -47,6 +49,11 @@ public class DriveSubsystem extends SubsystemBase {
     this.m_leftBack.restoreFactoryDefaults();
     this.m_rightFront.restoreFactoryDefaults();
     this.m_rightBack.restoreFactoryDefaults();
+
+    m_leftFront.setIdleMode(IdleMode.kBrake);
+    m_leftBack.setIdleMode(IdleMode.kBrake);
+    m_rightFront.setIdleMode(IdleMode.kBrake);
+    m_rightBack.setIdleMode(IdleMode.kBrake);
 
     this.m_rightGroup.setInverted(true);
 
