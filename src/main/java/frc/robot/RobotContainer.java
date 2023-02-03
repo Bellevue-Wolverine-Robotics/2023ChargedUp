@@ -98,10 +98,14 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new AutonomousDriveForwardCommand(m_driveSubsystem);
 
-    return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
-                                      new AutonomousTurnCommand(m_driveSubsystem, 90), 
-                                      new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
-                                      new AutonomousTurnCommand(m_driveSubsystem, -90), 
-                                      new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
+    // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
+    //                                   new AutonomousTurnCommand(m_driveSubsystem, 90), 
+    //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
+    //                                   new AutonomousTurnCommand(m_driveSubsystem, -90), 
+    //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
+
+    // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
+    return new SequentialCommandGroup(new AutonomousTurnCommand(m_driveSubsystem, 45));
+
   }
 }

@@ -1,19 +1,22 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousTurnCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private double m_targetAngle;
-    private boolean m_aboveAngle;
+    private PIDController m_pid = new PIDController(0.05, 0, 0.005);
     
     public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
         m_driveSubsystem = driveSubsystem;
-
         m_targetAngle = degreesToTurn;
-        m_aboveAngle = driveSubsystem.getGyroDegrees() > m_targetAngle;
+
+        m_pid.setTolerance(1);
+        m_pid.enableContinuousInput(-180, 180);
+
 
         addRequirements(m_driveSubsystem);
     }
@@ -21,31 +24,17 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public void execute()
     {
-        System.out.println("Auto turn command");
+        double motorSpeed = m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle);
 
-        if (m_aboveAngle)
-        {
-            m_driveSubsystem.tankDrive(-0.3, 0.3);
-        }
-        else
-        {
-            m_driveSubsystem.tankDrive(0.3, -0.3);
-        }
+        m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
 
     @Override
     public boolean isFinished()
     {
-        double currentHeadingDegrees = m_driveSubsystem.getGyroDegrees();
+        // return m_pid.atSetpoint();
 
-        if (m_aboveAngle)
-        {
-            return currentHeadingDegrees < m_targetAngle;
-        }
-        else
-        {
-            return currentHeadingDegrees > m_targetAngle;
-        }
+        return false;
     }
 
     @Override
