@@ -7,16 +7,15 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutonomousTurnCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private double m_targetAngle;
-    private PIDController m_pid = new PIDController(0.05, 0, 0.005);
+    private PIDController m_pid = new PIDController(0.02, 0, 0.001);
     
     public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
         m_driveSubsystem = driveSubsystem;
         m_targetAngle = degreesToTurn;
 
-        m_pid.setTolerance(1);
+        m_pid.setTolerance(0.3);
         m_pid.enableContinuousInput(-180, 180);
-
 
         addRequirements(m_driveSubsystem);
     }
@@ -32,9 +31,7 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public boolean isFinished()
     {
-        // return m_pid.atSetpoint();
-
-        return false;
+        return m_pid.atSetpoint();
     }
 
     @Override
