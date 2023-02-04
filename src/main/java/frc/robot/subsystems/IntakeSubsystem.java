@@ -48,6 +48,10 @@ public class IntakeSubsystem extends SubsystemBase {
         // until we get arm encoder
         return 0;
     }
+
+    public void resetArmEncoder() {
+        
+    }
 }
 
 

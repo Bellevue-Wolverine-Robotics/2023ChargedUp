@@ -33,4 +33,17 @@ public class AutonomousStraightDriveCommand extends CommandBase {
 
         m_driveSubsystem.tankDrive(linearSpeed + rotationalSpeed, linearSpeed -rotationalSpeed);
     }
+
+    @Override
+    public boolean isFinished() {
+        double rotationError = Math.abs(m_driveSubsystem.getGyroDegrees() - m_targetAngle);
+
+        return m_pidLinear.atSetpoint() && rotationError < 0.1;
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        m_driveSubsystem.resetPose();
+    }
 }
