@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeRetractCommand extends CommandBase {
-    IntakeSubsystem m_intakeSubsystem;
+    private IntakeSubsystem m_intakeSubsystem;
     
     public IntakeRetractCommand(IntakeSubsystem intakeSubsystem)
     {
