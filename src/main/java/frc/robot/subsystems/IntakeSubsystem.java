@@ -10,13 +10,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.ControlMode.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.INTAKE_FORWARD_CHANNEL, PneumaticsConstants.INTAKE_REVERSE_CHANNEL);
     // private WPI_TalonSRX m_grabMotor = new WPI_TalonSRX(CANConstants.GRAB_THING);
-    private CANSparkMax m_grabMotor = new CANSparkMax(5, MotorType.kBrushless);
-
+    private CANSparkMax m_armMotor = new CANSparkMax(5, MotorType.kBrushless);
+    // private RelativeEncoder m_armEncoder = new RelativeEncoder();
     private DoubleSolenoid.Value EXTEND_ENUM = DoubleSolenoid.Value.kReverse;
     private DoubleSolenoid.Value RETRACT_ENUM = DoubleSolenoid.Value.kForward;
 
@@ -39,9 +40,13 @@ public class IntakeSubsystem extends SubsystemBase {
         m_intakeSolenoid.set(toggledValue);
     }
 
-    public void rotateGrab(double speed) {
-        m_grabMotor.set(speed); 
+    public void rotateArm(double speed) {
+        m_armMotor.set(speed);
     }
+
+    // public double getArmRotation() {
+        // m_armMotor.
+    // }
 }
 
 

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -34,18 +36,14 @@ public final class Constants {
   }
 
   public static class PneumaticsConstants {
-    // to be changed
     public static final int INTAKE_FORWARD_CHANNEL = 0;
     public static final int INTAKE_REVERSE_CHANNEL = 1;
   }
 
   public static class PhysicalConstants {
-    // to be changed
-    public static final double INCHES_TO_METERS = 0.0254;
-
     public static final double DRIVE_GEAR_RATIO = 8.45;
-    public static final double WHEEEL_CIRCUMFERENCE_INCHES = 6 * Math.PI;
-    public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEEL_CIRCUMFERENCE_INCHES * INCHES_TO_METERS;
+    public static final double WHEEEL_CIRCUMFERENCE_INCHES = 18.875;
+    public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
   }
 
   public static class ButtonConstants {
@@ -54,6 +52,9 @@ public final class Constants {
     public static final int INTAKE_RETRACT_BUTTON = 4;
     public static final int GRAB_CLOCKWISE_BUTTON = 6;
     public static final int GRAB_COUNTER_CLOCKWISE_BUTTON = 7;
+
+    public static final int RESET_POSE_BUTTON = 8;
+    public static final int RESET_AND_CALIBRATE_BUTTON = 9;
   }
 
     //   // Inputs

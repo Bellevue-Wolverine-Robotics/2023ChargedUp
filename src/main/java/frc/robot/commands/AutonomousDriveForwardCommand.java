@@ -24,7 +24,6 @@ public class AutonomousDriveForwardCommand extends CommandBase {
     public void execute() { 
         double motorSpeed = m_pid.calculate(m_driveSubsystem.getPose().getX(), m_distance);
         
-        System.out.println("Motor speed: " + motorSpeed);
         m_driveSubsystem.tankDrive(motorSpeed, motorSpeed);
     }
 

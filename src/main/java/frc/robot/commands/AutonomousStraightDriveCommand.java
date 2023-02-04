@@ -6,24 +6,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousStraightDriveCommand extends CommandBase {
-    private PIDController m_pidLinear = new PIDController(1, 0, 0.1);
-    private PIDController m_pidRotational = new PIDController(0.02, 0, 0.001);
+    private PIDController m_pidLinear = new PIDController(2, 0, 0.2);
+    private double m_rotationKP = 0.02;
 
     private DriveSubsystem m_driveSubsystem;
 
-    private double m_distance;
-    private double m_initialAngle;
+    private double m_targetDistance;
+    private double m_targetAngle;
 
     public AutonomousStraightDriveCommand(DriveSubsystem driveSubsystem, double distance){
-        this.m_driveSubsystem = driveSubsystem;
-        this.m_distance = distance; 
+        m_driveSubsystem = driveSubsystem;
+        m_targetDistance = distance; 
 
-        m_pidLinear.setTolerance(0.1);
+        m_pidLinear.setTolerance(0.02);
 
-        m_pidRotational.setTolerance(5);
-        m_pidRotational.enableContinuousInput(-180, 180);
-
-        this.m_initialAngle = m_driveSubsystem.getGyroDegrees();
+        m_targetAngle = m_driveSubsystem.getGyroDegrees();
 
         addRequirements(m_driveSubsystem);
     }
@@ -31,14 +28,9 @@ public class AutonomousStraightDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_distance), -0.5, 0.5);
-        double rotationSpeed = m_pidRotational.calculate(m_driveSubsystem.getGyroDegrees(), m_initialAngle);
+        double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_targetDistance), -0.5, 0.5);
+        double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.5, 0.5);
 
-        if (m_pidRotational.atSetpoint()) {
-            m_driveSubsystem.tankDrive(linearSpeed , linearSpeed);
-        } else {
-            m_driveSubsystem.tankDrive(rotationSpeed, -rotationSpeed);
-            
-        }
+        m_driveSubsystem.tankDrive(linearSpeed, linearSpeed);
     }
 }

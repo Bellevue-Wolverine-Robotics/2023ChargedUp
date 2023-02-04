@@ -61,13 +61,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoder.setPosition(0);
 
     m_leftEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
-
-    // inverting right encoder because i guess motor controller inversion doesn't change encoder inversion
     m_rightEncoder.setPositionConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
 
     // WPILIB expects encoder rate to be in M/S while REV returns M/Min
-    m_leftEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
-    m_rightEncoder.setVelocityConversionFactor(PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO);
+    m_leftEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
+    m_rightEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
 
     m_gyro.reset();
     m_gyro.calibrate();
@@ -124,8 +122,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
-    // System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
-    // System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
+    System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
+    System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
 
     System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
     System.out.println("Degrees: " + getGyroDegrees());
@@ -142,8 +140,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
   }
 
+  public void resetAndCalibrate()
+  {
+    m_gyro.calibrate();
+    
+    resetPose();
+  }
+
   public void arcadeDrive(double xSpeed, double zRotation){
-    System.out.println("Joystick y: " + xSpeed + " Joystick x: " + zRotation);
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 

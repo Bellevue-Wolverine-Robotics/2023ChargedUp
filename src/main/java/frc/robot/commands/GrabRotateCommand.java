@@ -21,7 +21,7 @@ public class GrabRotateCommand extends CommandBase {
     @Override
     public void execute()
     {
-        m_intakeSubsystem.rotateGrab(input.getY(2));        
+        m_intakeSubsystem.rotateArm(input.getY(2));        
     }
 
 }

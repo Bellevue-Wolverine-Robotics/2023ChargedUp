@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -83,6 +84,9 @@ public class RobotContainer {
   private void configureBindings() {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
+    m_operatorController.button(ButtonConstants.RESET_AND_CALIBRATE_BUTTON).onTrue(new InstantCommand(m_driveSubsystem::resetAndCalibrate, m_driveSubsystem));
+
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeToggleCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new IntakeExtendCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new IntakeRetractCommand(m_intakeSubsystem));
@@ -106,7 +110,7 @@ public class RobotContainer {
     //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
 
     // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
-    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, 7));
+    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, 2));
 
   }
 }

@@ -34,6 +34,6 @@ public class Grab extends CommandBase {
 
     @Override
     public void execute() {
-        m_intakeSubsystem.rotateGrab(this.grab_power);
+        m_intakeSubsystem.rotateArm(this.grab_power);
     }
 }
