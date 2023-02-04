@@ -18,7 +18,7 @@ public class AutonomousStraightDriveCommand extends CommandBase {
         m_driveSubsystem = driveSubsystem;
         m_targetDistance = distance; 
 
-        m_pidLinear.setTolerance(0.02);
+        m_pidLinear.setTolerance(0.05);
 
         m_targetAngle = m_driveSubsystem.getGyroDegrees();
 
@@ -31,6 +31,6 @@ public class AutonomousStraightDriveCommand extends CommandBase {
         double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_targetDistance), -0.5, 0.5);
         double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.5, 0.5);
 
-        m_driveSubsystem.tankDrive(linearSpeed, linearSpeed);
+        m_driveSubsystem.tankDrive(linearSpeed + rotationalSpeed, linearSpeed -rotationalSpeed);
     }
 }

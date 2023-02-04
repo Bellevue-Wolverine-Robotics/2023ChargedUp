@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants.ButtonConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
@@ -110,7 +111,7 @@ public class RobotContainer {
     //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
 
     // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
-    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, 2));
+    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS * 5));
 
   }
 }
