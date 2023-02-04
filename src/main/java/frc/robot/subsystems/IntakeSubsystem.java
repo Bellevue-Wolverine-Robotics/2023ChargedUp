@@ -15,11 +15,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.INTAKE_FORWARD_CHANNEL, PneumaticsConstants.INTAKE_REVERSE_CHANNEL);
-    // private WPI_TalonSRX m_grabMotor = new WPI_TalonSRX(CANConstants.GRAB_THING);
-    private CANSparkMax m_armMotor = new CANSparkMax(5, MotorType.kBrushless);
+    private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
+    // private CANSparkMax m_armMotor = new CANSparkMax(CANConstants.ARM_SPARKMAX, MotorType.kBrushless);
     // private RelativeEncoder m_armEncoder = new RelativeEncoder();
-    private DoubleSolenoid.Value EXTEND_ENUM = DoubleSolenoid.Value.kReverse;
-    private DoubleSolenoid.Value RETRACT_ENUM = DoubleSolenoid.Value.kForward;
+    private DoubleSolenoid.Value EXTEND_ENUM = DoubleSolenoid.Value.kForward;
+    private DoubleSolenoid.Value RETRACT_ENUM = DoubleSolenoid.Value.kReverse;
 
     public void extendIntake()
     {
@@ -44,9 +44,10 @@ public class IntakeSubsystem extends SubsystemBase {
         m_armMotor.set(speed);
     }
 
-    // public double getArmRotation() {
-        // m_armMotor.
-    // }
+    public double getArmRotation() {
+        // until we get arm encoder
+        return 0;
+    }
 }
 
 
