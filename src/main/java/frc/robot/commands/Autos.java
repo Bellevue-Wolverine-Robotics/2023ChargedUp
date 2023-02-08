@@ -69,7 +69,7 @@ public final class Autos {
         this.m_commands[1] = new ParallelCommandGroup(new IntakeToggleCommand(intakeSubsystem), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
         this.m_commands[2] = new ParallelRaceGroup(new IntakeToggleCommand(intakeSubsystem), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
         this.m_commands[3] = new ParallelDeadlineGroup(new IntakeToggleCommand(intakeSubsystem), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
-        this.m_commands[4] = new ParallelCommandGroup(new RotateArmAbsoluteCommand(intakeSubsystem, 10*Math.PI), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
+        this.m_commands[4] = new ParallelRaceGroup(new RotateArmAbsoluteCommand(intakeSubsystem, 4*Math.PI), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
         //this.testCommand = new ParallelCommandGroup(new RotateArmAbsoluteCommand(intakeSubsystem, 4*Math.PI), new AutonomousStraightDriveCommand(driveSubsystem, 6.9));
 
     
