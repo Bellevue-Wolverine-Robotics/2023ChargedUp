@@ -23,6 +23,7 @@ import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutonomousStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
+import frc.robot.commands.Autos;
 import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.IntakeExtendCommand;
@@ -110,7 +111,11 @@ public class RobotContainer {
     //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
 
     // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
-    return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS * 5));
+    
+    // return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS * 5));
+   // System.out.println("trying to call IntakeS");
+    m_intakeSubsystem.resetPose();//suppose to reset neo arm encoders.
 
+    return new Autos(m_driveSubsystem, m_intakeSubsystem).runCommand(4);
   }
 }

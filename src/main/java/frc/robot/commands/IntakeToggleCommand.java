@@ -16,6 +16,7 @@ public class IntakeToggleCommand extends CommandBase {
     @Override
     public void execute()
     {
+        System.out.println("lolololol");
         m_intakeSubsystem.toggleIntake();
     }
 

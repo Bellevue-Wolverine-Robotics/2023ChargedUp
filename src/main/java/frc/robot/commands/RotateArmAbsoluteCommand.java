@@ -8,13 +8,13 @@ public class RotateArmAbsoluteCommand extends CommandBase {
     private IntakeSubsystem m_intakeSubsystem;
     private double m_targetAngle;
 
-    private PIDController m_pid = new PIDController(0.1, 0, 0); 
+    private PIDController m_pid = new PIDController(0.015, 0, 0); 
 
-    public RotateArmAbsoluteCommand(IntakeSubsystem intakeSubsystem, double degrees){
+    public RotateArmAbsoluteCommand(IntakeSubsystem intakeSubsystem, double radians){
         this.m_intakeSubsystem = intakeSubsystem;
-        this.m_targetAngle = degrees;
+        this.m_targetAngle = radians;
 
-        m_pid.setTolerance(0.1);
+        m_pid.setTolerance(0.05);
 
         addRequirements(this.m_intakeSubsystem);
     }

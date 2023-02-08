@@ -122,11 +122,11 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
-    System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
-    System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
+    //System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
+    //System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
 
-    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
-    System.out.println("Degrees: " + getGyroDegrees());
+    //System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
+    //System.out.println("Degrees: " + getGyroDegrees());
 
   } 
 
