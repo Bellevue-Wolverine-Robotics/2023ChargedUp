@@ -55,7 +55,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public void toggleIntake()
     {
         // TODO: need to handle initial undetermined state of solenoid
-
+        //not working when during auton when piston is retracted, return kOff, even after setting it to kForward or kBackword.
+         
         // this is needed
         System.out.println("toggling sh#t" + m_intakeSolenoid.get());
 
@@ -64,9 +65,9 @@ public class IntakeSubsystem extends SubsystemBase {
         m_intakeSolenoid.set(toggledValue);
 
         System.out.println("toggling sh#t" + m_intakeSolenoid.get() + " -----"  + toggledValue);
-        for (int i = 0; i < 100; i++) {
+        /*for (int i = 0; i < 100; i++) {
             System.out.println(m_intakeSolenoid.get());
-        }
+        }*/
 
     }
 
