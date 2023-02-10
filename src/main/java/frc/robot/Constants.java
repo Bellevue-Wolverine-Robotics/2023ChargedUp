@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -39,12 +40,15 @@ public final class Constants {
   public static class PneumaticsConstants {
     public static final int INTAKE_FORWARD_CHANNEL = 0;
     public static final int INTAKE_REVERSE_CHANNEL = 1;
+    public static final DoubleSolenoid.Value EXTEND_STATE = DoubleSolenoid.Value.kReverse;
+    public static final DoubleSolenoid.Value RETRACT_STATE = DoubleSolenoid.Value.kForward;
   }
 
   public static class PhysicalConstants {
     public static final double DRIVE_GEAR_RATIO = 8.45;
     public static final double WHEEEL_CIRCUMFERENCE_INCHES = 18.875;
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
+    public static final int TALON_PULSES_PER_ROTATION = 4096;
   }
 
   public static class ButtonConstants {
@@ -53,9 +57,15 @@ public final class Constants {
     public static final int INTAKE_RETRACT_BUTTON = 4;
     public static final int GRAB_CLOCKWISE_BUTTON = 6;
     public static final int GRAB_COUNTER_CLOCKWISE_BUTTON = 7;
-
     public static final int RESET_POSE_BUTTON = 8;
-    public static final int RESET_AND_CALIBRATE_BUTTON = 9;
+
+    public static final int ARM_LOW_BUTTON = 4;
+    public static final int ARM_HIGH_BUTTON = 6;
+
+  }
+
+  public static class FieldConstants {
+
   }
 
     //   // Inputs

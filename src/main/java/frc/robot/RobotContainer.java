@@ -21,14 +21,12 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.AutonomousStraightDriveCommand;
+import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
-import frc.robot.commands.IntakeExtendCommand;
-import frc.robot.commands.IntakeRetractCommand;
-import frc.robot.commands.IntakeToggleCommand;
+import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -46,6 +44,7 @@ public class RobotContainer {
 
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
+
 
   public IStreamBundle GetIStream(){
     return this.istream;
@@ -86,13 +85,15 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
-    m_operatorController.button(ButtonConstants.RESET_AND_CALIBRATE_BUTTON).onTrue(new InstantCommand(m_driveSubsystem::resetAndCalibrate, m_driveSubsystem));
 
-    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeToggleCommand(m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new IntakeExtendCommand(m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new IntakeRetractCommand(m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.CLOCKWISE));
     m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.COUNTERCLOCKWISE));
+  
+    m_driverController.button(ButtonConstants.ARM_HIGH_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI));
+    m_driverController.button(ButtonConstants.ARM_LOW_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, 0));
   }
 
   /**
@@ -101,21 +102,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // return new AutonomousDriveForwardCommand(m_driveSubsystem);
-
-    // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
-    //                                   new AutonomousTurnCommand(m_driveSubsystem, 90), 
-    //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828), 
-    //                                   new AutonomousTurnCommand(m_driveSubsystem, -90), 
-    //                                   new AutonomousDriveForwardCommand(m_driveSubsystem, 1.828));
-
-    // return new SequentialCommandGroup(new AutonomousDriveForwardCommand(m_driveSubsystem, 5));
-    
-    // return new SequentialCommandGroup(new AutonomousStraightDriveCommand(m_driveSubsystem, PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS * 5));
-   // System.out.println("trying to call IntakeS");
-    m_intakeSubsystem.resetPose();//suppose to reset neo arm encoders.
-
-    return new Autos(m_driveSubsystem, m_intakeSubsystem).runCommand(4);
+    return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
+    // return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
   }
 }
