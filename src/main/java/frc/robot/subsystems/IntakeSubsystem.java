@@ -1,8 +1,12 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
@@ -20,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //USING TALON, does not have encoder
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.INTAKE_FORWARD_CHANNEL, PneumaticsConstants.INTAKE_REVERSE_CHANNEL);
     private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
-
+    private DigitalInput m_itemContactSwitch = new DigitalInput(9); // TODO: constatn later
 
     public IntakeSubsystem(){
         this.m_armMotor.configFactoryDefault();
@@ -69,12 +73,19 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic()
     {
-        // System.out.println("Arm Rotation: " + getArmRotationRadians());
+        SmartDashboard.putNumber("Arm Rotation", getArmRotationRadians());
     }
 
     public void stopArmMotor()
     {
         m_armMotor.stopMotor();
+    }
+
+    public void onTeleop()
+    {
+        new Trigger(m_itemContactSwitch::get).onTrue(new InstantCommand(this::extendIntake, this));
+
+
     }
 
 }

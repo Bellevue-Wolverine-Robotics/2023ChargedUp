@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -76,6 +78,8 @@ public class DriveSubsystem extends SubsystemBase {
       new Pose2d());
 
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
+    
+    SmartDashboard.putData("Reset Drive Pose", new InstantCommand(this::resetPose, this));
   }
 
   public Pose2d getPose() {
@@ -122,11 +126,9 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
-    //System.out.println("Left Encoder: " + m_leftEncoder.getPosition());
-    //System.out.println("Right Encoder: " + m_rightEncoder.getPosition());
-
-    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
-    //System.out.println("Degrees: " + getGyroDegrees());
+    SmartDashboard.putNumber("Robot X", pose.getX());
+    SmartDashboard.putNumber("Robot Y", pose.getY());
+    SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
   } 
 
@@ -140,6 +142,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
     
     System.out.println("reset");
+    Pose2d pose = m_odometry.getPoseMeters();
+    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){
@@ -160,5 +164,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightGroup.set(0.1);
   }
 
+  public void stopDriveTrain()
+  {
+    m_drive.stopMotor();
+  }
 
 }

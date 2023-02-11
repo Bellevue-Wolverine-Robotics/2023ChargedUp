@@ -6,6 +6,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -101,8 +102,23 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
+  public Command getAutonomousCommand(String command) {
+    if (command.equals("OneConeAuto"))
+    {
+      return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
+    }
+    else if (command.equals("OneConeCharge"))
+    {
+      return new RelativeStraightDriveCommand(m_driveSubsystem, -1);
+    }
+    else {
+      return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
+    }
+    // return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
     // return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
+  }
+
+  public void onTeleop() {
+    m_intakeSubsystem.onTeleop();
   }
 }

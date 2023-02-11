@@ -31,13 +31,13 @@ public final class Autos {
         return new SequentialCommandGroup(
             new InstantCommand(intakeSubsystem::extendIntake, intakeSubsystem),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, 5),
+                new RelativeStraightDriveCommand(driveSubsystem, 2),
                 new RotateArmAbsoluteRadiansCommand(intakeSubsystem, Math.PI)),
             new WaitCommand(1),
             new InstantCommand(intakeSubsystem::retractIntake, intakeSubsystem),
             new WaitCommand(1),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -10),
+                new RelativeStraightDriveCommand(driveSubsystem, -4),
                 new RotateArmAbsoluteRadiansCommand(intakeSubsystem, 0))
             
         );

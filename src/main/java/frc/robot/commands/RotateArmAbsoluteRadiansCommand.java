@@ -9,7 +9,7 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
     private IntakeSubsystem m_intakeSubsystem;
     private double m_targetAngle;
 
-    private PIDController m_pid = new PIDController(1, 0, 0); 
+    private PIDController m_pid = new PIDController(0.2, 0, 0); 
 
     public RotateArmAbsoluteRadiansCommand(IntakeSubsystem intakeSubsystem, double radians){
         this.m_intakeSubsystem = intakeSubsystem;
@@ -25,7 +25,8 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
         double motorSpeed = this.m_pid.calculate(m_intakeSubsystem.getArmRotationRadians(), this.m_targetAngle);
         
         System.out.println("Rotate Arm at: " + motorSpeed);
-        motorSpeed = MathUtil.clamp(motorSpeed, -0.5, 0.5);
+        System.out.println("Arm at: " + m_intakeSubsystem.getArmRotationRadians());
+        motorSpeed = MathUtil.clamp(motorSpeed, -0.1, 0.1);
         m_intakeSubsystem.rotateArm(motorSpeed);
     }
 
