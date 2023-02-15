@@ -11,9 +11,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
+
+import java.lang.Math.*;
 
 import frc.robot.Constants;
 
@@ -43,6 +47,8 @@ public class DriveSubsystem extends SubsystemBase {
   private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
 
   private Gyro m_gyro = new ADXRS450_Gyro();
+
+  private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
   private DifferentialDriveOdometry m_odometry; 
   /** Creates a new ExampleSubsystem. */
@@ -123,13 +129,25 @@ public class DriveSubsystem extends SubsystemBase {
     return false;
   }
 
+  public double getPitchDegreesY(){
+    return Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+  }
+
+
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
+        
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
     SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
+    SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
+    SmartDashboard.putNumber("Accelerometer Y", m_accelerometer.getY());
+    SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
+
+    //System.out.println("Accelerometer: (" + m_accelerometer.getX() + ", " + m_accelerometer.getY() + ", " + m_accelerometer.getZ()-1 + ")");
+    System.out.println("Angle: " + this.getPitchDegreesY());
   } 
 
   public void resetPose()
@@ -155,7 +173,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
+    System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
     this.m_drive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void setMode(IdleMode mode) {
+    m_leftFront.setIdleMode(mode);
+    m_leftBack.setIdleMode(mode);
+    m_rightFront.setIdleMode(mode);
+    m_rightBack.setIdleMode(mode);
   }
 
   public void testDrive()
@@ -168,5 +194,4 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_drive.stopMotor();
   }
-
 }

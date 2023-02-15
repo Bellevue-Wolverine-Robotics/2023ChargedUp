@@ -65,9 +65,17 @@ public final class Constants {
   }
 
   public static class FieldConstants {
-
+    public static double RAMP_LENGTH_INCH = 26;
+    public static double RAMP_LENGTH_METERS = RAMP_LENGTH_INCH*PhysicsConstants.INCH_TO_METER;
+    public static double WHOLE_PLATFORM_LENGTH_INCH = 48;
+    public static double WHOLE_PLATFORM_LENGTH_METER = WHOLE_PLATFORM_LENGTH_INCH*PhysicsConstants.INCH_TO_METER;
+    
   }
 
+  public static class PhysicsConstants{
+    public static double INCH_TO_METER = 0.0254;
+
+  }
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;
   

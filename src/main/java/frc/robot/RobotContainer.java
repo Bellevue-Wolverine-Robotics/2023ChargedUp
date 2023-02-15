@@ -104,23 +104,22 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand(String command) {
+    return new BalanceChargeStation(m_driveSubsystem);
 
-
-    
-    if (command.equals("OneConeAuto"))
-    {
-      return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
-    }
-    else if (command.equals("OneConeCharge"))
-    {
-      return new RelativeStraightDriveCommand(m_driveSubsystem, -1);
-    }
-    else if (command.equals("ChargeStation")){
-      return new BalanceChargeStation(m_driveSubsystem);
-    }
-    else {
-      return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
-    }
+    // if (command.equals("OneConeAuto"))
+    // {
+    //   return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
+    // }
+    // else if (command.equals("OneConeCharge"))
+    // {
+    //   return new RelativeStraightDriveCommand(m_driveSubsystem, -1);
+    // }
+    // else if (command.equals("ChargeStation")){
+    //   return new BalanceChargeStation(m_driveSubsystem);
+    // }
+    // else {
+    //   return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
+    // }
     // return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
     // return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
   }
