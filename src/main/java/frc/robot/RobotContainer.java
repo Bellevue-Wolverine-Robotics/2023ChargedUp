@@ -25,7 +25,7 @@ import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Autos;
-import frc.robot.commands.BalanceChargeStation;
+import frc.robot.commands.BalanceChargeStationCommand;
 import frc.robot.commands.Grab;
 import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
@@ -96,6 +96,7 @@ public class RobotContainer {
   
     m_driverController.button(ButtonConstants.ARM_HIGH_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI));
     m_driverController.button(ButtonConstants.ARM_LOW_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, 0));
+    m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
   }
 
   /**
@@ -104,7 +105,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand(String command) {
-    return new BalanceChargeStation(m_driveSubsystem);
+    return new BalanceChargeStationCommand(m_driveSubsystem);
 
     // if (command.equals("OneConeAuto"))
     // {

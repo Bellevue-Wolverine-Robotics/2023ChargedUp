@@ -7,6 +7,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.estimator.KalmanFilter;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -49,6 +52,9 @@ public class DriveSubsystem extends SubsystemBase {
   private Gyro m_gyro = new ADXRS450_Gyro();
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
+
+  private LinearFilter m_pitchFilter = LinearFilter.movingAverage(10);
+  // private KalmanFilter m_pitchKalmanFilter = new KalmanFilter<>(null, null, null, null, null, getGyroDegrees())
 
   private DifferentialDriveOdometry m_odometry; 
   /** Creates a new ExampleSubsystem. */
@@ -130,7 +136,17 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getPitchDegreesY(){
-    return Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+    double pitch = Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+    //System.out.println("ACCeleratyion" + MathUtil.clamp(m_accelerometer.getZ(), -1, 1));
+    //double pitch = Math.acos(MathUtil.clamp(m_accelerometer.getZ(), -1, 1)) *  180/Math.PI;
+   // double pitch = Math.asin(MathUtil.clamp(m_accelerometer.getX(), -1, 1)) *  180/Math.PI;
+
+    //System.out.println(pitch);
+    return pitch;
+  }
+
+  public double getPitchDegreesYWeighted() {
+    return m_pitchFilter.calculate(getPitchDegreesY());
   }
 
 
@@ -147,7 +163,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
 
     //System.out.println("Accelerometer: (" + m_accelerometer.getX() + ", " + m_accelerometer.getY() + ", " + m_accelerometer.getZ()-1 + ")");
-    System.out.println("Angle: " + this.getPitchDegreesY());
+    SmartDashboard.putNumber("Pitch", this.getPitchDegreesY());
   } 
 
   public void resetPose()

@@ -62,6 +62,8 @@ public final class Constants {
     public static final int ARM_LOW_BUTTON = 4;
     public static final int ARM_HIGH_BUTTON = 6;
 
+    public static final int CHARGE_BALANCE_BUTTON = 2;
+
   }
 
   public static class FieldConstants {
