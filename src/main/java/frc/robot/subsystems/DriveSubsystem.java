@@ -135,14 +135,30 @@ public class DriveSubsystem extends SubsystemBase {
     return false;
   }
 
+  public double getPitchRadiansY()
+  {
+    return Math.atan(m_accelerometer.getY() / m_accelerometer.getZ());
+  }
   public double getPitchDegreesY(){
-    double pitch = Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+    //double reWeight = 1.0/(Math.pow(m_accelerometer.getY(), 2.0) + Math.pow(m_accelerometer.getX(), 2.0));
+
+
+    double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+    // double ySign = Math.abs(m_accelerometer.getY()) / m_accelerometer.getY() ;
+    // double zAccel = MathUtil.clamp(m_accelerometer.getZ(), -1, 1);
+
+    // System.out.println("Zaccel: " + zAccel);
+    // double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
+    // System.out.println("PITCH_RADIANS: " + pitchRadians);
+
+    // double pitchDegrees = -Math.toDegrees(pitchRadians);
+
     //System.out.println("ACCeleratyion" + MathUtil.clamp(m_accelerometer.getZ(), -1, 1));
     //double pitch = Math.acos(MathUtil.clamp(m_accelerometer.getZ(), -1, 1)) *  180/Math.PI;
    // double pitch = Math.asin(MathUtil.clamp(m_accelerometer.getX(), -1, 1)) *  180/Math.PI;
 
     //System.out.println(pitch);
-    return pitch;
+    return pitchDegrees;
   }
 
   public double getPitchDegreesYWeighted() {

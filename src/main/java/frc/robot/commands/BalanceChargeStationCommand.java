@@ -8,17 +8,22 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import java.lang.Math;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 public class BalanceChargeStationCommand extends CommandBase {
     //THIS COMMAND MUST GET RUN EXACTLY WHEN THE FRONT WHEEL STARTS TO TOUCH THE BEGGING OF THE RAMP
 
     private DriveSubsystem m_driveSubsystem;
-    private PIDController m_pid = new PIDController(0.02, 0, 0);
+    private PIDController m_pid = new PIDController(0.05, 0, 0);
+    // private double m_thetakP = 0.9;
 
     private double distanceFromStart = FieldConstants.RAMP_LENGTH_METERS + FieldConstants.WHOLE_PLATFORM_LENGTH_METER/2;
     private double offSetFactor = 1; //adjust when testing with actrual ramp to account for slip
 
     public BalanceChargeStationCommand(DriveSubsystem driveSubsystem) {
         this.m_driveSubsystem = driveSubsystem;
+
+        m_driveSubsystem.setMode(IdleMode.kCoast);
 
         m_pid.setTolerance(2);
     }
@@ -34,23 +39,19 @@ public class BalanceChargeStationCommand extends CommandBase {
 
     @Override
     public void execute() {
-        //System.out.println(m_driveSubsystem.getPitchDegreesY());
-        double pitch = m_driveSubsystem.getPitchDegreesYWeighted();
-        //double pitch = m_driveSubsystem.getPitchDegreesYWeighted(); // Getting the angle of the robot
-       //double pitch = m_driveSubsystem.getPitchDegreesY();
-        // if (this.touchedChargeStation == false) { //
-        //     m_driveSubsystem.tankDrive(0.25, 0.25);
-        //     if (angle > 10) {
-        //         this.touchedChargeStation = true;
-        //     }
-        // } else {
-        //     m_driveSubsystem.tankDrive(angle / 15, angle / 15);
-        // }
+        double pitchDegrees = m_driveSubsystem.getPitchDegreesY();
+        double pitchRadians = Math.toRadians(pitchDegrees);
+
         
-        SmartDashboard.putNumber("Pitch", pitch);
+        SmartDashboard.putNumber("Pitch", pitchRadians);
         // System.out.println("Pitch: " + pitch);
-        System.out.println("Pitch:  " + pitch);
-        double speed = MathUtil.clamp(m_pid.calculate(pitch, 0), -0.5, 0.5);
+        // System.out.println("Pitch_RADIANS:  " + pitchRadians);
+        System.out.println("PITCH_DEGREES: " + pitchDegrees);
+        double speed = -MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5);
+        
+        // P = Fv; P \propto sin(theta) * v
+        // double speed = MathUtil.clamp(m_thetakP * Math.sin(pitchRadians), -0.5, 0.5);
+
         System.out.println("Speed: " + speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
