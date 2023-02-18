@@ -98,14 +98,18 @@ public class DriveSubsystem extends SubsystemBase {
     return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), -m_rightEncoder.getVelocity());
   }
 
-  public void resetOdometry(Pose2d initialPose)
+  public void tankDriveVolts(double leftVolts, double rightVolts)
   {
+    m_leftGroup.setVoltage(leftVolts);
+    m_rightGroup.setVoltage(rightVolts);
 
+    m_drive.feed();
   }
 
   public void resetEncoders()
   {
-
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
   }
 
   public double getX(){
@@ -249,16 +253,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPose()
   {
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
-
-    m_gyro.reset();
+    resetEncoders();
 
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
-    
-    System.out.println("reset");
-    Pose2d pose = m_odometry.getPoseMeters();
-    System.out.println("Pose: X(" + pose.getX() + ") Y(" + pose.getY() + ") Degrees: " + pose.getRotation().getDegrees());
+  }
+  
+  public void resetOdometry(Pose2d initialPose)
+  {
+    resetEncoders();
+    m_odometry.resetPosition(
+      m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -80,9 +81,20 @@ public final class Constants {
 
   public static class DriveConstants {
     // TODO: SYSID CHANGE LATER
-    public static int ksVolts = 0;
-    public static int kvVoltSecondsPerMeter = 0;
-    public static int kaVoltSecondsSquaredPerMeter = 0;    
+    public static final double VOLTS = 0;
+    public static final double VOLTS_SECONDS_PER_METER = 0;
+    public static final double VOLTS_SECONDS_SQUARED_PER_METER = 0;
+
+    public static final double TRACKWIDTH_METERS = 0;
+    public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(TRACKWIDTH_METERS);
+    
+    public static final double MAX_VOLTAGE = 10;
+
+    public static final double RAMSETE_B = 2;
+    public static final double RAMSETE_ZETA = 0.7;
+
+    // TUNE
+    public static final double KP_DRIVE_VEL = 8;
   }
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;
