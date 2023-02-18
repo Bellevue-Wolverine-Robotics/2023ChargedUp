@@ -62,7 +62,7 @@ public final class Constants {
     public static final int ARM_LOW_BUTTON = 4;
     public static final int ARM_HIGH_BUTTON = 6;
 
-    public static final int CHARGE_BALANCE_BUTTON = 2;
+    public static final int CHARGE_BALANCE_BUTTON = 7;
 
   }
 
@@ -76,7 +76,13 @@ public final class Constants {
 
   public static class PhysicsConstants{
     public static double INCH_TO_METER = 0.0254;
+  }
 
+  public static class DriveConstants {
+    // TODO: SYSID CHANGE LATER
+    public static int ksVolts = 0;
+    public static int kvVoltSecondsPerMeter = 0;
+    public static int kaVoltSecondsSquaredPerMeter = 0;    
   }
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;

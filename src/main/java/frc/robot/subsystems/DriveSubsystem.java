@@ -3,20 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import java.util.Deque;
+
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -25,13 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-
-import java.lang.Math.*;
-
-import frc.robot.Constants;
-
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
 
@@ -53,8 +46,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
-  private LinearFilter m_pitchFilter = LinearFilter.movingAverage(10);
-  // private KalmanFilter m_pitchKalmanFilter = new KalmanFilter<>(null, null, null, null, null, getGyroDegrees())
+  private LinearFilter m_accelZFilter = LinearFilter.movingAverage(50);
+  private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
+  private LinearFilter m_accelYFilter = LinearFilter.movingAverage(50);
+
 
   private DifferentialDriveOdometry m_odometry; 
   /** Creates a new ExampleSubsystem. */
@@ -98,6 +93,21 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public DifferentialDriveWheelSpeeds getWheelSpeeds()
+  {
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), -m_rightEncoder.getVelocity());
+  }
+
+  public void resetOdometry(Pose2d initialPose)
+  {
+
+  }
+
+  public void resetEncoders()
+  {
+
+  }
+
   public double getX(){
     return getPose().getX();
   }
@@ -135,34 +145,89 @@ public class DriveSubsystem extends SubsystemBase {
     return false;
   }
 
-  public double getPitchRadiansY()
-  {
-    return Math.atan(m_accelerometer.getY() / m_accelerometer.getZ());
-  }
-  public double getPitchDegreesY(){
-    //double reWeight = 1.0/(Math.pow(m_accelerometer.getY(), 2.0) + Math.pow(m_accelerometer.getX(), 2.0));
+  public double getPitchDegreesYWeightedZ (){
+    // double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+
+    //int ySign = (int) Math.signum(m_accelerometer.getY());
+  
+    int ySign = (int) Math.signum(m_accelYFilter.calculate(m_accelerometer.getY()));
+
+    
+    //int ySign = picthUp()? 1: -1;
+
+    double zAccel = MathUtil.clamp(getZAccelWeighted(), -1, 1);
+
+    double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
+
+    double pitchDegrees = -Math.toDegrees(pitchRadians);
 
 
-    double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
-    // double ySign = Math.abs(m_accelerometer.getY()) / m_accelerometer.getY() ;
-    // double zAccel = MathUtil.clamp(m_accelerometer.getZ(), -1, 1);
+    pitchDegrees = m_accelPitchFilter.calculate(pitchDegrees);
 
-    // System.out.println("Zaccel: " + zAccel);
-    // double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
-    // System.out.println("PITCH_RADIANS: " + pitchRadians);
 
-    // double pitchDegrees = -Math.toDegrees(pitchRadians);
 
-    //System.out.println("ACCeleratyion" + MathUtil.clamp(m_accelerometer.getZ(), -1, 1));
-    //double pitch = Math.acos(MathUtil.clamp(m_accelerometer.getZ(), -1, 1)) *  180/Math.PI;
-   // double pitch = Math.asin(MathUtil.clamp(m_accelerometer.getX(), -1, 1)) *  180/Math.PI;
-
-    //System.out.println(pitch);
     return pitchDegrees;
   }
 
-  public double getPitchDegreesYWeighted() {
-    return m_pitchFilter.calculate(getPitchDegreesY());
+  
+
+
+  /*  deal with later
+  private Deque<Boolean> previous_pitches;
+  private int cur_avg = 0;
+
+  public boolean picthUp(){
+    Boolean positive = Math.signum(m_accelerometer.getY()) == 1.0;
+    previous_pitches.addFirst(positive);
+
+    if(previous_pitches.size() > 100){
+      if(previous_pitches.removeLast()){
+        cur_avg--;
+      }
+      else{
+        cur_avg++;
+      }
+    }
+
+
+    if(positive){
+      cur_avg++;
+    }
+    else{
+      cur_avg--;
+    }
+
+
+    if(cur_avg > 0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  
+  }*/
+  public double getPitchDegreesY() {
+    // double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
+
+    int ySign = (int) Math.signum(m_accelerometer.getY());
+    //int ySign = picthUp()? 1: -1;
+
+
+    double zAccel = MathUtil.clamp(m_accelerometer.getZ(), -1, 1);
+
+
+    double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
+
+    double pitchDegrees = -Math.toDegrees(pitchRadians);
+
+    return pitchDegrees;
+  }
+
+  public double getZAccelWeighted() {
+    double zAccel = m_accelZFilter.calculate(m_accelerometer.getZ());
+    SmartDashboard.putNumber("Z Accel Weighted", zAccel);
+
+    return zAccel;
   }
 
 
@@ -178,9 +243,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Accelerometer Y", m_accelerometer.getY());
     SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
 
-    //System.out.println("Accelerometer: (" + m_accelerometer.getX() + ", " + m_accelerometer.getY() + ", " + m_accelerometer.getZ()-1 + ")");
-    SmartDashboard.putNumber("Pitch", this.getPitchDegreesY());
-  } 
+    SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
+    System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
+  }
 
   public void resetPose()
   {
@@ -197,6 +262,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){
+    SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 

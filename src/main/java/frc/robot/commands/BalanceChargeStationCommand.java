@@ -8,6 +8,8 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import java.lang.Math;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class BalanceChargeStationCommand extends CommandBase {
@@ -25,34 +27,40 @@ public class BalanceChargeStationCommand extends CommandBase {
 
         m_driveSubsystem.setMode(IdleMode.kCoast);
 
-        m_pid.setTolerance(2);
+        m_pid.setTolerance(5);
     }
-
-    private void setSpeed(double speed) {
-        speed = MathUtil.clamp(speed, -1, 1);
-        // System.out.println("Motor Speed at: " + speed);
-        
-        m_driveSubsystem.tankDrive(speed, speed);
-    }
-
-    // private bool touchedChargeStation = false;
 
     @Override
     public void execute() {
-        double pitchDegrees = m_driveSubsystem.getPitchDegreesY();
-        double pitchRadians = Math.toRadians(pitchDegrees);
+        double pitchDegrees = m_driveSubsystem.getPitchDegreesYWeightedZ();
+        double pitchDegreesAbs = Math.abs(pitchDegrees);
+        int pitchSign = (int) Math.signum(pitchDegrees);
 
-        
-        SmartDashboard.putNumber("Pitch", pitchRadians);
-        // System.out.println("Pitch: " + pitch);
-        // System.out.println("Pitch_RADIANS:  " + pitchRadians);
-        System.out.println("PITCH_DEGREES: " + pitchDegrees);
-        double speed = -MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5);
-        
-        // P = Fv; P \propto sin(theta) * v
-        // double speed = MathUtil.clamp(m_thetakP * Math.sin(pitchRadians), -0.5, 0.5);
+        // double speed = -MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5);
+        // SmartDashboard.putNumber("Balance Speed", speed);
+        // System.out.println("Balance Speed: " + speed);
 
-        System.out.println("Speed: " + speed);
+        // if (!m_pid.atSetpoint())
+        // {
+        //     m_driveSubsystem.tankDrive(speed, speed);
+        // }
+
+        double speed = 0;
+
+        if (pitchDegreesAbs > 5)
+        {
+            speed = pitchSign * 0.25;
+        }
+        else if (pitchDegreesAbs > 10)
+        {
+            speed = pitchSign * 0.3;
+        }
+        else if (pitchDegreesAbs > 15)
+        {
+            speed = pitchSign * 0.35;
+        }
+
+        SmartDashboard.putNumber("Balance Speed", speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 

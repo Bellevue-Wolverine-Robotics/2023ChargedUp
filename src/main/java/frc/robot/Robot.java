@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     m_autoChooser.addOption("One Cone Auto", "OneConeAuto");
     m_autoChooser.addOption("One Cone Balance", "OneConeBalance");
     m_autoChooser.addOption("Charge Station", "ChargeStation");
+    m_autoChooser.addOption("Path Weaver", "PathWeaver");
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
   }
