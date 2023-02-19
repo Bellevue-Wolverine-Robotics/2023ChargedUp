@@ -65,7 +65,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightFront.setIdleMode(IdleMode.kBrake);
     m_rightBack.setIdleMode(IdleMode.kBrake);
 
-    this.m_rightGroup.setInverted(true);
+    m_rightFront.setInverted(true);
+    m_rightBack.setInverted(true);
 
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
@@ -82,10 +83,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry = new DifferentialDriveOdometry(
       m_gyro.getRotation2d(), 
-      m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(),
+      m_leftEncoder.getPosition(), m_rightEncoder.getPosition(),
       new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
     SmartDashboard.putData("Reset Drive Pose", new InstantCommand(this::resetPose, this));
   }
@@ -96,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), -m_rightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts)
@@ -238,7 +239,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
+    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
         
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
@@ -256,7 +257,7 @@ public class DriveSubsystem extends SubsystemBase {
   {
     resetEncoders();
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), -m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
   }
   
   public void resetOdometry(Pose2d initialPose)
