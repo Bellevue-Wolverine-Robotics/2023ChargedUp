@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -46,9 +47,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
-  private LinearFilter m_accelZFilter = LinearFilter.movingAverage(50);
+  private MedianFilter m_accelZFilter = new MedianFilter(50);
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
-  private LinearFilter m_accelYFilter = LinearFilter.movingAverage(50);
+  private MedianFilter m_accelYFilter = new MedianFilter(50);
 
 
   private DifferentialDriveOdometry m_odometry; 

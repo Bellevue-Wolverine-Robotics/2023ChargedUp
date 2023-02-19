@@ -35,7 +35,7 @@ public final class Constants {
       public static final int RIGHT_FRONT = 3;
       public static final int RIGHT_BACK = 4;
       public static final int ARM_SPARKMAX = 5;
-      public static final int ARM_TALON = 12;
+      public static final int ARM_TALON = 6;
   }
 
   public static class PneumaticsConstants {
