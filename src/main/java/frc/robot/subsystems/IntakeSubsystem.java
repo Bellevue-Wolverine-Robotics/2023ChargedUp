@@ -83,7 +83,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void onTeleop()
     {
-        new Trigger(m_itemContactSwitch::get).onTrue(new InstantCommand(this::extendIntake, this));
+        new Trigger(m_itemContactSwitch::get).onTrue(runOnce(this::extendIntake));
 
 
     }

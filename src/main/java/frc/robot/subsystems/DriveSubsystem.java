@@ -88,7 +88,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
-    SmartDashboard.putData("Reset Drive Pose", new InstantCommand(this::resetPose, this));
+    SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
   }
 
   public Pose2d getPose() {
@@ -286,12 +286,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftBack.setIdleMode(mode);
     m_rightFront.setIdleMode(mode);
     m_rightBack.setIdleMode(mode);
-  }
-
-  public void testDrive()
-  {
-    m_leftGroup.set(0.1);
-    m_rightGroup.set(0.1);
   }
 
   public void stopDriveTrain()

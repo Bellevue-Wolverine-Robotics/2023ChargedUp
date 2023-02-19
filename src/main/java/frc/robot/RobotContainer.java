@@ -31,6 +31,7 @@ import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -86,11 +87,11 @@ public class RobotContainer {
   private void configureBindings() {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
+    m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(runOnce(m_driveSubsystem::resetPose, m_driveSubsystem));
 
-    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
+    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.CLOCKWISE));
     m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.COUNTERCLOCKWISE));
   
