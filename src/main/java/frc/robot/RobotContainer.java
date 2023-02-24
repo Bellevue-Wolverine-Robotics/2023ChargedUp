@@ -81,7 +81,7 @@ public class RobotContainer {
   private void configureDefaultCommands()
   {
     m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
-    m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
+    // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
@@ -95,9 +95,11 @@ public class RobotContainer {
     m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.CLOCKWISE));
     m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.COUNTERCLOCKWISE));
   
-    m_driverController.button(ButtonConstants.ARM_HIGH_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI));
-    m_driverController.button(ButtonConstants.ARM_LOW_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, 0));
+    m_driverController.button(ButtonConstants.ARM_HIGH_BUTTON).whileTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI/2));
+    m_driverController.button(ButtonConstants.ARM_LOW_BUTTON).whileTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, 0));
     m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
+  
+    m_driverController.button(8).onTrue(runOnce(() -> m_intakeSubsystem.setArmPosition(0), m_intakeSubsystem));
   }
 
   /**

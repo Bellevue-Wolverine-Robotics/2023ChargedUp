@@ -50,6 +50,7 @@ public final class Constants {
     public static final double WHEEEL_CIRCUMFERENCE_INCHES = 18.875;
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
+    public static final double TALON_TO_ARM_RATIO = (double)15/44;
   }
 
   public static class ButtonConstants {

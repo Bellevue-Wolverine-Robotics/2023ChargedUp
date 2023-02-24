@@ -32,8 +32,20 @@ public class IntakeSubsystem extends SubsystemBase {
         this.m_armMotor.setNeutralMode(NeutralMode.Brake);
         m_armMotor.setSensorPhase(true);
         m_armMotor.setInverted(true);
+
+        m_armMotor.selectProfileSlot(0, 0);
+        m_armMotor.config_kF(0, 0);
+        m_armMotor.config_kP(0, 0.5);
+        m_armMotor.config_kI(0, 0);
+        m_armMotor.config_kD(0, 0);
+
     }
 
+    public void setArmPosition(double pos)
+    {
+        m_armMotor.set(ControlMode.Position, pos);
+        System.out.println("moving arm to " + pos);
+    }
 
     public void extendIntake()
     {
@@ -57,6 +69,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void rotateArm(double speed) {
+        System.out.println("Rotating speed: " + speed);
         m_armMotor.set(speed);
     }
 
@@ -64,10 +77,14 @@ public class IntakeSubsystem extends SubsystemBase {
         this.m_armMotor.setSelectedSensorPosition(0);
     }
 
+    public double getArmRotationDegrees() {
+        double rotationDeg = (m_armMotor.getSelectedSensorPosition() * PhysicalConstants.TALON_TO_ARM_RATIO * 360) / PhysicalConstants.TALON_PULSES_PER_ROTATION;
+
+        return rotationDeg;
+    }
     public double getArmRotationRadians() {
-        double rotation = this.m_armMotor.getSelectedSensorPosition() * 2 * Math.PI/ PhysicalConstants.TALON_PULSES_PER_ROTATION;
         
-        return rotation;
+        return Math.toRadians(getArmRotationDegrees());
     }
 
     @Override

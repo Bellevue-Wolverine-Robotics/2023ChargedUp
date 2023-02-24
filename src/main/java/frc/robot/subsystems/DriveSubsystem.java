@@ -250,7 +250,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
 
     SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
-    System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
+    // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
   }
 
   public void resetPose()
