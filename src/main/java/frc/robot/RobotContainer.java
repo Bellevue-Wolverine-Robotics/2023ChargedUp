@@ -26,12 +26,15 @@ import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
-import frc.robot.commands.Grab;
+import frc.robot.commands.RotateArmCommand;
 import frc.robot.commands.GrabRotateCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,6 +50,7 @@ public class RobotContainer {
 
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
+  private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
 
   public IStreamBundle GetIStream(){
@@ -92,14 +96,16 @@ public class RobotContainer {
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.CLOCKWISE));
-    m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).whileTrue(new Grab(m_intakeSubsystem, Grab.direction.COUNTERCLOCKWISE));
   
-    m_driverController.button(ButtonConstants.ARM_HIGH_BUTTON).whileTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI/2));
-    m_driverController.button(ButtonConstants.ARM_LOW_BUTTON).whileTrue(new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, 0));
+    m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.PI/2));
+    m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, 0));
+   
+    m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
+
     m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
-  
-    m_driverController.button(8).onTrue(runOnce(() -> m_intakeSubsystem.setArmPosition(0), m_intakeSubsystem));
+
+    BooleanSupplier outsideDeadband = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
+    new Trigger(outsideDeadband).whileTrue(new GrabRotateCommand(m_armSubsystem, m_operatorController::getY));
   }
 
   /**
@@ -110,7 +116,7 @@ public class RobotContainer {
   public Command getAutonomousCommand(String command) {
     if (command.equals("OneConeAuto"))
     {
-      return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem);
+      return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     }
     else if (command.equals("OneConeCharge"))
     {
@@ -123,7 +129,7 @@ public class RobotContainer {
       return Autos.pathWeaverCommand(m_driveSubsystem);
     }
     else {
-      return new RotateArmAbsoluteRadiansCommand(m_intakeSubsystem, Math.PI);
+      return new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.PI);
     }
   }
 

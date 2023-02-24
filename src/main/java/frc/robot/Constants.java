@@ -26,6 +26,8 @@ public final class Constants {
     public static final int JOYSTICK_3 = 2;
 
     public static final int Xbox = 3;
+    
+    public static final double controllerDeadband = 0.1;
   }
 
   public static class CANConstants {
@@ -38,7 +40,7 @@ public final class Constants {
       public static final int ARM_TALON = 6;
   }
 
-  public static class PneumaticsConstants {
+  public static class IntakeConstants {
     public static final int INTAKE_FORWARD_CHANNEL = 0;
     public static final int INTAKE_REVERSE_CHANNEL = 1;
     public static final DoubleSolenoid.Value EXTEND_STATE = DoubleSolenoid.Value.kReverse;
@@ -51,6 +53,8 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
+    public static final double STRIKE_GROUND_ANGLE = 90.0;
+    public static final double STRIKE_ROBOT_ANGLE = -90.0;
   }
 
   public static class ButtonConstants {
@@ -63,6 +67,7 @@ public final class Constants {
 
     public static final int ARM_LOW_BUTTON = 4;
     public static final int ARM_HIGH_BUTTON = 6;
+    public static final int TOGGLE_SAFTEY = 3;
 
     public static final int CHARGE_BALANCE_BUTTON = 7;
 
@@ -97,6 +102,13 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
   }
+
+  public static class ArmConstants {
+    public static final double kP = 0.04;
+    public static final double kI = 0;
+    public static final double kD = 0;
+  }
+  
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;
   

@@ -1,27 +1,38 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Istream.IStream;
 import frc.robot.Istream.IStreamBundle;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class GrabRotateCommand extends CommandBase {
-    private IntakeSubsystem m_intakeSubsystem;
-    private IStreamBundle input;
+    private ArmSubsystem m_armSubsystem;
+    private DoubleSupplier m_yInputSupplier;
 
-    public GrabRotateCommand(IntakeSubsystem intakeSubsystem, IStreamBundle input)
+    public GrabRotateCommand(ArmSubsystem m_armSubsystem, DoubleSupplier yInputSupplier)
     {
-        this.input = input;
+        m_yInputSupplier = yInputSupplier;
 
-        m_intakeSubsystem = intakeSubsystem;
-        addRequirements(intakeSubsystem);
+        this.m_armSubsystem = m_armSubsystem;
+        addRequirements(m_armSubsystem);
     }
 
     @Override
     public void execute()
     {
-        m_intakeSubsystem.rotateArm(input.getY(2));        
+        // lol
+        // square inputs, then multiply by sign
+        m_armSubsystem.rotateArm(Math.pow(m_yInputSupplier.getAsDouble(), 2) * (int) Math.signum(m_yInputSupplier.getAsDouble()));        
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        m_armSubsystem.stopArmMotor();
     }
 
 }

@@ -28,6 +28,8 @@ public class BalanceChargeStationCommand extends CommandBase {
         m_driveSubsystem.setMode(IdleMode.kCoast);
 
         m_pid.setTolerance(5);
+        
+        addRequirements(driveSubsystem);
     }
 
     @Override

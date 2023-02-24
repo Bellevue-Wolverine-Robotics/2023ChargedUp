@@ -5,7 +5,8 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.Grab.direction;
+import frc.robot.commands.RotateArmCommand.direction;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -35,18 +36,18 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public final class Autos {
   /** Example static factory for an autonomous command. */
 
-    public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem) {
+    public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, 2),
-                new RotateArmAbsoluteRadiansCommand(intakeSubsystem, Math.PI)),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Math.PI)),
             new WaitCommand(1),
             runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
             new WaitCommand(1),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(intakeSubsystem, 0))
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, 0))
             
         );
     }
