@@ -49,6 +49,11 @@ public class ArmSubsystem extends SubsystemBase {
         m_armMotor.set(speed);
     }
 
+    public void setArmVoltage(double outputVolts)
+    {
+        m_armMotor.setVoltage(outputVolts);
+    }
+
     public void toggleSaftey(){
         this.m_safety = !this.m_safety;
     }

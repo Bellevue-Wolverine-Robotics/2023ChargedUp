@@ -49,6 +49,7 @@ public final class Constants {
     public static final int kItemContactDIO = 9;
   }
 
+
   public static class PhysicalConstants {
     public static final double DRIVE_GEAR_RATIO = 8.45;
     public static final double WHEEEL_CIRCUMFERENCE_INCHES = 18.875;
@@ -109,6 +110,11 @@ public final class Constants {
     public static final double kP = 0.04;
     public static final double kI = 0;
     public static final double kD = 0;
+    public static final double kG = 0;
+    public static final double kS = 0;
+    public static final double kV = 0;
+
+    public static final int kInitialAngleOffset = 90;
   }
   
     //   // Inputs
