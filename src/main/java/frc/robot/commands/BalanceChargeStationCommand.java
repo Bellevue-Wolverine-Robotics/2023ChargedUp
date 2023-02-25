@@ -1,14 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import java.lang.Math;
-
-import javax.lang.model.util.ElementScanner14;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -18,9 +14,6 @@ public class BalanceChargeStationCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private PIDController m_pid = new PIDController(0.05, 0, 0);
     // private double m_thetakP = 0.9;
-
-    private double distanceFromStart = FieldConstants.RAMP_LENGTH_METERS + FieldConstants.WHOLE_PLATFORM_LENGTH_METER/2;
-    private double offSetFactor = 1; //adjust when testing with actrual ramp to account for slip
 
     public BalanceChargeStationCommand(DriveSubsystem driveSubsystem) {
         this.m_driveSubsystem = driveSubsystem;
