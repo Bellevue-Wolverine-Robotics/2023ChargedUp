@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.RotateArmCommand.direction;
+import frc.robot.commands.RotateArmDirectionalCommand.direction;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;

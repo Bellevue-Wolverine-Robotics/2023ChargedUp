@@ -26,8 +26,8 @@ import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
-import frc.robot.commands.RotateArmCommand;
-import frc.robot.commands.GrabRotateCommand;
+import frc.robot.commands.RotateArmDirectionalCommand;
+import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -105,7 +105,7 @@ public class RobotContainer {
     m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
     BooleanSupplier outsideDeadband = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadband).whileTrue(new GrabRotateCommand(m_armSubsystem, m_operatorController::getY));
+    new Trigger(outsideDeadband).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, m_operatorController::getY));
   }
 
   /**
