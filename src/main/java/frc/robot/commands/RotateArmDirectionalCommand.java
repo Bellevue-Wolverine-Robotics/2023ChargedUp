@@ -5,7 +5,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import java.lang.Enum;
 
-public class RotateArmCommand extends CommandBase {
+public class RotateArmDirectionalCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;
     private double grab_power;
     
@@ -14,7 +14,7 @@ public class RotateArmCommand extends CommandBase {
         COUNTERCLOCKWISE
     }
 
-    public RotateArmCommand (ArmSubsystem m_armSubsystem, direction dir) {
+    public RotateArmDirectionalCommand (ArmSubsystem m_armSubsystem, direction dir) {
         this.m_armSubsystem = m_armSubsystem;
 
         switch(dir){
