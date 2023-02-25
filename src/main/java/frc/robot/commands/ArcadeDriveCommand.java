@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Istream.IStreamBundle;
@@ -7,12 +9,15 @@ import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class ArcadeDriveCommand extends CommandBase {
-    private DriveSubsystem driveSubsystem;
-    private IStreamBundle input;
+    private DriveSubsystem m_driveSubsystem;
+    private DoubleSupplier m_xSpeedSupplier;
+    private DoubleSupplier m_zRotSupplier;
 
-    public ArcadeDriveCommand(IStreamBundle input, DriveSubsystem drivesystem){
-        this.input = input;
-        this.driveSubsystem = drivesystem;
+    public ArcadeDriveCommand(DriveSubsystem drivesystem, DoubleSupplier xSpeedSupplier, DoubleSupplier zRotSupplier){
+        this.m_driveSubsystem = drivesystem;
+
+        m_xSpeedSupplier = xSpeedSupplier;
+        m_zRotSupplier = zRotSupplier;
 
         addRequirements(drivesystem);
     }
@@ -20,9 +25,6 @@ public class ArcadeDriveCommand extends CommandBase {
     @Override
     public void execute()
     {
-        // TODO: pass in the joystick to constructor
-       // System.out.println(input.getX(1) + "x: y" + input.getY(1));
-        driveSubsystem.arcadeDrive(-input.getY(1), -input.getX(1));   
-
+        m_driveSubsystem.arcadeDrive(m_xSpeedSupplier.getAsDouble(), m_zRotSupplier.getAsDouble());   
     }
 }

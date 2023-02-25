@@ -21,25 +21,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase {
-    //USING TALON, does not have encoder
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.INTAKE_FORWARD_CHANNEL, IntakeConstants.INTAKE_REVERSE_CHANNEL);
-    private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
-    private DigitalInput m_itemContactSwitch = new DigitalInput(9); // TODO: constatn later
-
-    public IntakeSubsystem(){
-        this.m_armMotor.configFactoryDefault();
-        this.m_armMotor.setSelectedSensorPosition(0);
-        this.m_armMotor.setNeutralMode(NeutralMode.Brake);
-        m_armMotor.setSensorPhase(true);
-        m_armMotor.setInverted(true);
-
-        m_armMotor.selectProfileSlot(0, 0);
-        m_armMotor.config_kF(0, 0);
-        m_armMotor.config_kP(0, 0.5);
-        m_armMotor.config_kI(0, 0);
-        m_armMotor.config_kD(0, 0);
-
-    }
+    private DigitalInput m_itemContactSwitch = new DigitalInput(IntakeConstants.kItemContactDIO);
 
     public void extendIntake()
     {

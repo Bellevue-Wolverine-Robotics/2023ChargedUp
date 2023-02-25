@@ -38,11 +38,11 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Motor Speed", speed);
         
         if(this.m_safety){
-            if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE){
-                speed = speed > 0.0 ? 0: speed;                
+            if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
+                speed = speed < 0.0 ? 0 : speed;                
             }
-            if(getArmRotationDegrees() < Constants.PhysicalConstants.STRIKE_ROBOT_ANGLE){
-                speed = speed < 0.0 ? 0: speed;                
+            if(getArmRotationDegrees() < Constants.PhysicalConstants.STRIKE_ROBOT_ANGLE) {
+                speed = speed > 0.0 ? 0 : speed;                
             }
         }
 

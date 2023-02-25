@@ -84,7 +84,7 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(istream, m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, m_driverController::getX, m_driverController::getY));
     // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 

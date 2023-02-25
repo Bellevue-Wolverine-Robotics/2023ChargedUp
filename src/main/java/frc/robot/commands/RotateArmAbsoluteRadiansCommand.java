@@ -26,7 +26,7 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
 
     @Override
     public void execute(){
-        double motorSpeed = this.m_pid.calculate(m_armSubsystem.getArmRotationRadians(), this.m_targetAngle);
+        double motorSpeed = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
         
         motorSpeed = MathUtil.clamp(motorSpeed, -0.5, 0.5);
         m_armSubsystem.rotateArm(motorSpeed);

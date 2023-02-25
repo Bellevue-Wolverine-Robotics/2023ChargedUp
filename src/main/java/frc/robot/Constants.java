@@ -45,6 +45,8 @@ public final class Constants {
     public static final int INTAKE_REVERSE_CHANNEL = 1;
     public static final DoubleSolenoid.Value EXTEND_STATE = DoubleSolenoid.Value.kReverse;
     public static final DoubleSolenoid.Value RETRACT_STATE = DoubleSolenoid.Value.kForward;
+
+    public static final int kItemContactDIO = 9;
   }
 
   public static class PhysicalConstants {

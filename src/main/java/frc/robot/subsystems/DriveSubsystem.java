@@ -263,12 +263,15 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetOdometry(Pose2d initialPose)
   {
     resetEncoders();
+    
     m_odometry.resetPosition(
       m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){
     SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
+    SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
+
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 
