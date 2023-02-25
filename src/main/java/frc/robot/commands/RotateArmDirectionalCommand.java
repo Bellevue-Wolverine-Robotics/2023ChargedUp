@@ -2,8 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import java.lang.Enum;
 
 public class RotateArmDirectionalCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;

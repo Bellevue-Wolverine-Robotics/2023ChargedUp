@@ -3,11 +3,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import frc.robot.Istream.IStream;
-import frc.robot.Istream.IStreamBundle;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class RotateArmSpeedCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;
