@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    m_autoChooser.addOption("One Cone Auto", "OneConeAuto");
+    m_autoChooser.setDefaultOption("One Cone Auto", "OneConeAuto");
     m_autoChooser.addOption("One Cone Balance", "OneConeBalance");
     m_autoChooser.addOption("Charge Station", "ChargeStation");
     m_autoChooser.addOption("Path Weaver", "PathWeaver");
@@ -66,10 +66,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //System.out.println("autonomous was initiated");
-    //gets called everytime auton gets enabled.
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(m_autoChooser.getSelected());
-    // schedule the autonomous command (example)
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -90,7 +88,6 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.onTeleop();
-
   }
 
   /** This function is called periodically during operator control. */
