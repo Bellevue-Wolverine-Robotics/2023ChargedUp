@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,8 +19,6 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
         this.m_armSubsystem = m_armSubsystem;
         this.m_targetAngle = radians;
 
-        SmartDashboard.putData("arm rotate pid", m_pid);
-
         addRequirements(this.m_armSubsystem);
     }
 
@@ -28,6 +27,7 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
         double pidTerm = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
         double ffTerm = m_feedForward.calculate(m_targetAngle + ArmConstants.kInitialAngleOffset, 0);
         
+        System.out.println("pidTerm: " + pidTerm);
         m_armSubsystem.setArmVoltage(pidTerm);
     }
 

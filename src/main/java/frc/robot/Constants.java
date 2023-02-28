@@ -56,16 +56,15 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
-    public static final double STRIKE_GROUND_ANGLE = 90.0;
-    public static final double STRIKE_ROBOT_ANGLE = -90.0;
+    public static final double STRIKE_GROUND_ANGLE = 180;
+    public static final double STRIKE_ROBOT_ANGLE = 10;
   }
 
   public static class ButtonConstants {
     public static final int INTAKE_TOGGLE_BUTTON = 1;
     public static final int INTAKE_EXTEND_BUTTON = 5;
     public static final int INTAKE_RETRACT_BUTTON = 4;
-    public static final int GRAB_CLOCKWISE_BUTTON = 6;
-    public static final int GRAB_COUNTER_CLOCKWISE_BUTTON = 7;
+
     public static final int RESET_POSE_BUTTON = 8;
 
     public static final int ARM_LOW_BUTTON = 4;
@@ -73,6 +72,10 @@ public final class Constants {
     public static final int TOGGLE_SAFTEY = 3;
 
     public static final int CHARGE_BALANCE_BUTTON = 7;
+
+    public static final int kSlightlyAboveHomeButton = 6;
+    public static final int kScoringPositionButton = 7;
+    public static final int kParallelThingsButton = 8;
 
   }
 
@@ -107,14 +110,20 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final double kP = 0.04;
+    public static final double kP = 12.8;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kG = 0;
     public static final double kS = 0;
     public static final double kV = 0;
 
-    public static final int kInitialAngleOffset = 90;
+    public static final int kInitialAngleOffset = 90 - 25;
+
+    public static final int kArmCalibrationDIO = 9;
+
+    public static final int kSlightlyAboveHomeAngle = 10;
+    public static final int kScoringAngle = 80;
+    public static final int kParallelThingsAngle = 140;
   }
   
     //   // Inputs

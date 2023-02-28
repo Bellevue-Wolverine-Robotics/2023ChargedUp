@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  // private Command m_testCommand;
 
   private RobotContainer m_robotContainer;
   SendableChooser<String> m_autoChooser = new SendableChooser<>();
@@ -29,12 +30,14 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
     m_robotContainer = new RobotContainer();
 
     m_autoChooser.setDefaultOption("One Cone Auto", "OneConeAuto");
     m_autoChooser.addOption("One Cone Balance", "OneConeBalance");
     m_autoChooser.addOption("Charge Station", "ChargeStation");
     m_autoChooser.addOption("Path Weaver", "PathWeaver");
+    m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
   }
@@ -87,6 +90,10 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    // if (m_testCommand != null) {
+    //   m_testCommand.cancel();
+    // }
+
     m_robotContainer.onTeleop();
   }
 
@@ -97,13 +104,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    System.out.println("test init");
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
+    // m_testCommand = m_robotContainer.getTestCommand();
+    // m_testCommand.schedule();
+
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    // lazy
+    
+    m_robotContainer.getArmSubsystem().rotateArm(m_robotContainer.getOperatorY());
+    if (m_robotContainer.getArmSubsystem().isSwitchClosed()) m_robotContainer.getArmSubsystem().resetArmEncoder();
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override

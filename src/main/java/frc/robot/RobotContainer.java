@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ButtonConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Istream.IStreamBundle;
@@ -17,6 +18,7 @@ import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
+import frc.robot.commands.InitArmPositionCommand;
 import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -87,8 +89,9 @@ public class RobotContainer {
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
   
-    m_operatorController.button(ButtonConstants.GRAB_CLOCKWISE_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.PI/2));
-    m_operatorController.button(ButtonConstants.GRAB_COUNTER_CLOCKWISE_BUTTON).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, 0));
+    m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle)));
+    m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle)));
+    m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle)));
    
     m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
 
@@ -118,16 +121,30 @@ public class RobotContainer {
     else if (command.equals("PathWeaver")) {
       return Autos.pathWeaverCommand(m_driveSubsystem);
     }
-    else {
-      return new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.PI);
+    else if (command.equals("CalibrateArm")) {
+      return new InitArmPositionCommand(m_armSubsystem);
+    }
+    else
+    {
+      return null;
     }
   }
+
+  // public Command getTestCommand()
+  // {
+  //   System.out.println("getTestCommand");
+  //   return new InitArmPositionCommand(m_armSubsystem);
+  // }
 
   public void onTeleop() {
     m_intakeSubsystem.onTeleop();
   }
 
-  public void onTest() {
-    
+  public ArmSubsystem getArmSubsystem() {
+    return m_armSubsystem;
+  }
+
+  public double getOperatorY() {
+    return m_operatorController.getY();
   }
 }

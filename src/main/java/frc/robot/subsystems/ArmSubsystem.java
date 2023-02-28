@@ -4,15 +4,18 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 public class ArmSubsystem extends SubsystemBase {
     private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
     private boolean m_safety = true;
+    private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
 
     public ArmSubsystem() {
         m_armMotor.configFactoryDefault();
@@ -77,10 +80,17 @@ public class ArmSubsystem extends SubsystemBase {
         m_armMotor.stopMotor();
     }
 
+    public boolean isSwitchClosed()
+    {
+        return m_armCalibrationSwitch.get();
+    }
+
     @Override
     public void periodic()
     {
         SmartDashboard.putNumber("ArmRotation Degrees", getArmRotationDegrees());
+        SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
 
     }
+
 }

@@ -9,7 +9,7 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     private DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.INTAKE_FORWARD_CHANNEL, IntakeConstants.INTAKE_REVERSE_CHANNEL);
-    private DigitalInput m_itemContactSwitch = new DigitalInput(IntakeConstants.kItemContactDIO);
+    // private DigitalInput m_itemContactSwitch = new DigitalInput(IntakeConstants.kItemContactDIO);
 
     public void extendIntake()
     {
@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void onTeleop()
     {
-        new Trigger(m_itemContactSwitch::get).onTrue(runOnce(this::extendIntake));
+        // new Trigger(m_itemContactSwitch::get).onTrue(runOnce(this::extendIntake));
     }
 
 }
