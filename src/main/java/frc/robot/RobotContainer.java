@@ -15,6 +15,7 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
@@ -81,6 +82,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    m_driverController.button(ButtonConstants.TURN_180_BUTTON).onTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
+    
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(runOnce(m_driveSubsystem::resetPose, m_driveSubsystem));

@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
 
+    teleopInit();
+
     // m_testCommand = m_robotContainer.getTestCommand();
     // m_testCommand.schedule();
 
@@ -116,9 +118,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    // lazy
-    
-    m_robotContainer.getArmSubsystem().rotateArm(m_robotContainer.getOperatorY());
+    teleopPeriodic();
     if (m_robotContainer.getArmSubsystem().isSwitchClosed()) m_robotContainer.getArmSubsystem().resetArmEncoder();
   }
 

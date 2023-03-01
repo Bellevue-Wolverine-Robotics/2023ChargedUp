@@ -168,8 +168,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     pitchDegrees = m_accelPitchFilter.calculate(pitchDegrees);
 
-
-
     return pitchDegrees;
   }
 

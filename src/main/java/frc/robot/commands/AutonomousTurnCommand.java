@@ -2,12 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Utils.SmartDashboardUtils;
 
 public class AutonomousTurnCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private double m_targetAngle;
-    private PIDController m_pid = new PIDController(0.02, 0, 0.001);
+    private PIDController m_pid = new PIDController(DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
     
     public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
@@ -23,6 +25,8 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public void execute()
     {
+        SmartDashboardUtils.TunablePID(this.getName(), m_pid, DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
+
         double motorSpeed = m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle);
 
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);

@@ -21,10 +21,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-
-
-
-
 public final class Autos {
   /** Example static factory for an autonomous command. */
 

@@ -3,10 +3,12 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Utils.SmartDashboardUtils;
 
 public class RotateArmAbsoluteRadiansCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;
@@ -24,11 +26,12 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
 
     @Override
     public void execute(){
-        double pidTerm = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
-        double ffTerm = m_feedForward.calculate(m_targetAngle + ArmConstants.kInitialAngleOffset, 0);
+        SmartDashboardUtils.TunablePID(this.getName(), m_pid, ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
         
-        System.out.println("pidTerm: " + pidTerm);
-        m_armSubsystem.setArmVoltage(pidTerm);
+        double pidTerm = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
+        double ffTerm = m_feedForward.calculate(Units.degreesToRadians(m_targetAngle + ArmConstants.kInitialAngleOffset), 0);
+
+        m_armSubsystem.setArmVoltage(pidTerm + ffTerm);
     }
 
     // @Override

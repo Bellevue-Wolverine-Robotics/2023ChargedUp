@@ -12,6 +12,8 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
 
+import static edu.wpi.first.wpilibj2.command.Commands.*;
+
 public class ArmSubsystem extends SubsystemBase {
     private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
     private boolean m_safety = true;
@@ -28,6 +30,8 @@ public class ArmSubsystem extends SubsystemBase {
         // m_armMotor.config_kP(0, ArmConstants.kP);
         // m_armMotor.config_kI(0, ArmConstants.kI);
         // m_armMotor.config_kD(0, ArmConstants.kD);
+
+        SmartDashboard.putData("Reset Arm Position", runOnce(this::resetArmEncoder));
     }
     
     public void setArmPosition(double pos)

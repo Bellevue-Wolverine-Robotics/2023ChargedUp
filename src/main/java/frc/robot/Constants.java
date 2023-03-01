@@ -62,6 +62,7 @@ public final class Constants {
 
   public static class ButtonConstants {
     public static final int INTAKE_TOGGLE_BUTTON = 1;
+    public static final int TURN_180_BUTTON = 2;
     public static final int INTAKE_EXTEND_BUTTON = 5;
     public static final int INTAKE_RETRACT_BUTTON = 4;
 
@@ -107,10 +108,19 @@ public final class Constants {
 
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
+
+    public static final double kPTurn = 0.08;
+    public static final double kITurn = 0;
+    public static final double kDTurn = 0.008;
+
+    public static final double kPStraight = 2;
+    public static final double kIStraight = 0;
+    public static final double kDStraight = 0;
+
   }
 
   public static class ArmConstants {
-    public static final double kP = 12.8;
+    public static final double kP = 10;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kG = 0;
@@ -122,8 +132,8 @@ public final class Constants {
     public static final int kArmCalibrationDIO = 9;
 
     public static final int kSlightlyAboveHomeAngle = 10;
-    public static final int kScoringAngle = 80;
-    public static final int kParallelThingsAngle = 140;
+    public static final int kScoringAngle = 57;
+    public static final int kParallelThingsAngle = 100;
   }
   
     //   // Inputs

@@ -3,10 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RelativeStraightDriveCommand extends CommandBase {
-    private PIDController m_pidLinear = new PIDController(2, 0, 0.2);
+    private PIDController m_pidLinear = new PIDController(DriveConstants.kPStraight, DriveConstants.kIStraight, DriveConstants.kDStraight);
     private double m_rotationKP = 0.02;
 
     private DriveSubsystem m_driveSubsystem;
