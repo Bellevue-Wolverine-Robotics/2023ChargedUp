@@ -57,7 +57,7 @@ public final class Constants {
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
     public static final double STRIKE_GROUND_ANGLE = 150;
-    public static final double STRIKE_ROBOT_ANGLE = 10;
+    public static final double STRIKE_ROBOT_ANGLE = 20;
   }
 
   public static class ButtonConstants {
@@ -109,7 +109,7 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.002;
+    public static final double kPTurn = 0.001;
     public static final double kITurn = 0;
     public static final double kDTurn = 0;
 
@@ -131,7 +131,7 @@ public final class Constants {
 
     public static final int kArmCalibrationDIO = 9;
 
-    public static final int kSlightlyAboveHomeAngle = 10;
+    public static final int kSlightlyAboveHomeAngle = 20;
     public static final int kParallelThingsAngle = 57;
     public static final int kScoringAngle = 100;
   }

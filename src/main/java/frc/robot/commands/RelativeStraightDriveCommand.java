@@ -29,12 +29,12 @@ public class RelativeStraightDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_targetDistance), -0.5, 0.5);
-        double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.5, 0.5);
+        double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_targetDistance), -0.7, 0.7);
+        double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.7, 0.7);
 
         // System.out.println("Straight Drive at: " + linearSpeed + " with target at: " + m_targetDistance);
         
-        m_driveSubsystem.tankDrive(linearSpeed + rotationalSpeed, linearSpeed -rotationalSpeed);
+        m_driveSubsystem.tankDrive(linearSpeed, linearSpeed);
     }
 
     @Override
