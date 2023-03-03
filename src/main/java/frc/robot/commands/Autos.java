@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -11,6 +12,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -26,17 +28,26 @@ public final class Autos {
 
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kScoringAngle),
+            new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, 2),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Math.PI)),
-            new WaitCommand(1),
-            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
-            new WaitCommand(1),
+                new RelativeStraightDriveCommand(driveSubsystem, Units.feetToMeters(-18)),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kSlightlyAboveHomeAngle))
+        );
+    }
+
+    public static Command oneConeTouch(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kScoringAngle),
+            new WaitCommand(0.5),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, 0))
-            
+                new RelativeStraightDriveCommand(driveSubsystem, Units.feetToMeters(-10)),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kSlightlyAboveHomeAngle))
         );
     }
 

@@ -56,7 +56,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
-    public static final double STRIKE_GROUND_ANGLE = 180;
+    public static final double STRIKE_GROUND_ANGLE = 150;
     public static final double STRIKE_ROBOT_ANGLE = 10;
   }
 
@@ -75,8 +75,8 @@ public final class Constants {
     public static final int CHARGE_BALANCE_BUTTON = 7;
 
     public static final int kSlightlyAboveHomeButton = 6;
-    public static final int kScoringPositionButton = 7;
-    public static final int kParallelThingsButton = 8;
+    public static final int kParallelThingsButton = 7;
+    public static final int kScoringPositionButton = 8;
 
   }
 
@@ -109,9 +109,9 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.08;
+    public static final double kPTurn = 0.002;
     public static final double kITurn = 0;
-    public static final double kDTurn = 0.008;
+    public static final double kDTurn = 0;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;
@@ -132,8 +132,8 @@ public final class Constants {
     public static final int kArmCalibrationDIO = 9;
 
     public static final int kSlightlyAboveHomeAngle = 10;
-    public static final int kScoringAngle = 57;
-    public static final int kParallelThingsAngle = 100;
+    public static final int kParallelThingsAngle = 57;
+    public static final int kScoringAngle = 100;
   }
   
     //   // Inputs

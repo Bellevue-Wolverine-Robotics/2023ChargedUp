@@ -33,10 +33,10 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
 
-    m_autoChooser.setDefaultOption("One Cone Auto", "OneConeAuto");
-    m_autoChooser.addOption("One Cone Balance", "OneConeBalance");
-    m_autoChooser.addOption("Charge Station", "ChargeStation");
-    m_autoChooser.addOption("Path Weaver", "PathWeaver");
+    m_autoChooser.setDefaultOption("One Cone & Leave Community", "OneConeCommunity");
+    m_autoChooser.addOption("One Cone & Touch Charge Station", "OneConeTouchStation");
+    // m_autoChooser.addOption("Charge Station", "ChargeStation");
+    // m_autoChooser.addOption("Path Weaver", "PathWeaver");
     m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);

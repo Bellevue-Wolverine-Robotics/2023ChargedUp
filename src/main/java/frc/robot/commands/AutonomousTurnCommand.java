@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
@@ -16,7 +17,7 @@ public class AutonomousTurnCommand extends CommandBase {
         m_driveSubsystem = driveSubsystem;
         m_targetAngle = degreesToTurn;
 
-        m_pid.setTolerance(0.3);
+        m_pid.setTolerance(5);
         m_pid.enableContinuousInput(-180, 180);
 
         addRequirements(m_driveSubsystem);
@@ -27,7 +28,8 @@ public class AutonomousTurnCommand extends CommandBase {
     {
         SmartDashboardUtils.TunablePID(this.getName(), m_pid, DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
 
-        double motorSpeed = m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle);
+        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle), -0.5, 0.5);
+        // System.out.println("Motor Speed " + motorSpeed);
 
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
@@ -35,12 +37,15 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public boolean isFinished()
     {
-        return m_pid.atSetpoint();
+        System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
+        return false;
+        // return m_pid.atSetpoint();
     }
 
     @Override
     public void end(boolean interrupted)
     {
         m_driveSubsystem.resetPose();
+        m_driveSubsystem.stopDriveTrain();
     }
 }

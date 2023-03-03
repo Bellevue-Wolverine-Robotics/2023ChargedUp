@@ -77,16 +77,16 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () ->  m_driverController.getX()));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX()));
     // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
-    m_driverController.button(ButtonConstants.TURN_180_BUTTON).onTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
-    
+    // m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
+    m_driverController.button(ButtonConstants.TURN_180_BUTTON).onTrue(new RelativeStraightDriveCommand(m_driveSubsystem, 1));
+    m_driverController.button(12).onTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.RESET_POSE_BUTTON).onTrue(runOnce(m_driveSubsystem::resetPose, m_driveSubsystem));
 
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
@@ -110,22 +110,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand(String command) {
-    if (command.equals("OneConeAuto"))
+    if (command.equals("OneConeCommunity"))
     {
       return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     }
-    else if (command.equals("OneConeCharge"))
+    if (command.equals("OneConeTouchStation"))
     {
-      return new RelativeStraightDriveCommand(m_driveSubsystem, -1);
-    }
-    else if (command.equals("ChargeStation")){
-      return new BalanceChargeStationCommand(m_driveSubsystem);
-    }
-    else if (command.equals("PathWeaver")) {
-      return Autos.pathWeaverCommand(m_driveSubsystem);
-    }
-    else if (command.equals("CalibrateArm")) {
-      return new InitArmPositionCommand(m_armSubsystem);
+      return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     }
     else
     {

@@ -8,7 +8,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class RelativeStraightDriveCommand extends CommandBase {
     private PIDController m_pidLinear = new PIDController(DriveConstants.kPStraight, DriveConstants.kIStraight, DriveConstants.kDStraight);
-    private double m_rotationKP = 0.02;
+    private double m_rotationKP = DriveConstants.kPTurn;
 
     private DriveSubsystem m_driveSubsystem;
 

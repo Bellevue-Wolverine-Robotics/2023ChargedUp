@@ -18,7 +18,6 @@ public class BalanceChargeStationCommand extends CommandBase {
     public BalanceChargeStationCommand(DriveSubsystem driveSubsystem) {
         this.m_driveSubsystem = driveSubsystem;
 
-        m_driveSubsystem.setMode(IdleMode.kCoast);
 
         m_pid.setTolerance(5);
         
@@ -55,7 +54,6 @@ public class BalanceChargeStationCommand extends CommandBase {
             speed = pitchSign * 0.35;
         }
 
-        SmartDashboard.putNumber("Balance Speed", speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 

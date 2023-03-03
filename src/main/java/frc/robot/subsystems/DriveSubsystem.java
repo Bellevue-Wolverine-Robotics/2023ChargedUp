@@ -227,7 +227,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getZAccelWeighted() {
     double zAccel = m_accelZFilter.calculate(m_accelerometer.getZ());
-    SmartDashboard.putNumber("Z Accel Weighted", zAccel);
 
     return zAccel;
   }
@@ -236,16 +235,16 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
-        
-    SmartDashboard.putNumber("Robot X", pose.getX());
-    SmartDashboard.putNumber("Robot Y", pose.getY());
-    SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getGyroDegrees());
+    // SmartDashboard.putNumber("Robot X", pose.getX());
+    // SmartDashboard.putNumber("Robot Y", pose.getY());
+    // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
-    SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
-    SmartDashboard.putNumber("Accelerometer Y", m_accelerometer.getY());
-    SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
+    // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
+    // SmartDashboard.putNumber("Accelerometer Y", m_accelerometer.getY());
+    // SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
 
-    SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
+    // SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
     // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
   }
 
@@ -265,8 +264,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double xSpeed, double zRotation){
-    SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
-    SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
+    // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
+    // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
     this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
@@ -289,6 +288,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void stopDriveTrain()
   {
-    m_drive.stopMotor();
+    m_drive.tankDrive(0, 0);
   }
 }

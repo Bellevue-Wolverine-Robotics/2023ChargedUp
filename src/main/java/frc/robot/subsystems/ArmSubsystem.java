@@ -41,7 +41,6 @@ public class ArmSubsystem extends SubsystemBase {
     
     
     public void rotateArm(double speed) {
-        SmartDashboard.putNumber("Motor Speed", speed);
         
         if(this.m_safety){
             if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
