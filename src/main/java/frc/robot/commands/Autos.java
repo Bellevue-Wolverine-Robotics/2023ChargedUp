@@ -28,26 +28,26 @@ public final class Autos {
 
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
-            new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kScoringAngle),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kScoringAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kSlightlyAboveHomeAngle))
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
         );
     }
 
     public static Command oneConeTouch(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
-            new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kScoringAngle),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kScoringAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -1.4)),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, ArmConstants.kSlightlyAboveHomeAngle));
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true));
     }
 
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)

@@ -13,13 +13,15 @@ import frc.robot.subsystems.Utils.SmartDashboardUtils;
 public class RotateArmAbsoluteRadiansCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;
     private double m_targetAngle;
+    private boolean m_finishes;
 
     private PIDController m_pid = new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD); 
     private ArmFeedforward m_feedForward = new ArmFeedforward(ArmConstants.kS, ArmConstants.kG, ArmConstants.kV);
 
-    public RotateArmAbsoluteRadiansCommand(ArmSubsystem m_armSubsystem, double radians){
+    public RotateArmAbsoluteRadiansCommand(ArmSubsystem m_armSubsystem, double radians, boolean finishes){
         this.m_armSubsystem = m_armSubsystem;
         this.m_targetAngle = radians;
+        this.m_finishes = finishes;
 
         addRequirements(this.m_armSubsystem);
     }
@@ -34,10 +36,15 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
         m_armSubsystem.setArmVoltage(pidTerm + ffTerm);
     }
 
-    // @Override
-    // public boolean isFinished() {
-    //     return m_pid.atSetpoint();
-    // }
+    @Override
+    public boolean isFinished() {
+        if (!m_finishes)
+        {
+            return false;
+        }
+        
+        return m_pid.atSetpoint();
+    }
 
     @Override
     public void end(boolean interrupted) {
