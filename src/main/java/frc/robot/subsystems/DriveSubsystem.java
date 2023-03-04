@@ -49,6 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
   private MedianFilter m_accelYFilter = new MedianFilter(50);
 
+  private boolean m_squareInputs = false;
 
   private DifferentialDriveOdometry m_odometry; 
   /** Creates a new ExampleSubsystem. */
@@ -236,8 +237,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
     SmartDashboard.putNumber("Heading", getGyroDegrees());
-    // SmartDashboard.putNumber("Robot X", pose.getX());
-    // SmartDashboard.putNumber("Robot Y", pose.getY());
+    SmartDashboard.putNumber("Robot X", pose.getX());
+    SmartDashboard.putNumber("Robot Y", pose.getY());
+    SmartDashboard.putBoolean("Squaring Inputs", m_squareInputs);
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
@@ -267,7 +269,7 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
-    this.m_drive.arcadeDrive(xSpeed, zRotation, false);
+    this.m_drive.arcadeDrive(xSpeed, zRotation, m_squareInputs);
   }
 
   public void arcadeDriveSquared(double xSpeed, double zRotation){
@@ -290,4 +292,10 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_drive.tankDrive(0, 0);
   }
+
+  public void toggleSquareInputs()
+  {
+    m_squareInputs = !m_squareInputs;
+  }
+  
 }
