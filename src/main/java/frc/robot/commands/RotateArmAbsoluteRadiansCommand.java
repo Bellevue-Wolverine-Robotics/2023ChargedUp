@@ -28,7 +28,7 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
 
     @Override
     public void execute(){
-        SmartDashboardUtils.TunablePID(this.getName(), m_pid, ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
+        // SmartDashboardUtils.TunablePID(this.getName(), m_pid, ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
         
         double pidTerm = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
         double ffTerm = m_feedForward.calculate(Units.degreesToRadians(m_targetAngle + ArmConstants.kInitialAngleOffset), 0);

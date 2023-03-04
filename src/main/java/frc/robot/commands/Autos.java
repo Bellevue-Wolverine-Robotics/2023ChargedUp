@@ -51,6 +51,19 @@ public final class Autos {
         );
     }
 
+    public static Command hardCodedCommunityLeave(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(() -> armSubsystem.setArmVoltage(6), armSubsystem),
+            new WaitCommand(0.3),
+            runOnce(armSubsystem::stopArmMotor, armSubsystem),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, -1.4),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+        );
+    }
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
     {
         var autoVoltageConstraint =
