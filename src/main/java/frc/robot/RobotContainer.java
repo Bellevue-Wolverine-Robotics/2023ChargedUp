@@ -91,8 +91,8 @@ public class RobotContainer {
     m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 4));
 
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
+    // m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
+    // m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
   
     m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
     m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
