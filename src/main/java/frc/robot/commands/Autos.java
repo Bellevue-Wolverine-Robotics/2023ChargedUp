@@ -46,8 +46,9 @@ public final class Autos {
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -1.4)),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true));
+                new RelativeStraightDriveCommand(driveSubsystem, -1.4),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+        );
     }
 
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
