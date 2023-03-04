@@ -88,6 +88,8 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
 
+    m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 4));
+
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
@@ -98,7 +100,7 @@ public class RobotContainer {
    
     m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
 
-    m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
+    // m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
     BooleanSupplier outsideDeadband = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
     new Trigger(outsideDeadband).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, m_operatorController::getY));
