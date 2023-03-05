@@ -89,6 +89,11 @@ public final class Constants {
     public static double WHOLE_PLATFORM_LENGTH_INCH = 48;
     public static double WHOLE_PLATFORM_LENGTH_METER = WHOLE_PLATFORM_LENGTH_INCH*PhysicsConstants.INCH_TO_METER;
     
+    public static final double CHARGE_STATION = -2.5;
+    public static final double COMMUNITY = -4;
+
+    public static final double LOW_SCORING_SECONDS = 1;
+    public static final double MID_SCORING_SECONDS = 2.1;
   }
 
   public static class PhysicsConstants{

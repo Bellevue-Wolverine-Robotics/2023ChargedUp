@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -51,7 +52,7 @@ public final class Autos {
         );
     }
 
-    public static Command hardCodedOneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    public static Command hardCodedOneConeCommunityMidScoring(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
             runOnce(() -> armSubsystem.rotateArm(-0.4)),
@@ -68,28 +69,65 @@ public final class Autos {
         );
     }
 
-    public static Command hardCodedOneConeChargeBalance(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    public static Command hardCodedOneConeBalanceMidScoring(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
             runOnce(() -> armSubsystem.rotateArm(-0.4)),
-            new WaitCommand(1.5),
+            new WaitCommand(FieldConstants.MID_SCORING_SECONDS),
             runOnce(() -> armSubsystem.setArmVoltage(0)),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -2.5),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY),
+                runOnce(() -> armSubsystem.rotateArm(0.4))),
+            new WaitCommand(FieldConstants.MID_SCORING_SECONDS - 0.5),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem)
+        );
+    }
+
+    public static Command hardCodedOneConeCommunityLowScoring(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(() -> armSubsystem.rotateArm(-0.4)),
+            new WaitCommand(FieldConstants.LOW_SCORING_SECONDS),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY),
+                runOnce(() -> armSubsystem.rotateArm(0.4))),
+            new WaitCommand(FieldConstants.MID_SCORING_SECONDS - 0.5),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem)
+        );
+    }
+
+    public static Command hardCodedOneConeChargeBalanceLowScoring(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(() -> armSubsystem.rotateArm(-0.4)),
+            new WaitCommand(FieldConstants.LOW_SCORING_SECONDS),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION),
+                runOnce(() -> armSubsystem.rotateArm(0.4))),
+            new WaitCommand(FieldConstants.MID_SCORING_SECONDS - 0.5),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem)
         );
     }
 
     public static Command brokenArmCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
-        return new RelativeStraightDriveCommand(driveSubsystem, -4);
+        return new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY);
     }
 
     public static Command brokenArmChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
-        return new RelativeStraightDriveCommand(driveSubsystem, -2.5);
+        return new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION);
     }
 
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
