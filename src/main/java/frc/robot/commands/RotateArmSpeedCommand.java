@@ -22,7 +22,7 @@ public class RotateArmSpeedCommand extends CommandBase {
     {
         // lol
         // square inputs, then multiply by sign
-        m_armSubsystem.rotateArm(Math.pow(m_yInputSupplier.getAsDouble(), 2) * (int) Math.signum(m_yInputSupplier.getAsDouble()));        
+        m_armSubsystem.rotateArm(m_yInputSupplier.getAsDouble());        
     }
 
     @Override
