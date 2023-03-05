@@ -42,14 +42,14 @@ public class ArmSubsystem extends SubsystemBase {
     
     public void rotateArm(double speed) {
         
-        if(this.m_safety){
-            if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
-                speed = speed < 0.0 ? 0 : speed;                
-            }
-            if(getArmRotationDegrees() < Constants.PhysicalConstants.STRIKE_ROBOT_ANGLE) {
-                speed = speed > 0.0 ? 0 : speed;                
-            }
-        }
+        // if(this.m_safety){
+        //     if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
+        //         speed = speed < 0.0 ? 0 : speed;                
+        //     }
+        //     if(getArmRotationDegrees() < Constants.PhysicalConstants.STRIKE_ROBOT_ANGLE) {
+        //         speed = speed > 0.0 ? 0 : speed;                
+        //     }
+        // }
 
         System.out.println(speed);
         m_armMotor.set(speed);

@@ -46,7 +46,7 @@ public final class Autos {
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -1.4),
+                new RelativeStraightDriveCommand(driveSubsystem, -2.5),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
         );
     }
@@ -54,13 +54,27 @@ public final class Autos {
     public static Command hardCodedOneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
-            runOnce(() -> armSubsystem.rotateArm(-0.5)),
-            new WaitCommand(0.5),
+            runOnce(() -> armSubsystem.rotateArm(-0.8)),
+            new WaitCommand(1.5),
             runOnce(() -> armSubsystem.setArmVoltage(0)),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -1.4),
+                new RelativeStraightDriveCommand(driveSubsystem, -4),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+        );
+    }
+
+    public static Command hardCodedOneConeChargeBalance(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(() -> armSubsystem.rotateArm(-0.8)),
+            new WaitCommand(1.5),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, -2.5),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
         );
     }
@@ -69,6 +83,12 @@ public final class Autos {
     {
         return new RelativeStraightDriveCommand(driveSubsystem, -4);
     }
+
+    public static Command brokenArmChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new RelativeStraightDriveCommand(driveSubsystem, -2.5);
+    }
+
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
     {
         var autoVoltageConstraint =
