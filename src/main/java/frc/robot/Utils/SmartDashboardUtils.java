@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Utils;
+package frc.robot.Utils;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +14,11 @@ public class SmartDashboardUtils {
         SmartDashboard.putNumber(name + " [PID_I]", pidController.getI());
         SmartDashboard.putNumber(name + " [PID_D]", pidController.getD());
 
-        System.out.println(name + " CONTROLLER: P(" + pidController.getP() + ") " + "I(" + pidController.getI() + ") " + "D(" + pidController.getD() + ") [[[[SAVE_IN_CONSTANTS]]]]");
+        // System.out.println(name + " CONTROLLER: P(" + pidController.getP() + ") " + "I(" + pidController.getI() + ") " + "D(" + pidController.getD() + ") [[[[SAVE_IN_CONSTANTS]]]]");
+    }
 
+    public static void TunableNumber(String name, double defaultNumber)
+    {
+        
     }
 }

@@ -7,8 +7,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Utils.SmartDashboardUtils;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.Utils.SmartDashboardUtils;
 
 public class RotateArmAbsoluteRadiansCommand extends CommandBase {
     private ArmSubsystem m_armSubsystem;

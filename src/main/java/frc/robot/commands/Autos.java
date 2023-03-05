@@ -54,21 +54,24 @@ public final class Autos {
     public static Command hardCodedOneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
-            runOnce(() -> armSubsystem.rotateArm(-0.8)),
-            new WaitCommand(1.5),
+            runOnce(() -> armSubsystem.rotateArm(-0.4)),
+            new WaitCommand(2.1),
             runOnce(() -> armSubsystem.setArmVoltage(0)),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+                runOnce(() -> armSubsystem.rotateArm(0.4))),
+            new WaitCommand(1.8),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem)
         );
     }
 
     public static Command hardCodedOneConeChargeBalance(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
-            runOnce(() -> armSubsystem.rotateArm(-0.8)),
+            runOnce(() -> armSubsystem.rotateArm(-0.4)),
             new WaitCommand(1.5),
             runOnce(() -> armSubsystem.setArmVoltage(0)),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
@@ -79,7 +82,7 @@ public final class Autos {
         );
     }
 
-    public static Command brokenArmAuto(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    public static Command brokenArmCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new RelativeStraightDriveCommand(driveSubsystem, -4);
     }

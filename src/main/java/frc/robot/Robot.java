@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    System.out.println("test init");
+    // System.out.println("test init");
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
 

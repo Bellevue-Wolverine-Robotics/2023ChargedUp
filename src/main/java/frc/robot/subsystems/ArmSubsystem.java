@@ -56,8 +56,12 @@ public class ArmSubsystem extends SubsystemBase {
         //     }
         // }
 
-        System.out.println(speed);
+        // System.out.println(speed);
         if (!armFast) speed /= 2;
+        m_armMotor.set(speed);
+    }
+
+    public void rotateArmIgnoreFastMode(double speed) {
         m_armMotor.set(speed);
     }
 
@@ -99,6 +103,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic()
     {
         SmartDashboard.putNumber("ArmRotation Degrees", getArmRotationDegrees());
+        SmartDashboard.putBoolean("Arm Slow Mode", !armFast);
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
 
     }

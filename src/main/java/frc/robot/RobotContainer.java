@@ -116,8 +116,8 @@ public class RobotContainer {
     // m_operatorController.button(10).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
     // m_operatorController.button(9).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
    
-    m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArm(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-    m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArm(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
+    m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
+    m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
    
     m_operatorController.button(3).onTrue(runOnce(m_armSubsystem::toggleFast, m_armSubsystem));
     // m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
@@ -136,7 +136,7 @@ public class RobotContainer {
   public Command getAutonomousCommand(String command) {
   
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    // return Autos.brokenArmAuto(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    // return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     return Autos.hardCodedOneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);

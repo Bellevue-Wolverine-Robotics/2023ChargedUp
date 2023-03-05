@@ -25,8 +25,8 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         DoubleSolenoid.Value toggledValue = m_intakeSolenoid.get() == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward;
 
-        System.out.println("Before: " + m_intakeSolenoid.get());
-        System.out.println("After: " + toggledValue);
+        // System.out.println("Before: " + m_intakeSolenoid.get());
+        // System.out.println("After: " + toggledValue);
         m_intakeSolenoid.set(toggledValue);
     }
 

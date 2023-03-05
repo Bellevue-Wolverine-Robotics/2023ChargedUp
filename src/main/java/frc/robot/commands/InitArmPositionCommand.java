@@ -25,7 +25,7 @@ public class InitArmPositionCommand extends CommandBase {
         m_armSubsystem.rotateArm(0.3);
         if (m_armSubsystem.isSwitchClosed()) m_armSubsystem.resetArmEncoder();
 
-        System.out.println("initarmposition execute");
+        // System.out.println("initarmposition execute");
     }
 
     @Override
