@@ -89,7 +89,7 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
 
     m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 8));
-    // m_driverController.button(2).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
+    m_driverController.button(2).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
     m_driverController.button(3).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
     m_driverController.button(4).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
    
@@ -130,8 +130,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand(String command) {
   
-      return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-      // return Autos.hardCodedCommunityLeave(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    return Autos.brokenArmAuto(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    // return Autos.hardCodedOneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
   }

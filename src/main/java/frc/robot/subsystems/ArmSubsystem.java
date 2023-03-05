@@ -51,6 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
             }
         }
 
+        System.out.println(speed);
         m_armMotor.set(speed);
     }
 

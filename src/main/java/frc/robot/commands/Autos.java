@@ -51,18 +51,23 @@ public final class Autos {
         );
     }
 
-    public static Command hardCodedCommunityLeave(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    public static Command hardCodedOneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
-            runOnce(() -> armSubsystem.setArmVoltage(6), armSubsystem),
-            new WaitCommand(0.3),
-            runOnce(armSubsystem::stopArmMotor, armSubsystem),
+            runOnce(() -> armSubsystem.rotateArm(-0.5)),
+            new WaitCommand(0.5),
+            runOnce(() -> armSubsystem.setArmVoltage(0)),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -1.4),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
         );
+    }
+
+    public static Command brokenArmAuto(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new RelativeStraightDriveCommand(driveSubsystem, -4);
     }
     public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
     {
