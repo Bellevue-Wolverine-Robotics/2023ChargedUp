@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -48,6 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
   private MedianFilter m_accelZFilter = new MedianFilter(50);
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
   private MedianFilter m_accelYFilter = new MedianFilter(50);
+  private SlewRateLimiter m_slewRateLimiter = new SlewRateLimiter(0.5);
 
   private boolean m_squareInputs = false;
 
@@ -270,10 +272,13 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
     this.m_drive.arcadeDrive(xSpeed, zRotation, m_squareInputs);
+    // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
   }
 
   public void arcadeDriveSquared(double xSpeed, double zRotation){
     this.m_drive.arcadeDrive(xSpeed, zRotation, true);
+    // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), true);
+
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){

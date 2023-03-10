@@ -64,8 +64,7 @@ public final class Autos {
                 new RelativeStraightDriveCommand(driveSubsystem, -4),
                 runOnce(() -> armSubsystem.rotateArm(0.4))),
             new WaitCommand(1.8),
-            runOnce(() -> armSubsystem.setArmVoltage(0)),
-            runOnce(intakeSubsystem::retractIntake, intakeSubsystem)
+            runOnce(() -> armSubsystem.setArmVoltage(0))
         );
     }
 
