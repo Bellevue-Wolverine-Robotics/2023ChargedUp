@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +19,8 @@ public class ArmSubsystem extends SubsystemBase {
     private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
     private boolean m_safety = true;
     private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
-    private boolean armFast = true;
+
+    private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
 
     public ArmSubsystem() {
         m_armMotor.configFactoryDefault();
@@ -40,13 +42,8 @@ public class ArmSubsystem extends SubsystemBase {
         m_armMotor.set(ControlMode.Position, pos);
     }
     
-    public void toggleFast()
-    {
-        armFast = !armFast;
-    }
     
     public void rotateArm(double speed) {
-        
         // if(this.m_safety){
         //     if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
         //         speed = speed < 0.0 ? 0 : speed;                
@@ -57,12 +54,7 @@ public class ArmSubsystem extends SubsystemBase {
         // }
 
         // System.out.println(speed);
-        if (!armFast) speed /= 2;
-        m_armMotor.set(speed);
-    }
-
-    public void rotateArmIgnoreFastMode(double speed) {
-        m_armMotor.set(speed);
+        m_armMotor.set(m_rateLimiter.calculate(speed));
     }
 
     public void setArmVoltage(double outputVolts)
@@ -103,7 +95,6 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic()
     {
         SmartDashboard.putNumber("ArmRotation Degrees", getArmRotationDegrees());
-        SmartDashboard.putBoolean("Arm Slow Mode", !armFast);
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
 
     }

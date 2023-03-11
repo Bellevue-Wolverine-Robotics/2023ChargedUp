@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ButtonConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
@@ -81,23 +82,22 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2, false));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
     // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
-    m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 8, false));
+    m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_2, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_2, false));
+    m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_3, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_3, false));
   
-    m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
-    m_driverController.button(ButtonConstants.TURN_90_COUNTER_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
-    m_driverController.button(ButtonConstants.TURN_90_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
+    // m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
+    // m_driverController.button(ButtonConstants.TURN_90_COUNTER_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
+    // m_driverController.button(ButtonConstants.TURN_90_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
 
-    m_driverController.button(ButtonConstants.TEST_CURVATURE_DRIVE).whileTrue(new CurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX(), false));
-    m_driverController.button(ButtonConstants.TEST_SEMI_CONSTANT_CURVATURE_DRIVE).whileTrue(new SemiConstantCurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX()));
+    // m_driverController.button(ButtonConstants.TEST_CURVATURE_DRIVE).toggleOnTrue(new CurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2, false));
+    // m_driverController.button(ButtonConstants.TEST_SEMI_CONSTANT_CURVATURE_DRIVE).whileTrue(new SemiConstantCurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2));
 
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
-    // m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
-    // m_operatorController.button(ButtonConstants.INTAKE_RETRACT_BUTTON).onTrue(runOnce(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
   
     // m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
     // m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
@@ -140,9 +140,5 @@ public class RobotContainer {
 
   public ArmSubsystem getArmSubsystem() {
     return m_armSubsystem;
-  }
-
-  public double getOperatorY() {
-    return m_operatorController.getY();
   }
 }

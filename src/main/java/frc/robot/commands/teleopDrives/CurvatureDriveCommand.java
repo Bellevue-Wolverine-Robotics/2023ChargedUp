@@ -24,6 +24,7 @@ public class CurvatureDriveCommand extends CommandBase {
     @Override
     public void execute()
     {
-        m_driveSubsystem.arcadeDrive(m_xSpeedSupplier.getAsDouble(), m_zRotSupplier.getAsDouble(), m_squareInputs);   
+        System.out.println("CALLING CURVATURE");
+        m_driveSubsystem.curvatureDrive(m_xSpeedSupplier.getAsDouble(), m_zRotSupplier.getAsDouble(), m_squareInputs);   
     }
 }

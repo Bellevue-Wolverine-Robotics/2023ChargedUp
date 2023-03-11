@@ -63,8 +63,8 @@ public final class Constants {
 
   public static class ButtonConstants {
     // DRIVING
-    public static final int SLOW_DRIVE_BUTTON = 1;
-    public static final int TURN_180_BUTTON = 2;
+    public static final int DRIVE_PRESET_2 = 1;
+    public static final int DRIVE_PRESET_3 = 2;
     public static final int TURN_90_COUNTER_CLOCKWISE_BUTTON = 3;
     public static final int TURN_90_CLOCKWISE_BUTTON = 4;
     public static final int TEST_CURVATURE_DRIVE = 5;
@@ -107,6 +107,18 @@ public final class Constants {
 
   public static class DriveConstants {
     // TODO: SYSID CHANGE LATER
+    public static final double THROTTLE_PRESET_1 = (double)1;
+    public static final double ROTATION_PRESET_1 = (double)1 / 2;
+
+    public static final double THROTTLE_PRESET_2 = (double)3 / 4;
+    public static final double ROTATION_PRESET_2 = (double)3 / 8;
+
+    public static final double THROTTLE_PRESET_3 = (double)1 / 2;
+    public static final double ROTATION_PRESET_3 = (double)1 / 4;
+
+    public static final int STALL_LIMIT = 40;
+    public static final int FREE_LIMIT = 20;
+
     public static final double VOLTS = 0;
     public static final double VOLTS_SECONDS_PER_METER = 0;
     public static final double VOLTS_SECONDS_SQUARED_PER_METER = 0;

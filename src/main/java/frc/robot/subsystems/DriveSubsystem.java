@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -49,9 +52,15 @@ public class DriveSubsystem extends SubsystemBase {
   private MedianFilter m_accelZFilter = new MedianFilter(50);
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
   private MedianFilter m_accelYFilter = new MedianFilter(50);
-  private SlewRateLimiter m_slewRateLimiter = new SlewRateLimiter(0.5);
+
+  private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
 
   private DifferentialDriveOdometry m_odometry; 
+
+  private AHRS m_imu = new AHRS(SPI.Port.kMXP);
+
+  // private AHRS m_imu 
+
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
     this.m_leftFront.restoreFactoryDefaults();
@@ -63,6 +72,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftBack.setIdleMode(IdleMode.kBrake);
     m_rightFront.setIdleMode(IdleMode.kBrake);
     m_rightBack.setIdleMode(IdleMode.kBrake);
+
+    m_leftFront.setSmartCurrentLimit(DriveConstants.STALL_LIMIT, DriveConstants.FREE_LIMIT);
+    m_rightFront.setSmartCurrentLimit(DriveConstants.STALL_LIMIT, DriveConstants.FREE_LIMIT);
+    m_leftBack.setSmartCurrentLimit(DriveConstants.STALL_LIMIT, DriveConstants.FREE_LIMIT);
+    m_rightBack.setSmartCurrentLimit(DriveConstants.STALL_LIMIT, DriveConstants.FREE_LIMIT);
 
     m_rightFront.setInverted(true);
     m_rightBack.setInverted(true);
@@ -239,6 +253,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Heading", getGyroDegrees());
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
+    SmartDashboard.putNumber("Robot Pitch", m_imu.getPitch());
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
@@ -268,13 +283,8 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
-    this.m_drive.arcadeDrive(xSpeed, zRotation);
+    this.m_drive.arcadeDrive(m_rateLimiter.calculate(xSpeed), zRotation);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
-  }
-
-  public void arcadeDriveSquared(double xSpeed, double zRotation){
-    this.m_drive.arcadeDrive(xSpeed, zRotation, true);
-    // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), true);
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean squareInputs)
