@@ -51,8 +51,6 @@ public class DriveSubsystem extends SubsystemBase {
   private MedianFilter m_accelYFilter = new MedianFilter(50);
   private SlewRateLimiter m_slewRateLimiter = new SlewRateLimiter(0.5);
 
-  private boolean m_squareInputs = false;
-
   private DifferentialDriveOdometry m_odometry; 
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
@@ -241,7 +239,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Heading", getGyroDegrees());
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
-    SmartDashboard.putBoolean("Squaring Inputs", m_squareInputs);
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
@@ -267,18 +264,40 @@ public class DriveSubsystem extends SubsystemBase {
       m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
   }
 
-  public void arcadeDrive(double xSpeed, double zRotation){
+  public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
-    this.m_drive.arcadeDrive(xSpeed, zRotation, m_squareInputs);
+    this.m_drive.arcadeDrive(xSpeed, zRotation);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
   }
 
   public void arcadeDriveSquared(double xSpeed, double zRotation){
     this.m_drive.arcadeDrive(xSpeed, zRotation, true);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), true);
+  }
 
+  public void curvatureDrive(double xSpeed, double zRotation, boolean squareInputs)
+  {
+    m_drive.curvatureDrive(xSpeed, zRotation, squareInputs);
+  }
+
+  // https://ewpratten.com/blog/joystick-to-voltage/
+  public void semiConstantCurvatureDrive(double xSpeed, double zRotation)
+  {
+    double leftSpeed = 12 * (((xSpeed + Math.abs(xSpeed) * zRotation) + (xSpeed + zRotation)) / 2);
+    double rightSpeed = 12 * (((xSpeed - Math.abs(xSpeed) * zRotation) + (xSpeed - zRotation)) / 2);
+
+    double maxOutput = Math.max(Math.abs(xSpeed), Math.abs(zRotation));
+
+    if (maxOutput > 1.0)
+    {
+      leftSpeed /= maxOutput;
+      rightSpeed /= maxOutput;
+
+    }
+    
+    tankDrive(leftSpeed, rightSpeed);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
@@ -296,11 +315,6 @@ public class DriveSubsystem extends SubsystemBase {
   public void stopDriveTrain()
   {
     m_drive.tankDrive(0, 0);
-  }
-
-  public void toggleSquareInputs()
-  {
-    m_squareInputs = !m_squareInputs;
   }
   
 }

@@ -16,13 +16,13 @@ import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
-import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
 import frc.robot.commands.InitArmPositionCommand;
 import frc.robot.commands.RotateArmSpeedCommand;
+import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -47,10 +47,10 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
-
   public IStreamBundle GetIStream(){
     return this.istream;
   }
+
 //GrabRotateCommand
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
@@ -79,7 +79,7 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2, false));
     // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
@@ -90,19 +90,10 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
 
-    m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 8));
-    m_driverController.button(2).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
-    m_driverController.button(3).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
-    m_driverController.button(4).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
-   
-    // square inputs
-    m_driverController.button(12).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-    m_driverController.button(11).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-    m_driverController.button(10).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-    m_driverController.button(9).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-    m_driverController.button(8).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-    m_driverController.button(7).onTrue(runOnce(m_driveSubsystem::toggleSquareInputs, m_driveSubsystem));
-
+    m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 8, false));
+    m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
+    m_driverController.button(ButtonConstants.TURN_90_COUNTER_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
+    m_driverController.button(ButtonConstants.TURN_90_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
 
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
@@ -142,13 +133,7 @@ public class RobotContainer {
     // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
   }
-
-  // public Command getTestCommand()
-  // {
-  //   System.out.println("getTestCommand");
-  //   return new InitArmPositionCommand(m_armSubsystem);
-  // }
-
+  
   public void onTeleop() {
     m_intakeSubsystem.onTeleop();
   }

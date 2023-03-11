@@ -63,9 +63,11 @@ public final class Constants {
 
   public static class ButtonConstants {
     public static final int SLOW_DRIVE_BUTTON = 1;
+    public static final int TURN_180_BUTTON = 2;
+    public static final int TURN_90_COUNTER_CLOCKWISE_BUTTON = 3;
+    public static final int TURN_90_CLOCKWISE_BUTTON = 4;
 
     public static final int INTAKE_TOGGLE_BUTTON = 1;
-    public static final int TURN_180_BUTTON = 2;
     public static final int INTAKE_EXTEND_BUTTON = 5;
     public static final int INTAKE_RETRACT_BUTTON = 4;
 
