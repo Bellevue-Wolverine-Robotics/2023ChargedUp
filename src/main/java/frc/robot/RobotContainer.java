@@ -23,6 +23,8 @@ import frc.robot.commands.BalanceChargeStationCommand;
 import frc.robot.commands.InitArmPositionCommand;
 import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
+import frc.robot.commands.teleopDrives.CurvatureDriveCommand;
+import frc.robot.commands.teleopDrives.SemiConstantCurvatureDriveCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -84,16 +86,14 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
-    // m_driverController.button(ButtonConstants.TURN_180_BUTTON).onTrue(new RelativeStraightDriveCommand(m_driveSubsystem, 1));
-    // m_driverController.button(12).onTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
-    // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(new IntakeGrabCommand(m_intakeSubsystem));
-    // m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onFalse(new IntakeReleaseCommand(m_intakeSubsystem));
-
     m_driverController.button(ButtonConstants.SLOW_DRIVE_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() / 4, () -> -m_driverController.getX() / 8, false));
+  
     m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
     m_driverController.button(ButtonConstants.TURN_90_COUNTER_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
     m_driverController.button(ButtonConstants.TURN_90_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
+
+    m_driverController.button(ButtonConstants.TEST_CURVATURE_DRIVE).whileTrue(new CurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX(), false));
+    m_driverController.button(ButtonConstants.TEST_SEMI_CONSTANT_CURVATURE_DRIVE).whileTrue(new SemiConstantCurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX()));
 
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
     // m_operatorController.button(ButtonConstants.INTAKE_EXTEND_BUTTON).onTrue(runOnce(m_intakeSubsystem::extendIntake, m_intakeSubsystem));
@@ -107,10 +107,10 @@ public class RobotContainer {
     // m_operatorController.button(10).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
     // m_operatorController.button(9).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
    
-    m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-    m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
+    // m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
+    // m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
    
-    m_operatorController.button(3).onTrue(runOnce(m_armSubsystem::toggleFast, m_armSubsystem));
+    // m_operatorController.button(3).onTrue(runOnce(m_armSubsystem::toggleFast, m_armSubsystem));
     // m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
 
     // m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
