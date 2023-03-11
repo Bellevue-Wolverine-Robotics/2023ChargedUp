@@ -127,6 +127,7 @@ public final class Constants {
     public static final double kIStraight = 0;
     public static final double kDStraight = 0;
 
+    public static final double BALANCE_CHARGESTATION_HARDCODE_TUNE = 0.05;
   }
 
   public static class ArmConstants {
