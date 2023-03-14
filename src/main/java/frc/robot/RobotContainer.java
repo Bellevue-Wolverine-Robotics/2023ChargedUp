@@ -89,14 +89,8 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_2, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_2, false));
     m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_3, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_3, false));
-  
-    // m_driverController.button(ButtonConstants.TURN_180_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 180));
-    // m_driverController.button(ButtonConstants.TURN_90_COUNTER_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, -90));
-    // m_driverController.button(ButtonConstants.TURN_90_CLOCKWISE_BUTTON).whileTrue(new AutonomousTurnCommand(m_driveSubsystem, 90));
 
-    // m_driverController.button(ButtonConstants.TEST_CURVATURE_DRIVE).toggleOnTrue(new CurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2, false));
-    // m_driverController.button(ButtonConstants.TEST_SEMI_CONSTANT_CURVATURE_DRIVE).whileTrue(new SemiConstantCurvatureDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() , () -> -m_driverController.getX() / 2));
-
+    m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
   
     // m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));

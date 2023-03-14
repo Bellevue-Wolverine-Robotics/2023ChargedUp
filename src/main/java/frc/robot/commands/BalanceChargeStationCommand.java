@@ -15,13 +15,11 @@ public class BalanceChargeStationCommand extends CommandBase {
 
     private DriveSubsystem m_driveSubsystem;
     private PIDController m_pid = new PIDController(0.05, 0, 0);
-    private boolean PIDMode;
 
     // private double m_thetakP = 0.9;
 
-    public BalanceChargeStationCommand(DriveSubsystem driveSubsystem, boolean PIDMode) {
+    public BalanceChargeStationCommand(DriveSubsystem driveSubsystem) {
         this.m_driveSubsystem = driveSubsystem;
-        this.PIDMode = PIDMode;
 
         m_pid.setTolerance(5);
         
@@ -30,24 +28,10 @@ public class BalanceChargeStationCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double pitchDegrees = m_driveSubsystem.getPitchDegreesYWeightedZ();
-        double pitchDegreesAbs = Math.abs(pitchDegrees);
-        int pitchSign = (int) Math.signum(pitchDegrees);
+        // double speed = this.PIDMode ? MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5): 
+        //                             Constants.DriveConstants.BALANCE_CHARGESTATION_HARDCODE_TUNE*pitchSign*Math.pow(pitchDegreesAbs, 2);        
+        double speed = m_pid.calculate(m_driveSubsystem.getPitch(), 0);
 
-        // double speed = -MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5);
-        // SmartDashboard.putNumber("Balance Speed", speed);
-        // System.out.println("Balance Speed: " + speed);
-
-        // if (!m_pid.atSetpoint())
-        // {
-        //     m_driveSubsystem.tankDrive(speed, speed);
-        // }
-
-
-    
-        double speed = this.PIDMode ? MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5): 
-                                    Constants.DriveConstants.BALANCE_CHARGESTATION_HARDCODE_TUNE*pitchSign*Math.pow(pitchDegreesAbs, 2);        
-        SmartDashboard.putNumber("Balance Speed", speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 

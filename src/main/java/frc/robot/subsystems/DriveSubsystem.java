@@ -91,6 +91,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
     m_rightEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
 
+    m_imu.calibrate();
+
     m_gyro.reset();
     m_gyro.calibrate();
 
@@ -253,7 +255,16 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Heading", getGyroDegrees());
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
+
     SmartDashboard.putNumber("Robot Pitch", m_imu.getPitch());
+    SmartDashboard.putNumber("Robot Yaw", m_imu.getYaw());
+    SmartDashboard.putNumber("Robot Roll", m_imu.getRoll());
+
+    SmartDashboard.putNumber("Raw X", m_imu.getRawGyroX());
+    SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
+    SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
+
+
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
@@ -262,6 +273,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
     // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
+  }
+
+  public double getPitch()
+  {
+    // pointing up is pos, pointing down is neg
+    
+    // imu returning roll as pitch
+    return -m_imu.getRoll();
   }
 
   public void resetPose()
