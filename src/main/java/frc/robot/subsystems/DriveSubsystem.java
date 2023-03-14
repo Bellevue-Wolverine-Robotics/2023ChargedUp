@@ -261,7 +261,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
     SmartDashboard.putNumber("Robot Pitch", m_imu.getPitch());
-<<<<<<< HEAD
     SmartDashboard.putNumber("Robot Yaw", m_imu.getYaw());
     SmartDashboard.putNumber("Robot Roll", m_imu.getRoll());
 
@@ -269,15 +268,12 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
-=======
-
     m_odometry.update(m_gyro.getRotation2d(),
     m_leftEncoder.getPosition(),
     m_rightEncoder.getPosition());
 m_field.setRobotPose(m_odometry.getPoseMeters());
 
     SmartDashboard.putData("Field", m_field);
->>>>>>> aa27152... Simulation code, joystick doesnt work
 
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
