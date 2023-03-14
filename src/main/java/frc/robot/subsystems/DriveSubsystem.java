@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,6 +33,9 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+  private Field2d m_field = new Field2d();
+
+
   private CANSparkMax m_leftBack = new CANSparkMax(CANConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(CANConstants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax m_rightFront = new CANSparkMax(CANConstants.RIGHT_FRONT, MotorType.kBrushless);
@@ -264,6 +268,10 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
+
+    m_field.setRobotPose(m_odometry.getPoseMeters());
+
+    SmartDashboard.putData("Field", m_field);
 
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
