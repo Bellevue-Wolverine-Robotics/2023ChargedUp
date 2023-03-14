@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
   // private Command m_testCommand;
 
   private RobotContainer m_robotContainer;
-  SendableChooser<String> m_autoChooser = new SendableChooser<>();
+  SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -33,8 +33,8 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
 
-    m_autoChooser.setDefaultOption("One Cone & Leave Community", "OneConeCommunity");
-    m_autoChooser.addOption("One Cone & Touch Charge Station", "OneConeTouchStation");
+    m_autoChooser.setDefaultOption("One Cone & Leave Community", AutoEnum.ONE_CONE_LEAVE_COMMUNITY);
+    m_autoChooser.addOption("One Cone & Balance Charge Station", AutoEnum.ONE_CONE_BALANCE_CHARGE_STATION);
     // m_autoChooser.addOption("Charge Station", "ChargeStation");
     // m_autoChooser.addOption("Path Weaver", "PathWeaver");
     // m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");

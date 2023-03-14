@@ -118,8 +118,16 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand(String command) {
-  
+  public Command getAutonomousCommand(AutoEnum autoEnum) {
+    switch (autoEnum)
+    {
+      case ONE_CONE_LEAVE_COMMUNITY:
+        System.out.println("leave com");
+        return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case ONE_CONE_BALANCE_CHARGE_STATION:
+        System.out.println("charge station");
+        return Autos.oneConeChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     // return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
