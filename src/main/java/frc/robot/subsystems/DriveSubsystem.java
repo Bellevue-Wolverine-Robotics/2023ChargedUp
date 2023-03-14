@@ -283,7 +283,7 @@ public class DriveSubsystem extends SubsystemBase {
     // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
   }
 
-  public double getPitch()
+  public double getPitchDegrees()
   {
     // pointing up is pos, pointing down is neg
     
