@@ -326,5 +326,11 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_drive.tankDrive(0, 0);
   }
+
+  // unit test example delete later
+  public int add(int a, int b)
+  {
+    return a + b;
+  }
   
 }
