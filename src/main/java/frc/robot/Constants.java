@@ -161,6 +161,12 @@ public final class Constants {
     public static final int kScoringAngle = 100;
   }
   
+  public static class PIDConstants {
+    public static final double kPChargeStation = 1.5;
+    public static final double kIChargeStation = 0;
+    public static final double kDChargeStation = 0.015;
+    
+  }
     //   // Inputs
     // public static final int QUICKTURN_BUTTON = 1;
   
