@@ -25,6 +25,11 @@
         "header": {
           "open": true
         }
+      },
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
