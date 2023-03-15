@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
@@ -62,10 +63,11 @@ public class DriveSubsystem extends SubsystemBase {
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
 
+  
 
-  private Gyro m_gyro = new ADXRS450_Gyro();
-  //private GyroSim m_gyroSim = new AnalogGyroSim((AnalogGyro) m_gyro);
-  private AnalogGyroSim m_gyroSim = new AnalogGyroSim(new AnalogGyro(1));
+  private ADXRS450_Gyro _rawGyro = new ADXRS450_Gyro();
+  private Gyro m_gyro = _rawGyro;
+  private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_rawGyro);
 
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
   DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
