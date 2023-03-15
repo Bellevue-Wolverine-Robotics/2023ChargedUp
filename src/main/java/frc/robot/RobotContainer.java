@@ -18,6 +18,7 @@ import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.commands.AutonomousTurnCommand;
+import frc.robot.commands.AutonomousTurnHardcodeCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
@@ -93,6 +94,11 @@ public class RobotContainer {
     m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
   
+    m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
+    m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
+    m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
+
+
     // m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
     // m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
     // m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));

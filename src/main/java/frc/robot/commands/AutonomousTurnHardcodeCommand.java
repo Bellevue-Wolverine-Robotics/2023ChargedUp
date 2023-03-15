@@ -10,15 +10,20 @@ public class AutonomousTurnHardcodeCommand extends CommandBase{
     private DriveSubsystem m_driveSubsystem;
     private long _commandStart;
     private double _runTime;
+    private double _runSpeed;
 
 
     public AutonomousTurnHardcodeCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
         
+        
         m_driveSubsystem = driveSubsystem;
         
+    
+        _runSpeed = degreesToTurn > 0? 0.8: -0.8;
         _commandStart = System.currentTimeMillis();
-        _runTime = 1000 * degreesToTurn/10;//guessed hard code time: TEST LATER!!!
+        _runTime = 1000 * degreesToTurn/50;//guessed hard code time: TEST LATER!!!
+        
         addRequirements(m_driveSubsystem);
     }
 
@@ -26,9 +31,9 @@ public class AutonomousTurnHardcodeCommand extends CommandBase{
     public void execute()
     {
 
-        // System.out.println("Motor Speed " + motorSpeed);
-        double motorSpeed = 0.5;//half speed during turn;
-        m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
+        System.out.println("Motor Speed " + _runSpeed + " Run TIme : " + _runTime);
+    
+        m_driveSubsystem.tankDrive(_runSpeed, -_runSpeed);
     }
 
     @Override

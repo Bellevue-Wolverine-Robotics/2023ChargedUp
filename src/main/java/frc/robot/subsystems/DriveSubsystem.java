@@ -393,7 +393,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    // System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
+    System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
     this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
