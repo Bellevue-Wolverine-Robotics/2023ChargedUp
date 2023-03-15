@@ -11,19 +11,28 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -49,7 +58,31 @@ public class DriveSubsystem extends SubsystemBase {
   private RelativeEncoder m_leftEncoder =  m_leftFront.getEncoder();
   private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
 
+  //Sketchy sim stuff
+  private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
+  private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
+
+
   private Gyro m_gyro = new ADXRS450_Gyro();
+  //private GyroSim m_gyroSim = new AnalogGyroSim((AnalogGyro) m_gyro);
+  private AnalogGyroSim m_gyroSim = new AnalogGyroSim(new AnalogGyro(1));
+
+  DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
+  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
+  8.45,                    // 8.45:1 gearing reduction.
+  7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
+  30.0,                    // The mass of the robot is 60 kg.
+  Units.inchesToMeters(3), // The robot uses 3" radius wheels.
+  0.7112,                  // The track width is 0.7112 meters.
+
+  // The standard deviations for measurement noise:
+  // x and y:          0.001 m
+  // heading:          0.001 rad
+  // l and r velocity: 0.1   m/s
+  // l and r position: 0.005 m
+  VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+
+
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
@@ -108,6 +141,26 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
+  }
+
+  public void simulationPeriodic() {
+    // Set the inputs to the system. Note that we need to convert
+    // the [-1, 1] PWM signal to voltage by multiplying it by the
+    // robot controller voltage.
+    m_driveSim.setInputs(m_leftGroup.get() * RobotController.getInputVoltage(),
+    m_rightGroup.get() * RobotController.getInputVoltage());
+  
+    // Advance the model by 20 ms. Note that if you are running this
+    // subsystem in a separate thread or have changed the nominal timestep
+    // of TimedRobot, this value needs to match it.
+    m_driveSim.update(0.02);
+  
+    // Update all of our sensors.
+    m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
+    m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
+    m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
+    m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+    m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
   }
 
   public Pose2d getPose() {

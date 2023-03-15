@@ -1,4 +1,33 @@
 {
+  "HALProvider": {
+    "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
+      "1": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": true
+      }
+    },
+    "Other Devices": {
+      "ADXRS450[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "AnalogGyro[1]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -10,11 +39,6 @@
     "windows": {
       "/SmartDashboard/Field": {
         "image": "/Users/justin/Downloads/2023-field.png",
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Reset Arm Position": {
         "window": {
           "visible": true
         }
