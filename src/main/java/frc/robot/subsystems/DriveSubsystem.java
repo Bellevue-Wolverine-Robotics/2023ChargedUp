@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -45,6 +46,7 @@ import frc.robot.Constants.PhysicalConstants;
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
+   
 
   private CANSparkMax m_leftBack = new CANSparkMax(CANConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(CANConstants.LEFT_FRONT, MotorType.kBrushless);
@@ -56,25 +58,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_leftGroup, m_rightGroup);
 
+
+  REVPhysicsSim _revSimulation = new REVPhysicsSim();
   private RelativeEncoder m_leftEncoder =  m_leftFront.getEncoder();
   private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
+
+
 
   //Sketchy sim stuff
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
-
   
 
-  private ADXRS450_Gyro _rawGyro = new ADXRS450_Gyro();
-  private Gyro m_gyro = _rawGyro;
-  private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_rawGyro);
+  private ADXRS450_Gyro _ADXRS450_Gyro = new ADXRS450_Gyro();
+  private Gyro m_gyro = _ADXRS450_Gyro;
+  private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
 
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
-  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-  8.45,                    // 8.45:1 gearing reduction.
+  DCMotor.getNEO(2),              // 2 NEO motors on each side of the drivetrain.
+  8.45,                             // 8.45:1 gearing reduction.
   7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
-  30.0,                    // The mass of the robot is 60 kg.
-  Units.inchesToMeters(3), // The robot uses 3" radius wheels.
+  30.0,                             // The mass of the robot is 60 kg.
+  Units.inchesToMeters(3),            // The robot uses 3" radius wheels.
   0.7112,                  // The track width is 0.7112 meters.
 
   // The standard deviations for measurement noise:
@@ -129,6 +134,15 @@ public class DriveSubsystem extends SubsystemBase {
     // WPILIB expects encoder rate to be in M/S while REV returns M/Min
     m_leftEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
     m_rightEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
+
+
+    float stallTorque = (float) 3.35;
+    float freeSpeed = (float) 5874.0;
+    _revSimulation.addSparkMax(m_leftBack, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_rightBack, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_leftFront, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_rightFront, stallTorque, freeSpeed);
+
 
     m_imu.calibrate();
 
@@ -327,7 +341,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_field.setRobotPose(m_odometry.getPoseMeters());
 
     SmartDashboard.putData("Field", m_field);
-
+    SmartDashboard.putData(m_field);
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());

@@ -28,5 +28,6 @@
   "java.test.defaultConfig": "WPIlibUnitTests",
   "githubPullRequests.ignoredPullRequestBranches": [
     "main"
-  ]
+  ],
+  "wpilib.stopSimulationOnEntry": true
 }
