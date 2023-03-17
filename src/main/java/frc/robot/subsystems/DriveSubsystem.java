@@ -62,7 +62,6 @@ public class DriveSubsystem extends SubsystemBase {
   //Sketchy sim stuff
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
-
   
 
   private ADXRS450_Gyro _rawGyro = new ADXRS450_Gyro();
@@ -346,6 +345,11 @@ public class DriveSubsystem extends SubsystemBase {
     return -m_imu.getRoll();
   }
 
+  public double getYaw()
+  {
+    return m_imu.getYaw();
+  }
+
   public void resetPose()
   {
     resetEncoders();
@@ -409,10 +413,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.tankDrive(0, 0);
   }
 
-  // unit test example delete later
-  public int add(int a, int b)
+  public void resetImu()
   {
-    return a + b;
-  }
-  
+    m_imu.reset();
+  } 
 }
