@@ -73,6 +73,8 @@ public final class Constants {
 
     public static final int RESET_IMU_BUTTON = 7;
 
+    public static final int IGNORE_ROTATION_BUTTON = 11;
+
     // OPERATOR
     public static final int INTAKE_TOGGLE_BUTTON = 1;
     public static final int INTAKE_EXTEND_BUTTON = 5;
@@ -140,9 +142,9 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.02;
+    public static final double kPTurn = 0.01;
     public static final double kITurn = 0;
-    public static final double kDTurn = 0.002;
+    public static final double kDTurn = 0.001;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;
