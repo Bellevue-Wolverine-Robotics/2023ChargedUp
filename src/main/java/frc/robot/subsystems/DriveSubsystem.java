@@ -62,7 +62,6 @@ public class DriveSubsystem extends SubsystemBase {
   //Sketchy sim stuff
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
-
   
 
   private ADXRS450_Gyro _rawGyro = new ADXRS450_Gyro();

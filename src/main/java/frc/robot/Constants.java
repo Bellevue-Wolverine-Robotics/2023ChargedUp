@@ -56,7 +56,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     // TODO: FIX THE GEARING LATER ONCE THE ENCODER GETS FIXED
-    public static final double TALON_TO_ARM_RATIO = (double)(15/44);
+    public static final double TALON_TO_ARM_RATIO = (double)15/44;
     public static final double STRIKE_GROUND_ANGLE = 150;
     public static final double STRIKE_ROBOT_ANGLE = 5;
   }
@@ -65,9 +65,10 @@ public final class Constants {
     // DRIVING
     public static final int DRIVE_PRESET_2 = 1;
     public static final int DRIVE_PRESET_3 = 2;
-    public static final int TURN_90_COUNTER_CLOCKWISE_BUTTON = 3;
-    public static final int TURN_90_CLOCKWISE_BUTTON = 4;
-    public static final int TEST_CHARGE_BALANCE_BUTTON = 5;
+    public static final int FACE_FORWARDS_BUTTON = 3;
+    public static final int FACE_BACKWARDS_BUTTON = 4;
+    public static final int FACE_LEFT_BUTTON = 5;
+    public static final int FACE_RIGHT_BUTTON = 6;
 
     public static final int INTAKE_TOGGLE_BUTTON = 1;
     public static final int INTAKE_EXTEND_BUTTON = 5;
@@ -84,6 +85,10 @@ public final class Constants {
     public static final int kSlightlyAboveHomeButton = 6;
     public static final int kParallelThingsButton = 7;
     public static final int kScoringPositionButton = 8;
+
+    public static final int kHomePositionButtonLH = 11;
+    public static final int kPickupPositionButtonLH = 10;
+    public static final int kScoringPositionButtonLH = 9;
 
   }
 
@@ -115,7 +120,7 @@ public final class Constants {
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
     public static final double ROTATION_PRESET_3 = (double)1 / 4;
 
-    public static final int STALL_LIMIT = 40;
+    public static final int STALL_LIMIT = 35;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;
@@ -133,9 +138,9 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.001;
+    public static final double kPTurn = 0.02;
     public static final double kITurn = 0;
-    public static final double kDTurn = 0;
+    public static final double kDTurn = 0.002;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;
@@ -145,9 +150,9 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final double kP = 7;
+    public static final double kP = 15;
     public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kD = 0.15;
     public static final double kG = 0;
     public static final double kS = 0;
     public static final double kV = 0;

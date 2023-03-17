@@ -7,15 +7,15 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Utils.SmartDashboardUtils;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class AutonomousTurnCommand extends CommandBase {
+public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private double m_targetAngle;
     private PIDController m_pid = new PIDController(DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
     
-    public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
+    public RotateDrivestationAbsoluteDegreesCommand(DriveSubsystem driveSubsystem, double absoluteDegrees)
     {
         m_driveSubsystem = driveSubsystem;
-        m_targetAngle = degreesToTurn;
+        m_targetAngle = absoluteDegrees;
 
         m_pid.setTolerance(5);
         m_pid.enableContinuousInput(-180, 180);
@@ -26,10 +26,7 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public void execute()
     {
-        SmartDashboardUtils.TunablePID(this.getName(), m_pid, DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
-
         double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle), -0.5, 0.5);
-        // System.out.println("Motor Speed " + motorSpeed);
 
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
@@ -37,15 +34,12 @@ public class AutonomousTurnCommand extends CommandBase {
     @Override
     public boolean isFinished()
     {
-        System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
-        return false;
-        // return m_pid.atSetpoint();
+        return m_pid.atSetpoint();
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        m_driveSubsystem.resetPose();
         m_driveSubsystem.stopDriveTrain();
     }
 }
