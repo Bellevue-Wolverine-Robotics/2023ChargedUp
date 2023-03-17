@@ -48,7 +48,8 @@ public final class Autos {
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -2.5),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true))
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new BalanceChargeStationCommand(driveSubsystem)
         );
     }
 
