@@ -17,7 +17,6 @@ import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
-import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.AutonomousTurnHardcodeCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
@@ -84,8 +83,6 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
-    // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
@@ -99,36 +96,29 @@ public class RobotContainer {
     m_driverController.button(ButtonConstants.FACE_LEFT_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 90));
     m_driverController.button(ButtonConstants.FACE_RIGHT_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, -90));
 
+    m_driverController.button(ButtonConstants.RESET_IMU_BUTTON).onTrue(runOnce(m_driveSubsystem::resetImu, m_driveSubsystem));
+
+    // m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
+    // m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
+    // m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
+
+    // OPERATORS
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
   
-
-    m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
-    m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
-    m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
-
-
-    m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
-    m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
-    m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
+    m_operatorController.button(ButtonConstants.kHomePositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+    m_operatorController.button(ButtonConstants.kPickupPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+    m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
    
-    m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
-    m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
-    m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
+    m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+    m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+    m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
    
-    // m_operatorController.button(11).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
-    // m_operatorController.button(10).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
-    // m_operatorController.button(9).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
-   
-    // m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-    // m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-   
-    // m_operatorController.button(3).onTrue(runOnce(m_armSubsystem::toggleFast, m_armSubsystem));
-    // m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
+    BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
 
-    // m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
-    BooleanSupplier outsideDeadband = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadband).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+    BooleanSupplier outsideDeadbandDrive = () -> { return Math.abs(m_driverController.getX()) > OperatorConstants.controllerDeadband || Math.abs(m_driverController.getY()) > OperatorConstants.controllerDeadband;};
+    new Trigger(outsideDeadbandDrive).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
   }
 
   /**

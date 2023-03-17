@@ -65,11 +65,15 @@ public final class Constants {
     // DRIVING
     public static final int DRIVE_PRESET_2 = 1;
     public static final int DRIVE_PRESET_3 = 2;
+
     public static final int FACE_FORWARDS_BUTTON = 3;
     public static final int FACE_BACKWARDS_BUTTON = 4;
     public static final int FACE_LEFT_BUTTON = 5;
     public static final int FACE_RIGHT_BUTTON = 6;
 
+    public static final int RESET_IMU_BUTTON = 7;
+
+    // OPERATOR
     public static final int INTAKE_TOGGLE_BUTTON = 1;
     public static final int INTAKE_EXTEND_BUTTON = 5;
     public static final int INTAKE_RETRACT_BUTTON = 4;
@@ -80,10 +84,8 @@ public final class Constants {
     public static final int ARM_HIGH_BUTTON = 6;
     public static final int TOGGLE_SAFTEY = 3;
 
-    public static final int CHARGE_BALANCE_BUTTON = 7;
-
-    public static final int kSlightlyAboveHomeButton = 6;
-    public static final int kParallelThingsButton = 7;
+    public static final int kHomePositionButton = 6;
+    public static final int kPickupPositionButton = 7;
     public static final int kScoringPositionButton = 8;
 
     public static final int kHomePositionButtonLH = 11;
@@ -161,9 +163,9 @@ public final class Constants {
 
     public static final int kArmCalibrationDIO = 9;
 
-    public static final int kSlightlyAboveHomeAngle = 10;
-    public static final int kParallelThingsAngle = 65;
-    public static final int kScoringAngle = 100;
+    public static final int kArmHomeAngle = 10;
+    public static final int kArmPickupAngle = 65;
+    public static final int kArmScoringAngle = 100;
   }
   
   public static class PIDConstants {
