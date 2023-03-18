@@ -98,7 +98,7 @@ public class RobotContainer {
     m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
     //m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
    // m_driverController.button(12).onTrue(new RelativeStraightDriveCommand(m_driveSubsystem, 100));
-    m_driverController.button(11).onTrue(runOnce(()->{System.out.println("PRESSED 12");}));
+    m_driverController.button(12).onTrue(runOnce(()->{System.out.println("PRESSED 12");}));
     // m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
     // m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
     // m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
