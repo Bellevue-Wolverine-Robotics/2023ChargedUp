@@ -31,7 +31,7 @@ public class AutonomousTurnHardcodeCommand extends CommandBase{
     public void execute()
     {
 
-        System.out.println("Motor Speed " + _runSpeed + " Run TIme : " + _runTime);
+        //System.out.println("Motor Speed " + _runSpeed + " Run TIme : " + _runTime);
     
         m_driveSubsystem.tankDrive(_runSpeed, -_runSpeed);
     }

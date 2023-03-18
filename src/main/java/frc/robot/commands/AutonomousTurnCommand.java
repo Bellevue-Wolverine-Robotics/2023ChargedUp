@@ -12,8 +12,13 @@ public class AutonomousTurnCommand extends CommandBase {
     private double m_targetAngle;
     private PIDController m_pid = new PIDController(DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
     
+
+
     public AutonomousTurnCommand(DriveSubsystem driveSubsystem, double degreesToTurn)
     {
+
+        degreesToTurn *= 0.9;//ADJUSTED FOR ROTATIONAL MOMENTUM
+
         m_driveSubsystem = driveSubsystem;
         m_targetAngle = degreesToTurn;
 
@@ -29,9 +34,10 @@ public class AutonomousTurnCommand extends CommandBase {
         SmartDashboardUtils.TunablePID(this.getName(), m_pid, DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
 
         double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle), -0.8, 0.8);
-        // System.out.println("Motor Speed " + motorSpeed);
         
-        System.out.println("TARGET:::::" + m_driveSubsystem.getGyroDegrees());
+        System.out.println("Motor Speed " + motorSpeed);
+        System.out.println("CURRENT ANGLE:::::" + m_driveSubsystem.getGyroDegrees());
+    
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
 

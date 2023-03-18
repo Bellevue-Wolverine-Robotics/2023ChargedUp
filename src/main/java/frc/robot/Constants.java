@@ -134,8 +134,8 @@ public final class Constants {
     public static final double KP_DRIVE_VEL = 8;
 
     public static final double kPTurn = 0.01;
-    public static final double kITurn = 0;
-    public static final double kDTurn = 0;
+    public static final double kITurn = 0.01;
+    public static final double kDTurn = 0.01;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;

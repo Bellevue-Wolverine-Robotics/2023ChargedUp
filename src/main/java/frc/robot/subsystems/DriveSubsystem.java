@@ -216,12 +216,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetEncoders()
   {
+    //System.out.println("FUCKING HERE");
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
+
+    /* 
+    shouldnt reset
     m_leftEncoderSim.setDistance(0);
     m_rightEncoderSim.setDistance(0);
-
-
+    m_driveSim.setPose(new Pose2d());
+    */
   }
 
   public double getX(){
@@ -360,6 +364,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
     m_field.setRobotPose(m_driveSim.getPose());
+    
 
     //m_field.setRobotPose(m_odometry.getPoseMeters());
 
@@ -387,9 +392,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPose()
   {
-    resetEncoders();
+    resetOdometry(new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
   }
   
   public void resetOdometry(Pose2d initialPose)
@@ -432,7 +436,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
+    //System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
     this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 

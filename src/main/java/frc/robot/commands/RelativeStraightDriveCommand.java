@@ -33,7 +33,7 @@ public class RelativeStraightDriveCommand extends CommandBase {
         double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.7, 0.7);
 
         // System.out.println("Straight Drive at: " + linearSpeed + " with target at: " + m_targetDistance);    
-        System.out.println("FUCKing DRIVING STAIGHT !!!!" + m_driveSubsystem.getPose().getX());
+        //System.out.println("FUCKing DRIVING STAIGHT !!!!" + m_driveSubsystem.getPose().getX());
         m_driveSubsystem.tankDrive(linearSpeed, linearSpeed);
     }
 

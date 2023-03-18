@@ -131,8 +131,10 @@ public class RobotContainer {
    // return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     //return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnCommand(m_driveSubsystem, 90), new WaitCommand(0.1), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
-
+    return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
+    
+    
+    //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
   
   public void onTeleop() {

@@ -1,6 +1,26 @@
 {
   "HALProvider": {
+    "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
+      "1": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": true
+      }
+    },
     "Other Devices": {
+      "ADXRS450[0]": {
+        "header": {
+          "open": true
+        }
+      },
       "AnalogGyro[1]": {
         "header": {
           "open": false
