@@ -219,7 +219,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetEncoders()
   {
-    //System.out.println("FUCKING HERE");
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
 
