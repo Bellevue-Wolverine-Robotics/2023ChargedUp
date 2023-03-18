@@ -361,7 +361,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
-    //m_poseEstimator.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
     m_field.setRobotPose(m_driveSim.getPose());
 
     //m_field.setRobotPose(m_odometry.getPoseMeters());
