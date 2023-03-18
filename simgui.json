@@ -43,11 +43,14 @@
         }
       },
       "/SmartDashboard/Field": {
+<<<<<<< HEAD
         "Robot": {
           "arrowSize": 61,
           "image": "/Users/justin/Desktop/photo_shop/cow.png"
         },
         "image": "/Users/justin/Downloads/2023-field.png",
+=======
+>>>>>>> 65971c2 (smartdashboard)
         "window": {
           "name": "config1",
           "visible": true

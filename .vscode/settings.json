@@ -29,5 +29,9 @@
   "githubPullRequests.ignoredPullRequestBranches": [
     "main"
   ],
+<<<<<<< HEAD
   "wpilib.stopSimulationOnEntry": true
+=======
+  "java.debug.settings.onBuildFailureProceed": true
+>>>>>>> 65971c2 (smartdashboard)
 }

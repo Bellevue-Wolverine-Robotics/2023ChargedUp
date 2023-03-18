@@ -93,7 +93,7 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic()
     {
-        SmartDashboard.putNumber("ArmRotation Degrees", getArmRotationDegrees());
+        SmartDashboard.putNumber("Arm Rotation Degrees", getArmRotationDegrees());
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
 
     }

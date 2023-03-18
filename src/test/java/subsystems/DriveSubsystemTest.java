@@ -21,11 +21,4 @@ class DriveSubsystemTest {
 
     m_driveSubsystem = new DriveSubsystem();
   }
-
-  @Test
-  void addTest() {
-    int a = 10;
-    int b = 20;
-    assertEquals(m_driveSubsystem.add(a, b), 30);
-  }
 }

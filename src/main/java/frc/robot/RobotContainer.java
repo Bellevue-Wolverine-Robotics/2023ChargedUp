@@ -5,6 +5,7 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -76,8 +77,9 @@ public class RobotContainer {
 
   private void configureSmartDashboardCommands()
   {
-    SmartDashboard.putData("Reset Drive Pose", runOnce(m_driveSubsystem::resetPose));
-    SmartDashboard.putData("Reset Arm Position", runOnce(m_armSubsystem::resetArmEncoder));
+    // ONLY WORK IN TELEOP
+    SmartDashboard.putData("Reset Drive Pose", new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
+    SmartDashboard.putData("Reset Arm Position", new InstantCommand(m_armSubsystem::resetArmEncoder, m_armSubsystem));
   }
 
   /**
