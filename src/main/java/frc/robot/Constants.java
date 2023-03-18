@@ -133,7 +133,7 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.001;
+    public static final double kPTurn = 0.01;
     public static final double kITurn = 0;
     public static final double kDTurn = 0;
 

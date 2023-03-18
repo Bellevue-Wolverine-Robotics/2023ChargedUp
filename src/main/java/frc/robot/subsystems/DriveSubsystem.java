@@ -47,7 +47,6 @@ import frc.robot.Constants.PhysicalConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
-  private final Field2d m_fieldApproximation = new Field2d();
 
    
 
@@ -96,18 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
   VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
   
-  private final DifferentialDriveKinematics m_kinematics =
-  new DifferentialDriveKinematics(kTrackWidth);
-  private final DifferentialDrivePoseEstimator m_poseEstimator =
-  new DifferentialDrivePoseEstimator(
-      m_kinematics,
-      m_gyro.getRotation2d(),
-      m_leftEncoder.getPosition(),
-      m_rightEncoder.getPosition(),
-      new Pose2d(),
-      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
-
+  
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
@@ -199,6 +187,12 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
     m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
     m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+
+
+    //so PID using odometry in commands are udpated.
+    m_leftEncoder.setPosition(m_driveSim.getLeftPositionMeters());
+    m_rightEncoder.setPosition(m_driveSim.getRightPositionMeters());
+    
   }
 
   
@@ -224,6 +218,10 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
+    m_leftEncoderSim.setDistance(0);
+    m_rightEncoderSim.setDistance(0);
+
+
   }
 
   public double getX(){

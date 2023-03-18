@@ -28,18 +28,19 @@ public class AutonomousTurnCommand extends CommandBase {
     {
         SmartDashboardUtils.TunablePID(this.getName(), m_pid, DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
 
-        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle), -0.5, 0.5);
+        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getGyroDegrees(), m_targetAngle), -0.8, 0.8);
         // System.out.println("Motor Speed " + motorSpeed);
-
+        
+        System.out.println("TARGET:::::" + m_driveSubsystem.getGyroDegrees());
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
 
     @Override
     public boolean isFinished()
     {
-        System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
-        return false;
-        // return m_pid.atSetpoint();
+       // System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
+        //return false;
+         return m_pid.atSetpoint();
     }
 
     @Override

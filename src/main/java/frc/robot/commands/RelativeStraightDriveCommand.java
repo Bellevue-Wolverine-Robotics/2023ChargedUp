@@ -41,7 +41,7 @@ public class RelativeStraightDriveCommand extends CommandBase {
     public boolean isFinished() {
         double rotationError = Math.abs(m_driveSubsystem.getGyroDegrees() - m_targetAngle);
 
-        return m_pidLinear.atSetpoint() && rotationError < 0.1;
+        return m_pidLinear.atSetpoint();
     }
 
     @Override
