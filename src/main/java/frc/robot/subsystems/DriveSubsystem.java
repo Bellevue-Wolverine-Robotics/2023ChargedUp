@@ -77,7 +77,6 @@ public class DriveSubsystem extends SubsystemBase {
   private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
 
 
-  private static final double kTrackWidth = 0.381 * 2; // meters
 
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
   DCMotor.getNEO(2),              // 2 NEO motors on each side of the drivetrain.
@@ -167,6 +166,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
+  }
+  
+  public void simulationInit(){
+    //some bs
   }
 
   public void simulationPeriodic() {
