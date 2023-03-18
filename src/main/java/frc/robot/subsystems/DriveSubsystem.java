@@ -13,10 +13,12 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -45,6 +47,7 @@ import frc.robot.Constants.PhysicalConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
+  private final Field2d m_fieldApproximation = new Field2d();
 
    
 
@@ -74,6 +77,9 @@ public class DriveSubsystem extends SubsystemBase {
   private Gyro m_gyro = _ADXRS450_Gyro;
   private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
 
+
+  private static final double kTrackWidth = 0.381 * 2; // meters
+
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
   DCMotor.getNEO(2),              // 2 NEO motors on each side of the drivetrain.
   8.45,                             // 8.45:1 gearing reduction.
@@ -89,6 +95,18 @@ public class DriveSubsystem extends SubsystemBase {
   // l and r position: 0.005 m
   VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
+  
+  private final DifferentialDriveKinematics m_kinematics =
+  new DifferentialDriveKinematics(kTrackWidth);
+  private final DifferentialDrivePoseEstimator m_poseEstimator =
+  new DifferentialDrivePoseEstimator(
+      m_kinematics,
+      m_gyro.getRotation2d(),
+      m_leftEncoder.getPosition(),
+      m_rightEncoder.getPosition(),
+      new Pose2d(),
+      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
@@ -156,6 +174,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
+    SmartDashboard.putData("Field", m_field);
+
+
+
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
   }
 
@@ -178,6 +200,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
     m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
   }
+
+  
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
@@ -337,11 +361,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
+    //m_poseEstimator.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    m_field.setRobotPose(m_driveSim.getPose());
 
-    m_field.setRobotPose(m_odometry.getPoseMeters());
+    //m_field.setRobotPose(m_odometry.getPoseMeters());
 
-    SmartDashboard.putData("Field", m_field);
-    SmartDashboard.putData(m_field);
+
+    //m_fieldApproximation.setRobotPose(m_poseEstimator.getEstimatedPosition());
+
+    //SmartDashboard.putData("Field", m_field);
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());

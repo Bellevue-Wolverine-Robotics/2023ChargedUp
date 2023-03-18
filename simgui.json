@@ -1,6 +1,11 @@
 {
   "HALProvider": {
     "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
       "1": {
         "header": {
           "open": true
