@@ -34,7 +34,6 @@ public class ArmSubsystem extends SubsystemBase {
         // m_armMotor.config_kI(0, ArmConstants.kI);
         // m_armMotor.config_kD(0, ArmConstants.kD);
 
-        SmartDashboard.putData("Reset Arm Position", runOnce(this::resetArmEncoder));
     }
     
     public void setArmPosition(double pos)

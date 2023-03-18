@@ -7,7 +7,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Utils.SmartDashboardUtils;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class RotateArmAbsoluteRadiansCommand extends CommandBase {
@@ -30,7 +29,6 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
 
     @Override
     public void execute(){
-        // SmartDashboardUtils.TunablePID(this.getName(), m_pid, ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
         
         double pidTerm = this.m_pid.calculate(m_targetAngle, m_armSubsystem.getArmRotationRadians());
         double ffTerm = m_feedForward.calculate(Units.degreesToRadians(m_targetAngle + ArmConstants.kInitialAngleOffset), 0);
