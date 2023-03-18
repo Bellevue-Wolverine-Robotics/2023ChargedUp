@@ -42,7 +42,9 @@ public final class Autos {
     public static Command oneConeTouch(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
+            runOnce(()->{System.out.println("STARTING ROTATE ARM COMMAND");}),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kScoringAngle), true),
+            runOnce(()->{System.out.println("ENDING ROTATE ARM COMMAND");}),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
