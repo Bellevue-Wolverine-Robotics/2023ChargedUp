@@ -93,6 +93,9 @@ public final class Constants {
     public static final int kHomePositionButtonLH = 11;
     public static final int kPickupPositionButtonLH = 10;
     public static final int kScoringPositionButtonLH = 9;
+  }
+
+  public static class ButtonConstantsMatthew {
 
   }
 
@@ -142,9 +145,9 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.01;
+    public static final double kPTurn = 0.006;
     public static final double kITurn = 0;
-    public static final double kDTurn = 0.001;
+    public static final double kDTurn = 0;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;
@@ -157,16 +160,16 @@ public final class Constants {
     public static final double kP = 15;
     public static final double kI = 0;
     public static final double kD = 0.15;
-    public static final double kG = 0;
+    public static final double kG = 10;
     public static final double kS = 0;
     public static final double kV = 0;
 
-    public static final int kInitialAngleOffset = 90 - 25;
+    public static final int kInitialAngleOffset = 25;
 
     public static final int kArmCalibrationDIO = 9;
 
     public static final int kArmHomeAngle = 10;
-    public static final int kArmPickupAngle = 65;
+    public static final int kArmPickupAngle = 60;
     public static final int kArmScoringAngle = 100;
   }
   

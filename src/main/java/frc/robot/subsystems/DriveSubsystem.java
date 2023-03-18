@@ -155,11 +155,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_gyro.calibrate();
 
     m_odometry = new DifferentialDriveOdometry(
-      m_gyro.getRotation2d(), 
+      m_imu.getRotation2d(), 
       m_leftEncoder.getPosition(), m_rightEncoder.getPosition(),
       new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
     SmartDashboard.putData("Field", m_field);
 
@@ -352,7 +352,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    Pose2d pose = m_odometry.update(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
@@ -383,7 +383,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPose()
   {
-    resetOdometry(new Pose2d());
+    resetEncoders();
+    m_imu.reset();
+
+    m_odometry.resetPosition(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
 
   }
   
@@ -392,7 +395,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
     
     m_odometry.resetPosition(
-      m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
+      m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {

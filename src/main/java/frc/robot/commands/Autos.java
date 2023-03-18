@@ -38,6 +38,7 @@ public final class Autos {
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new WaitCommand(0.2),
             new RotateDrivestationAbsoluteDegreesCommand(driveSubsystem, 180)
         );
     }
