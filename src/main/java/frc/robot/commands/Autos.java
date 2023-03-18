@@ -50,7 +50,7 @@ public final class Autos {
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
-            new ParallelDeadlineGroup(
+            new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
             new BalanceChargeStationCommand(driveSubsystem)
