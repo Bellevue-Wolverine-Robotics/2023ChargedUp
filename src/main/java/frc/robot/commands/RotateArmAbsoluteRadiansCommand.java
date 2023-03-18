@@ -23,6 +23,8 @@ public class RotateArmAbsoluteRadiansCommand extends CommandBase {
         this.m_targetAngle = radians;
         this.m_finishes = finishes;
 
+        m_pid.setTolerance(0.1);
+
         addRequirements(this.m_armSubsystem);
     }
 
