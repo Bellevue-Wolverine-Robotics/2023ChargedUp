@@ -151,7 +151,12 @@ public class RobotContainer {
   }
   
   public void onTeleop() {
-    m_intakeSubsystem.onTeleop();
+  }
+
+  public void onAuton()
+  {
+    m_driveSubsystem.resetPose();
+    m_armSubsystem.resetArmEncoder();
   }
 
   public ArmSubsystem getArmSubsystem() {

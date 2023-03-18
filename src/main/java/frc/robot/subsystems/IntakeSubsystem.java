@@ -29,10 +29,4 @@ public class IntakeSubsystem extends SubsystemBase {
         // System.out.println("After: " + toggledValue);
         m_intakeSolenoid.set(toggledValue);
     }
-
-    public void onTeleop()
-    {
-        // new Trigger(m_itemContactSwitch::get).onTrue(runOnce(this::extendIntake));
-    }
-
 }
