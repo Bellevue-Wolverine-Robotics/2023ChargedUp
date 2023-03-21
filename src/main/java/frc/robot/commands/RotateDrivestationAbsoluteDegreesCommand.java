@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Utils.SmartDashboardUtils;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
@@ -14,7 +13,7 @@ public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     
     public RotateDrivestationAbsoluteDegreesCommand(DriveSubsystem driveSubsystem, double absoluteDegrees)
     {
-
+        // this absolutedegrees is untested.  DO NOT RELY ON COMMAND DURING COMP
         absoluteDegrees *= 0.9;//ADJUSTED FOR ROTATIONAL MOMENTUM
 
         m_driveSubsystem = driveSubsystem;
@@ -29,7 +28,7 @@ public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     @Override
     public void execute()
     {
-        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle), -0.5, 0.5);
+        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle), 0, 0.8);
 
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
@@ -37,9 +36,7 @@ public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     @Override
     public boolean isFinished()
     {
-       // System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
-        //return false;
-         return m_pid.atSetpoint();
+        return false;
     }
 
     @Override

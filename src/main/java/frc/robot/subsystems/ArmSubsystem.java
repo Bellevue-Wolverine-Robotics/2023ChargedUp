@@ -34,7 +34,6 @@ public class ArmSubsystem extends SubsystemBase {
         // m_armMotor.config_kI(0, ArmConstants.kI);
         // m_armMotor.config_kD(0, ArmConstants.kD);
 
-        SmartDashboard.putData("Reset Arm Position", runOnce(this::resetArmEncoder));
     }
     
     public void setArmPosition(double pos)
@@ -94,7 +93,7 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic()
     {
-        SmartDashboard.putNumber("ArmRotation Degrees", getArmRotationDegrees());
+        SmartDashboard.putNumber("Arm Rotation Degrees", getArmRotationDegrees());
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
 
     }

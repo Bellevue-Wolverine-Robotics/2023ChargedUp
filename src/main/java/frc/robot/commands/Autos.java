@@ -20,6 +20,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -29,25 +30,29 @@ public final class Autos {
 
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true))
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new WaitCommand(0.2),
+            new RotateDrivestationAbsoluteDegreesCommand(driveSubsystem, 180)
         );
     }
 
     public static Command oneConeChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
-                new RelativeStraightDriveCommand(driveSubsystem, -2.5),
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION),
                 new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
             new BalanceChargeStationCommand(driveSubsystem)
         );

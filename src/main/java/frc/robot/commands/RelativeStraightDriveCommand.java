@@ -21,7 +21,7 @@ public class RelativeStraightDriveCommand extends CommandBase {
 
         m_pidLinear.setTolerance(0.1);
 
-        m_targetAngle = m_driveSubsystem.getGyroDegrees();
+        m_targetAngle = m_driveSubsystem.getYaw();
 
         addRequirements(m_driveSubsystem);
     }
@@ -30,16 +30,15 @@ public class RelativeStraightDriveCommand extends CommandBase {
     @Override
     public void execute() {
         double linearSpeed = MathUtil.clamp(m_pidLinear.calculate(m_driveSubsystem.getPose().getX(), m_targetDistance), -0.7, 0.7);
-        double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getGyroDegrees()) * m_rotationKP, -0.7, 0.7);
+        double rotationalSpeed = MathUtil.clamp((m_targetAngle - m_driveSubsystem.getYaw()) * m_rotationKP, -0.7, 0.7);
 
         // System.out.println("Straight Drive at: " + linearSpeed + " with target at: " + m_targetDistance);    
-        System.out.println("FUCKing DRIVING STAIGHT !!!!" + m_driveSubsystem.getPose().getX());
         m_driveSubsystem.tankDrive(linearSpeed, linearSpeed);
     }
 
     @Override
     public boolean isFinished() {
-        double rotationError = Math.abs(m_driveSubsystem.getGyroDegrees() - m_targetAngle);
+        double rotationError = Math.abs(m_driveSubsystem.getYaw() - m_targetAngle);
 
         return m_pidLinear.atSetpoint();
     }
@@ -47,7 +46,6 @@ public class RelativeStraightDriveCommand extends CommandBase {
     @Override
     public void end(boolean interrupted)
     {
-        m_driveSubsystem.resetPose();
         m_driveSubsystem.stopDriveTrain();
     }
 }

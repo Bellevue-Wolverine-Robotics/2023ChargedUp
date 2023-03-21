@@ -48,8 +48,6 @@ import frc.robot.Constants.PhysicalConstants;
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
-   
-
   private CANSparkMax m_leftBack = new CANSparkMax(CANConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(CANConstants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax m_rightFront = new CANSparkMax(CANConstants.RIGHT_FRONT, MotorType.kBrushless);
@@ -102,8 +100,6 @@ public class DriveSubsystem extends SubsystemBase {
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
   private MedianFilter m_accelYFilter = new MedianFilter(50);
 
-  private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
-
   private DifferentialDriveOdometry m_odometry; 
 
   private AHRS m_imu = new AHRS(SPI.Port.kMXP);
@@ -155,11 +151,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_gyro.calibrate();
 
     m_odometry = new DifferentialDriveOdometry(
-      m_gyro.getRotation2d(), 
+      m_imu.getRotation2d(), 
       m_leftEncoder.getPosition(), m_rightEncoder.getPosition(),
       new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
+    m_odometry.resetPosition(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
     SmartDashboard.putData("Field", m_field);
 
@@ -219,7 +215,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetEncoders()
   {
-    //System.out.println("FUCKING HERE");
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
 
@@ -353,36 +348,20 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Pose2d pose = m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("Heading", getGyroDegrees());
+    Pose2d pose = m_odometry.update(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
-    SmartDashboard.putNumber("Robot Pitch", m_imu.getPitch());
-    SmartDashboard.putNumber("Robot Yaw", m_imu.getYaw());
-    SmartDashboard.putNumber("Robot Roll", m_imu.getRoll());
-
-    SmartDashboard.putNumber("Raw X", m_imu.getRawGyroX());
-    SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
-    SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
-
-    m_field.setRobotPose(m_driveSim.getPose());
-    
+    // imu pitch is roll, roll is pitch
+    SmartDashboard.putNumber("Robot Roll", m_imu.getPitch());
+    SmartDashboard.putNumber("Robot Heading", m_imu.getYaw());
+    SmartDashboard.putNumber("Robot Pitch", m_imu.getRoll());
 
     //m_field.setRobotPose(m_odometry.getPoseMeters());
 
 
     //m_fieldApproximation.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
-    //SmartDashboard.putData("Field", m_field);
-    // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
-
-    // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
-    // SmartDashboard.putNumber("Accelerometer Y", m_accelerometer.getY());
-    // SmartDashboard.putNumber("Accelerometer Z", m_accelerometer.getZ());
-
-    // SmartDashboard.putNumber("Weighted Pitch With Weighted Z", this.getPitchDegreesYWeightedZ());
-    // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
   }
 
   public double getPitchDegrees()
@@ -400,7 +379,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPose()
   {
-    resetOdometry(new Pose2d());
+    resetEncoders();
+    m_imu.reset();
+
+    m_odometry.resetPosition(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
 
   }
   
@@ -409,14 +391,14 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
     
     m_odometry.resetPosition(
-      m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
+      m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), initialPose);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
-    this.m_drive.arcadeDrive(m_rateLimiter.calculate(xSpeed), zRotation);
+    this.m_drive.arcadeDrive(xSpeed, zRotation);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
   }
 
@@ -444,7 +426,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    //System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
     this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
