@@ -23,12 +23,7 @@
       },
       "AnalogGyro[1]": {
         "header": {
-          "open": true
-        }
-      },
-      "Compressor[0]": {
-        "header": {
-          "open": true
+          "open": false
         }
       }
     }
@@ -41,9 +36,19 @@
       "/SmartDashboard/Reset Drive Pose": "Command"
     },
     "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
+        "Robot": {
+          "arrowSize": 61,
+          "image": "/Users/justin/Desktop/photo_shop/cow.png"
+        },
         "image": "/Users/justin/Downloads/2023-field.png",
         "window": {
+          "name": "config1",
           "visible": true
         }
       }

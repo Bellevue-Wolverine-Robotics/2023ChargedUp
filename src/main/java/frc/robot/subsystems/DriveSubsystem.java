@@ -6,16 +6,19 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -45,6 +48,7 @@ import frc.robot.Constants.PhysicalConstants;
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
+   
 
   private CANSparkMax m_leftBack = new CANSparkMax(CANConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(CANConstants.LEFT_FRONT, MotorType.kBrushless);
@@ -56,24 +60,30 @@ public class DriveSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_leftGroup, m_rightGroup);
 
+
+  REVPhysicsSim _revSimulation = new REVPhysicsSim();
   private RelativeEncoder m_leftEncoder =  m_leftFront.getEncoder();
   private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
+
+
 
   //Sketchy sim stuff
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
   
 
-  private ADXRS450_Gyro _rawGyro = new ADXRS450_Gyro();
-  private Gyro m_gyro = _rawGyro;
-  private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_rawGyro);
+  private ADXRS450_Gyro _ADXRS450_Gyro = new ADXRS450_Gyro();
+  private Gyro m_gyro = _ADXRS450_Gyro;
+  private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
+
+
 
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
-  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-  8.45,                    // 8.45:1 gearing reduction.
+  DCMotor.getNEO(2),              // 2 NEO motors on each side of the drivetrain.
+  8.45,                             // 8.45:1 gearing reduction.
   7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
-  30.0,                    // The mass of the robot is 60 kg.
-  Units.inchesToMeters(3), // The robot uses 3" radius wheels.
+  30.0,                             // The mass of the robot is 60 kg.
+  Units.inchesToMeters(3),            // The robot uses 3" radius wheels.
   0.7112,                  // The track width is 0.7112 meters.
 
   // The standard deviations for measurement noise:
@@ -83,7 +93,8 @@ public class DriveSubsystem extends SubsystemBase {
   // l and r position: 0.005 m
   VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
-
+  
+  
 
   private Accelerometer m_accelerometer = new BuiltInAccelerometer();
 
@@ -129,6 +140,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
     m_rightEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
 
+
+    float stallTorque = (float) 3.35;
+    float freeSpeed = (float) 5874.0;
+    _revSimulation.addSparkMax(m_leftBack, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_rightBack, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_leftFront, stallTorque, freeSpeed);
+    _revSimulation.addSparkMax(m_rightFront, stallTorque, freeSpeed);
+
+
     m_imu.calibrate();
 
     m_gyro.reset();
@@ -141,7 +161,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
     
+    SmartDashboard.putData("Field", m_field);
+
+
+
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
+  }
+  
+  public void simulationInit(){
+    //some bs
   }
 
   public void simulationPeriodic() {
@@ -162,7 +190,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
     m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
     m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+
+
+    //so PID using odometry in commands are udpated.
+    m_leftEncoder.setPosition(m_driveSim.getLeftPositionMeters());
+    m_rightEncoder.setPosition(m_driveSim.getRightPositionMeters());
+    
   }
+
+  
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
@@ -183,8 +219,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetEncoders()
   {
+    //System.out.println("FUCKING HERE");
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
+
+    /* 
+    shouldnt reset
+    m_leftEncoderSim.setDistance(0);
+    m_rightEncoderSim.setDistance(0);
+    m_driveSim.setPose(new Pose2d());
+    */
   }
 
   public double getX(){
@@ -322,11 +366,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Raw Y", m_imu.getRawGyroY());
     SmartDashboard.putNumber("Raw Z", m_imu.getRawGyroZ());
 
+    m_field.setRobotPose(m_driveSim.getPose());
+    
 
-    m_field.setRobotPose(m_odometry.getPoseMeters());
+    //m_field.setRobotPose(m_odometry.getPoseMeters());
 
-    SmartDashboard.putData("Field", m_field);
 
+    //m_fieldApproximation.setRobotPose(m_poseEstimator.getEstimatedPosition());
+
+    //SmartDashboard.putData("Field", m_field);
     // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Accelerometer X", m_accelerometer.getX());
@@ -352,9 +400,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetPose()
   {
-    resetEncoders();
+    resetOdometry(new Pose2d());
 
-    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
   }
   
   public void resetOdometry(Pose2d initialPose)
@@ -397,7 +444,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
-    System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
+    //System.out.println("Tank Drive: left(" + leftSpeed + ") right(" + rightSpeed + ")");
     this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
