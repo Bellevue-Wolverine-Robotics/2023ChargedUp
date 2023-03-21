@@ -101,28 +101,6 @@ public class RobotContainer {
 
     // m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
   
-<<<<<<< HEAD
-    m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
-    m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
-    //m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
-   // m_driverController.button(12).onTrue(new RelativeStraightDriveCommand(m_driveSubsystem, 100));
-    m_driverController.button(12).onTrue(runOnce(()->{System.out.println("PRESSED 12");}));
-    // m_operatorController.button(ButtonConstants.kSlightlyAboveHomeButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
-    // m_operatorController.button(ButtonConstants.kParallelThingsButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
-    // m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
-   
-    // m_operatorController.button(11).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kSlightlyAboveHomeAngle), false));
-    // m_operatorController.button(10).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kParallelThingsAngle), false));
-    // m_operatorController.button(9).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kScoringAngle), false));
-   
-    // m_operatorController.button(10).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(1.3), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-    // m_operatorController.button(9).onTrue(new SequentialCommandGroup(runOnce(() -> m_armSubsystem.rotateArmIgnoreFastMode(-0.8), m_armSubsystem), new WaitCommand(0.8), runOnce(m_armSubsystem::stopArmMotor, m_armSubsystem)));
-   
-    // m_operatorController.button(3).onTrue(runOnce(m_armSubsystem::toggleFast, m_armSubsystem));
-    // m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
-
-    // m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
-=======
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
     m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
     m_driverController.button(ButtonConstants.FACE_LEFT_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 90));
@@ -133,7 +111,6 @@ public class RobotContainer {
     // m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
     // m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
     // m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
->>>>>>> 5ac609f6fafa0cd26c7dfeb401baa0ef64498b14
 
     // OPERATORS
     m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
@@ -167,7 +144,7 @@ public class RobotContainer {
    // return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
+    return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
     
     
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
