@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  Thread m_visionThread;
   private Command m_autonomousCommand;
   // private Command m_testCommand;
 
@@ -40,6 +43,19 @@ public class Robot extends TimedRobot {
     // m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
+
+    UsbCamera m_camera = CameraServer.startAutomaticCapture();
+    m_camera.setResolution(640, 480);
+    m_camera.setFPS(15);
+    // m_visionThread = new Thread(
+    //   () -> {
+    //     UsbCamera m_camera = CameraServer.startAutomaticCapture();
+    //     camera.set_resolution(640, 480);
+    //     camera.setFPS(15)
+    //   }
+    // )
+    // }
+    
   }
 
   /**
