@@ -1,0 +1,11 @@
+{
+  "NetworkTables": {
+    "Transitory Values": {
+      "open": false
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Server",
+    "visible": false
+  }
+}
