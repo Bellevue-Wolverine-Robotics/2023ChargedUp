@@ -73,6 +73,8 @@ public final class Constants {
 
     public static final int RESET_IMU_BUTTON = 7;
 
+    public static final int TEST_CHARGE_BALANCE = 9;
+
     public static final int IGNORE_ROTATION_BUTTON = 11;
 
     // OPERATOR
@@ -95,8 +97,27 @@ public final class Constants {
     public static final int kScoringPositionButtonLH = 9;
   }
 
-  public static class ButtonConstantsMatthew {
+  public static class ButtonConstantsMatthew
+  {
+    // DRIVE
+    public static final int DRIVE_PRESET_2 = 3;
+    public static final int DRIVE_PRESET_3 = 1;
+    
+    public static final int IGNORE_ROTATION_BUTTON = 2;
 
+    public static final int TEST_CHARGE_BALANCE_BUTTON = 6;
+
+    // OP
+    public static final int INTAKE_TOGGLE_BUTTON = 1;
+
+    public static final int kHomePositionButton = 12;
+    public static final int kHomePositionButtonAlt = 11;
+
+    public static final int kPickupPositionButton = 10;
+    public static final int kPickupPositionButtonAlt = 9;
+
+    public static final int kScoringPositionButton = 8;
+    public static final int kScoringPositionButtonAlt = 7;
   }
 
   public static class FieldConstants {
@@ -127,7 +148,7 @@ public final class Constants {
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
     public static final double ROTATION_PRESET_3 = (double)1 / 4;
 
-    public static final int STALL_LIMIT = 35;
+    public static final int STALL_LIMIT = 20;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;

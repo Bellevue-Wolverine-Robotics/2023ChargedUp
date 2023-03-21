@@ -48,8 +48,6 @@ import frc.robot.Constants.PhysicalConstants;
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
-   
-
   private CANSparkMax m_leftBack = new CANSparkMax(CANConstants.LEFT_BACK, MotorType.kBrushless);
   private CANSparkMax m_leftFront = new CANSparkMax(CANConstants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax m_rightFront = new CANSparkMax(CANConstants.RIGHT_FRONT, MotorType.kBrushless);
@@ -101,8 +99,6 @@ public class DriveSubsystem extends SubsystemBase {
   private MedianFilter m_accelZFilter = new MedianFilter(50);
   private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
   private MedianFilter m_accelYFilter = new MedianFilter(50);
-
-  private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
 
   private DifferentialDriveOdometry m_odometry; 
 
@@ -402,7 +398,7 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
-    this.m_drive.arcadeDrive(m_rateLimiter.calculate(xSpeed), zRotation);
+    this.m_drive.arcadeDrive(xSpeed, zRotation);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
   }
 

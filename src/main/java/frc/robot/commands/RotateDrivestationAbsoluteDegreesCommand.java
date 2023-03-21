@@ -28,7 +28,7 @@ public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     @Override
     public void execute()
     {
-        double motorSpeed = m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle);
+        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle), 0, 0.8);
 
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
