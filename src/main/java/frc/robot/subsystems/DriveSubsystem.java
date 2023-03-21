@@ -385,12 +385,17 @@ public class DriveSubsystem extends SubsystemBase {
     // System.out.println("WEIGHTED_PITCH_WEIGHTED_Z: " + getPitchDegreesYWeightedZ());
   }
 
-  public double getPitch()
+  public double getPitchDegrees()
   {
     // pointing up is pos, pointing down is neg
     
     // imu returning roll as pitch
     return -m_imu.getRoll();
+  }
+
+  public double getYaw()
+  {
+    return m_imu.getYaw();
   }
 
   public void resetPose()
@@ -455,10 +460,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.tankDrive(0, 0);
   }
 
-  // unit test example delete later
-  public int add(int a, int b)
+  public void resetImu()
   {
-    return a + b;
-  }
-  
+    m_imu.reset();
+  } 
 }

@@ -29,28 +29,33 @@ public final class Autos {
 
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
-            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kScoringAngle), true),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -4),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true))
         );
     }
 
-    public static Command oneConeTouch(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    public static Command oneConeChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(
+<<<<<<< HEAD
             runOnce(()->{System.out.println("STARTING ROTATE ARM COMMAND");}),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kScoringAngle), true),
             runOnce(()->{System.out.println("ENDING ROTATE ARM COMMAND");}),
+=======
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
+>>>>>>> 5ac609f6fafa0cd26c7dfeb401baa0ef64498b14
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),
             new ParallelCommandGroup(
                 new RelativeStraightDriveCommand(driveSubsystem, -2.5),
-                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kSlightlyAboveHomeAngle), true))
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new BalanceChargeStationCommand(driveSubsystem)
         );
     }
 

@@ -17,13 +17,13 @@ import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
-import frc.robot.commands.AutonomousTurnCommand;
 import frc.robot.commands.AutonomousTurnHardcodeCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
 import frc.robot.commands.InitArmPositionCommand;
 import frc.robot.commands.RotateArmSpeedCommand;
+import frc.robot.commands.RotateDrivestationAbsoluteDegreesCommand;
 import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
 import frc.robot.commands.teleopDrives.CurvatureDriveCommand;
 import frc.robot.commands.teleopDrives.SemiConstantCurvatureDriveCommand;
@@ -83,17 +83,25 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
-    // m_intakeSubsystem.setDefaultCommand(new GrabRotateCommand(m_intakeSubsystem, istream));
   }
 
   private void configureBindings() {
+    // default commands
+
+    BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+
+    BooleanSupplier outsideDeadbandDrive = () -> { return Math.abs(m_driverController.getX()) > OperatorConstants.controllerDeadband || Math.abs(m_driverController.getY()) > OperatorConstants.controllerDeadband;};
+    new Trigger(outsideDeadbandDrive).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
+
+    // driving
+
     m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_2, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_2, false));
     m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_3, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_3, false));
 
-    m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
-    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
+    // m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
   
+<<<<<<< HEAD
     m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
     m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
     //m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
@@ -114,9 +122,29 @@ public class RobotContainer {
     // m_operatorController.button(ButtonConstants.TOGGLE_SAFTEY).onTrue(runOnce(m_armSubsystem::toggleSaftey, m_armSubsystem));
 
     // m_driverController.button(ButtonConstants.CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
+=======
+    m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
+    m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
+    m_driverController.button(ButtonConstants.FACE_LEFT_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 90));
+    m_driverController.button(ButtonConstants.FACE_RIGHT_BUTTON).onTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, -90));
 
-    BooleanSupplier outsideDeadband = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadband).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+    m_driverController.button(ButtonConstants.RESET_IMU_BUTTON).onTrue(runOnce(m_driveSubsystem::resetImu, m_driveSubsystem));
+
+    // m_driverController.button(8).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 360));
+    // m_driverController.button(10).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 180));
+    // m_driverController.button(12).onTrue(new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90));
+>>>>>>> 5ac609f6fafa0cd26c7dfeb401baa0ef64498b14
+
+    // OPERATORS
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
+  
+    m_operatorController.button(ButtonConstants.kHomePositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+    m_operatorController.button(ButtonConstants.kPickupPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+    m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
+   
+    m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+    m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+    m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
   }
 
   /**
@@ -124,8 +152,16 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand(String command) {
-  
+  public Command getAutonomousCommand(AutoEnum autoEnum) {
+    switch (autoEnum)
+    {
+      case ONE_CONE_LEAVE_COMMUNITY:
+        System.out.println("leave com");
+        return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case ONE_CONE_BALANCE_CHARGE_STATION:
+        System.out.println("charge station");
+        return Autos.oneConeChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     // return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
