@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,9 +24,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  Thread m_visionThread;
   private Command m_autonomousCommand;
-  // private Command m_testCommand;
+
+  private CvSink m_cvSink = CameraServer.getVideo();
+  private CvSource m_outputStream = CameraServer.putVideo("Blur", 1920, 1080);
+  private Mat m_source = new Mat();
+  private Mat m_output = new Mat();
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -43,6 +51,7 @@ public class Robot extends TimedRobot {
     // m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
+
 
     UsbCamera m_camera = CameraServer.startAutomaticCapture();
     m_camera.setResolution(640, 480);
@@ -73,6 +82,14 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    
+
+    
+    if (m_cvSink.grabFrame(m_source) == 0) {
+      return;
+    }
+    Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
+    m_outputStream.putFrame(m_output);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
