@@ -125,7 +125,12 @@ public final class Constants {
     public static double RAMP_LENGTH_METERS = RAMP_LENGTH_INCH*PhysicsConstants.INCH_TO_METER;
     public static double WHOLE_PLATFORM_LENGTH_INCH = 48;
     public static double WHOLE_PLATFORM_LENGTH_METER = WHOLE_PLATFORM_LENGTH_INCH*PhysicsConstants.INCH_TO_METER;
+    public static double PLATFORM_INCH = 4*12;//4 feet 
+    public static double PLATFORM_METER = PLATFORM_INCH * PhysicsConstants.INCH_TO_METER;//official manual says ~122cm
     
+
+
+
     public static final double CHARGE_STATION = -2.5;
     public static final double COMMUNITY = -4;
 

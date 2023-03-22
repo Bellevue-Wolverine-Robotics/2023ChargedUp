@@ -179,14 +179,17 @@ public class RobotContainer {
         return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       case ONE_CONE_BALANCE_CHARGE_STATION:
         return Autos.oneConeChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case BALANCE_ONLY:
+        return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
+
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     // return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
-    
+   // return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
+    return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
     
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
