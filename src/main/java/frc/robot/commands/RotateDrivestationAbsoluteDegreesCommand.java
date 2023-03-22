@@ -10,9 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
     private DriveSubsystem m_driveSubsystem;
     private double m_targetAngle;
-    private PIDController m_pid = new PIDController(DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);
-    
-    public RotateDrivestationAbsoluteDegreesCommand(DriveSubsystem driveSubsystem, double absoluteDegrees)
+    private PIDController m_pid = new PIDController(DriveConstants.kPTurn, DriveConstants.kITurn, DriveConstants.kDTurn);public RotateDrivestationAbsoluteDegreesCommand(DriveSubsystem driveSubsystem, double absoluteDegrees)
     {
 
         absoluteDegrees *= 0.9;//ADJUSTED FOR ROTATIONAL MOMENTUM
@@ -28,19 +26,15 @@ public class RotateDrivestationAbsoluteDegreesCommand extends CommandBase {
 
     @Override
     public void execute()
-    {
-        double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle), -0.5, 0.5);
-
+    {double motorSpeed = MathUtil.clamp(m_pid.calculate(m_driveSubsystem.getYaw(), m_targetAngle), -0.5, 0.5);
         m_driveSubsystem.tankDrive(motorSpeed, -motorSpeed);
     }
 
     @Override
     public boolean isFinished()
-    {
-       // System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
+    {      // System.out.println("UNDO RETURN FALSE IN AUTONOMOUSTURNCOMMAND");
         //return false;
-         return m_pid.atSetpoint();
-    }
+         return m_pid.atSetpoint(); }
 
     @Override
     public void end(boolean interrupted)

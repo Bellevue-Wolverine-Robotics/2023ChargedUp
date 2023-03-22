@@ -56,7 +56,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     // TODO: FIX THE GEARING LATER ONCE THE ENCODER GETS FIXED
-    public static final double TALON_TO_ARM_RATIO = (double)15/44;
+    public static final double TALON_TO_ARM_RATIO = (double)(15/44);
     public static final double STRIKE_GROUND_ANGLE = 150;
     public static final double STRIKE_ROBOT_ANGLE = 5;
   }
@@ -122,7 +122,7 @@ public final class Constants {
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
     public static final double ROTATION_PRESET_3 = (double)1 / 4;
 
-    public static final int STALL_LIMIT = 35;
+    public static final int STALL_LIMIT = 40;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;
@@ -140,9 +140,9 @@ public final class Constants {
     // TUNE
     public static final double KP_DRIVE_VEL = 8;
 
-    public static final double kPTurn = 0.02;
+    public static final double kPTurn = 0.001;
     public static final double kITurn = 0;
-    public static final double kDTurn = 0.002;
+    public static final double kDTurn = 0;
 
     public static final double kPStraight = 2;
     public static final double kIStraight = 0;
@@ -151,10 +151,13 @@ public final class Constants {
     public static final double BALANCE_CHARGESTATION_HARDCODE_TUNE = 0.05;
   }
 
+
+
+  
   public static class ArmConstants {
-    public static final double kP = 15;
+    public static final double kP = 7;
     public static final double kI = 0;
-    public static final double kD = 0.15;
+    public static final double kD = 0;
     public static final double kG = 0;
     public static final double kS = 0;
     public static final double kV = 0;
@@ -167,8 +170,7 @@ public final class Constants {
     public static final int kArmPickupAngle = 65;
     public static final int kArmScoringAngle = 100;
   }
-  
-  public static class PIDConstants {
+    public static class PIDConstants {
     public static final double kPChargeStation = 1.5;
     public static final double kIChargeStation = 0;
     public static final double kDChargeStation = 0.015;
