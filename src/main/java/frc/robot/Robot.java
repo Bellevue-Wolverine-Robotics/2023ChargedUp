@@ -5,6 +5,8 @@
 package frc.robot;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -26,10 +28,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private CvSink m_cvSink = CameraServer.getVideo();
-  private CvSource m_outputStream = CameraServer.putVideo("Blur", 1920, 1080);
-  private Mat m_source = new Mat();
-  private Mat m_output = new Mat();
+  // private CvSink m_cvSink = CameraServer.getVideo();
+  //private CvSource m_outputStream = CameraServer.putVideo("Blur", 1920, 1080);
+ // private CvSource m_outputStream = CameraServer.putVideo("Blur", 640, 480);
+  private CvSink m_cvSink;
+  private CvSource m_outputStream;
+
+  private Mat mat;
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -56,6 +61,16 @@ public class Robot extends TimedRobot {
     UsbCamera m_camera = CameraServer.startAutomaticCapture();
     m_camera.setResolution(640, 480);
     m_camera.setFPS(15);
+
+    m_cvSink = CameraServer.getVideo();
+    m_cvSink = CameraServer.getVideo();
+    m_outputStream = CameraServer.putVideo("Rectangle", 1920, 1080);
+    
+    mat = new Mat();
+
+
+    /*m_source = new Mat();
+    m_output = new Mat();*/
     // m_visionThread = new Thread(
     //   () -> {
     //     UsbCamera m_camera = CameraServer.startAutomaticCapture();
@@ -83,13 +98,17 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     
-
     
-    if (m_cvSink.grabFrame(m_source) == 0) {
-      return;
+    
+    if (m_cvSink.grabFrame(mat) == 0) {
+       return;
     }
-    Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
-    m_outputStream.putFrame(m_output);
+
+
+    Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
+    
+    // Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
+    m_outputStream.putFrame(mat);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
