@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -171,6 +172,13 @@ public final class Autos {
         // Run path following command, then stop at the end.
         return ramseteCommand.andThen(() -> driveSubsystem.tankDriveVolts(0, 0));
     }
+
+    public static Command FastBalanceChargeStationCommand(DriveSubsystem driveSubsystem){
+        return new SequentialCommandGroup(new RelativeStraightDriveCommand(driveSubsystem, (Constants.FieldConstants.WHOLE_PLATFORM_LENGTH_METER/2) + Constants.FieldConstants.RAMP_LENGTH_METERS), new BalanceChargeStationCommand(driveSubsystem));
+   
+   
+    }
+
 
     // public static Command oneConeChargeTouch() {
     //     return oneConeCommunity();

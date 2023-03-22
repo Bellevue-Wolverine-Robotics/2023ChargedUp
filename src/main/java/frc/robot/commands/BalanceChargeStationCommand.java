@@ -13,13 +13,18 @@ import java.lang.Math;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 public class BalanceChargeStationCommand extends CommandBase {
-    //THIS COMMAND MUST GET RUN EXACTLY WHEN THE FRONT WHEEL STARTS TO TOUCH THE BEGGING OF THE RAMP
 
     private DriveSubsystem m_driveSubsystem;
     private PIDController m_pid = new PIDController(PIDConstants.kPChargeStation, PIDConstants.kIChargeStation, PIDConstants.kDChargeStation);
 
     // private double m_thetakP = 0.9;
-
+/*
+  public static class PIDConstants {
+    public static final double kPChargeStation = 1.5;
+    public static final double kIChargeStation = 0;
+    public static final double kDChargeStation = 0.015;   
+  }
+ */
     public BalanceChargeStationCommand(DriveSubsystem driveSubsystem) {
         this.m_driveSubsystem = driveSubsystem;
 
@@ -39,6 +44,11 @@ public class BalanceChargeStationCommand extends CommandBase {
 
         System.out.println("Charge Balance");
 
+        //TO ADJUST FOR SLOWER SEED WHEN REVERSING  
+        if(speed < 0){
+            speed *= 1.1;
+        }
+        speed = MathUtil.clamp(speed, -1.0, 1.0);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 
