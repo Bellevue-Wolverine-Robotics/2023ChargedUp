@@ -1,27 +1,24 @@
 
-
-
 # How to work in your own branch and push changes for review
 
-## Working in your local machine
-- create you own branch  `git checkout -b <your_branch_name>`
-- working in your own branch
-     - switch to your branch `git checkout <your_branch_name>
-     - add your changes
-     - check all changes you made by `git status`; they are shown in red
-     - stage all your changes:  `git add .` for all files under current directory or  `git add <file_name>`
-     - check that all changes are staged: they are green
-     - commit your changes: `git commit -m "explain what you did here"`
-     - make sure you have unit test and  tested code
-- push your branch to remote/origin
-     - run `git push` and it might display a command to push new branch. Copy the command and run it.
+## Working on your local machine
+- Create your own branch using `git checkout -b <your_branch_name>`
+- Working in your branch
+     - Switch to your branch using `git checkout <your_branch_name>`
+     - Edit the code
+     - Make sure you have unit tests and have tested the code
+     - Check all changes you made using `git status`; Changes are shown in red
+     - Stage all your changes using `git add .` for all files in the current directory or `git add <file_name>` to add one file
+     - Check that all changes are staged using `git status`; Staged files are shown in green
+     - Commit your changes using `git commit -m "explain what you did here"`
+- Push your branch to remote/origin
+     - Run `git push`. If it displays a command to push new branch, copy the command and run it.
 
-  
-## Check your branch and prepare for pull request
-- Got to github and review the changes before submit pull requst
-- After submit your pull request, asking a teammate to review the changes for you. 
-- After you receive an approval,  merge. 
 
+## Check your branch and create a pull request
+- Go to Github and review the changes before submitting a pull request to merge your branch
+- After submitting your pull request, ask a teammate to review the changes for you. 
+- After you receive approval, merge.
 
 
 # Reference
