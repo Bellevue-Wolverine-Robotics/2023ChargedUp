@@ -34,7 +34,8 @@ public class Robot extends TimedRobot {
   private CvSink m_cvSink;
   private CvSource m_outputStream;
 
-  private Mat mat;
+  private Mat m_source;
+  private Mat m_output;
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -60,13 +61,13 @@ public class Robot extends TimedRobot {
 
     UsbCamera m_camera = CameraServer.startAutomaticCapture();
     m_camera.setResolution(640, 480);
-    m_camera.setFPS(15);
+    m_camera.setFPS(30);
 
     m_cvSink = CameraServer.getVideo();
-    m_cvSink = CameraServer.getVideo();
-    m_outputStream = CameraServer.putVideo("Rectangle", 1920, 1080);
+    m_outputStream = CameraServer.putVideo("Lebron POV", 640, 480);
     
-    mat = new Mat();
+    m_source = new Mat();
+    m_output = new Mat();
 
 
     /*m_source = new Mat();
@@ -100,15 +101,14 @@ public class Robot extends TimedRobot {
     
     
     
-    if (m_cvSink.grabFrame(mat) == 0) {
+    if (m_cvSink.grabFrame(m_source) == 0) {
        return;
     }
 
 
-    Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
-    
-    // Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
-    m_outputStream.putFrame(mat);
+    // Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
+    Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
+    m_outputStream.putFrame(m_output);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
