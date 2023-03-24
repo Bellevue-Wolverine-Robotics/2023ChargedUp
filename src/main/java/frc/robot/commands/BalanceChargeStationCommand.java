@@ -40,18 +40,13 @@ public class BalanceChargeStationCommand extends CommandBase {
 
         // double speed = this.PIDMode ? MathUtil.clamp(m_pid.calculate(pitchDegrees, 0), -0.5, 0.5): 
         //                             Constants.DriveConstants.BALANCE_CHARGESTATION_HARDCODE_TUNE*pitchSign*Math.pow(pitchDegreesAbs, 2);        
-        double speed = m_pid.calculate(Math.sin(pitchRadians), 0);
+        double speed = m_pid.calculate(-Math.sin(pitchRadians), 0);
 
-        System.out.println("Charge Balance");
 
-        //TO ADJUST FOR SLOWER SEED WHEN REVERSING  
-        if(speed < 0){
-            speed *= 1.1;
-        }
-        else{
-            speed *= 0.9;
-        }
-        speed = MathUtil.clamp(speed, -1.0, 1.0);
+       if (pitchDegrees < 0) speed *= 1.6;
+        
+       System.out.println("DEGREES " + pitchDegrees);
+       System.out.println("CHARGE STATION " + speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 

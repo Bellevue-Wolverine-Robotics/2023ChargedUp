@@ -200,7 +200,7 @@ public final class Constants {
   }
   
   public static class PIDConstants {
-    public static final double kPChargeStation = 1.5;
+    public static final double kPChargeStation = 1.2;
     public static final double kIChargeStation = 0;
     public static final double kDChargeStation = 0.015;
     
