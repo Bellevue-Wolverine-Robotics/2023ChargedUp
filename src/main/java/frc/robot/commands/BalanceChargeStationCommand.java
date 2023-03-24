@@ -48,6 +48,9 @@ public class BalanceChargeStationCommand extends CommandBase {
         if(speed < 0){
             speed *= 1.1;
         }
+        else{
+            speed *= 0.9;
+        }
         speed = MathUtil.clamp(speed, -1.0, 1.0);
         m_driveSubsystem.tankDrive(speed, speed);
     }

@@ -13,6 +13,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,15 +29,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
-  // private CvSink m_cvSink = CameraServer.getVideo();
-  //private CvSource m_outputStream = CameraServer.putVideo("Blur", 1920, 1080);
- // private CvSource m_outputStream = CameraServer.putVideo("Blur", 640, 480);
-  private CvSink m_cvSink;
-  private CvSource m_outputStream;
-
-  private Mat m_source;
-  private Mat m_output;
+  Thread m_visionThread;
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -59,28 +53,51 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
 
-    UsbCamera m_camera = CameraServer.startAutomaticCapture();
-    m_camera.setResolution(640, 480);
-    m_camera.setFPS(30);
-
-    m_cvSink = CameraServer.getVideo();
-    m_outputStream = CameraServer.putVideo("Lebron POV", 640, 480);
-    
-    m_source = new Mat();
-    m_output = new Mat();
 
 
-    /*m_source = new Mat();
-    m_output = new Mat();*/
-    // m_visionThread = new Thread(
-    //   () -> {
-    //     UsbCamera m_camera = CameraServer.startAutomaticCapture();
-    //     camera.set_resolution(640, 480);
-    //     camera.setFPS(15)
-    //   }
-    // )
-    // }
-    
+    m_visionThread =
+    new Thread(
+        () -> {
+          // Get the UsbCamera from CameraServer
+          UsbCamera camera = CameraServer.startAutomaticCapture();
+          // Set the resolution
+          camera.setResolution(640, 480);
+          camera.setFPS(15);
+
+          // Get a CvSink. This will capture Mats from the camera
+          CvSink cvSink = CameraServer.getVideo();
+          // Setup a CvSource. This will send images back to the Dashboard
+          CvSource outputStream = CameraServer.putVideo("Lebron POV", 640, 480);
+
+          Mat m_source = new Mat();
+          Mat m_output = new Mat();
+
+
+          // This cannot be 'true'. The program will never exit if it is. This
+          // lets the robot stop this thread when restarting robot code or
+          // deploying.
+          while (!Thread.interrupted()) {
+            // Tell the CvSink to grab a frame from the camera and put it
+            // in the source mat.  If there is an error notify the output.
+            if (cvSink.grabFrame(m_source) == 0) {
+              // Send the output the error.
+              outputStream.notifyError(cvSink.getError());
+              // skip the rest of the current iteration
+              continue;
+            }
+            // Put a rectangle on the image
+            if (cvSink.grabFrame(m_source) == 0) {
+              return;
+            }
+        
+        
+            // Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
+            Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
+            outputStream.putFrame(m_output);
+          }
+        });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
   }
 
   /**
@@ -97,18 +114,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
-    
-    
-    
-    if (m_cvSink.grabFrame(m_source) == 0) {
-       return;
-    }
-
-
-    // Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
-    Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
-    m_outputStream.putFrame(m_output);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
