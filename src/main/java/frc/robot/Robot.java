@@ -4,8 +4,17 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,9 +28,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  Thread m_visionThread;
   private Command m_autonomousCommand;
-  // private Command m_testCommand;
+  Thread m_visionThread;
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -44,18 +52,52 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
-    UsbCamera m_camera = CameraServer.startAutomaticCapture();
-    m_camera.setResolution(640, 480);
-    m_camera.setFPS(15);
-    // m_visionThread = new Thread(
-    //   () -> {
-    //     UsbCamera m_camera = CameraServer.startAutomaticCapture();
-    //     camera.set_resolution(640, 480);
-    //     camera.setFPS(15)
-    //   }
-    // )
-    // }
-    
+
+
+
+    m_visionThread =
+    new Thread(
+        () -> {
+          // Get the UsbCamera from CameraServer
+          UsbCamera camera = CameraServer.startAutomaticCapture();
+          // Set the resolution
+          camera.setResolution(640, 480);
+          camera.setFPS(15);
+
+          // Get a CvSink. This will capture Mats from the camera
+          CvSink cvSink = CameraServer.getVideo();
+          // Setup a CvSource. This will send images back to the Dashboard
+          CvSource outputStream = CameraServer.putVideo("Lebron POV", 640, 480);
+
+          Mat m_source = new Mat();
+          Mat m_output = new Mat();
+
+
+          // This cannot be 'true'. The program will never exit if it is. This
+          // lets the robot stop this thread when restarting robot code or
+          // deploying.
+          while (!Thread.interrupted()) {
+            // Tell the CvSink to grab a frame from the camera and put it
+            // in the source mat.  If there is an error notify the output.
+            if (cvSink.grabFrame(m_source) == 0) {
+              // Send the output the error.
+              outputStream.notifyError(cvSink.getError());
+              // skip the rest of the current iteration
+              continue;
+            }
+            // Put a rectangle on the image
+            if (cvSink.grabFrame(m_source) == 0) {
+              return;
+            }
+        
+        
+            // Imgproc.rectangle(mat, new Point(100, 100), new Point(1080, 1080), new Scalar(255, 255, 255), 5);
+            Imgproc.cvtColor(m_source, m_output, Imgproc.COLOR_BGR2GRAY);
+            outputStream.putFrame(m_output);
+          }
+        });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
   }
 
   /**
@@ -72,7 +114,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

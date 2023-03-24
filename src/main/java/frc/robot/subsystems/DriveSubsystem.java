@@ -353,9 +353,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
     // imu pitch is roll, roll is pitch
-    SmartDashboard.putNumber("Robot Roll", m_imu.getPitch());
-    SmartDashboard.putNumber("Robot Heading", m_imu.getYaw());
-    SmartDashboard.putNumber("Robot Pitch", m_imu.getRoll());
+    SmartDashboard.putNumber("Robot Roll", getRoll());
+    SmartDashboard.putNumber("Robot Heading", getYaw());
+    SmartDashboard.putNumber("Robot Pitch", getPitchDegrees());
 
     //m_field.setRobotPose(m_odometry.getPoseMeters());
 
@@ -365,16 +365,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getPitchDegrees()
-  {
-    // pointing up is pos, pointing down is neg
-    
+  {    
     // imu returning roll as pitch
-    return -m_imu.getRoll();
+    return m_imu.getRoll();
   }
 
   public double getYaw()
   {
     return m_imu.getYaw();
+  }
+
+  public double getRoll()
+  {
+    return m_imu.getPitch();
   }
 
   public void resetPose()
@@ -444,5 +447,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetImu()
   {
     m_imu.reset();
-  } 
+  }
+
+public Integer add(int a, int b) {
+    return a + b;
+} 
 }
