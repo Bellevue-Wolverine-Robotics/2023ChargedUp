@@ -153,7 +153,7 @@ public final class Constants {
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
     public static final double ROTATION_PRESET_3 = (double)1 / 4;
 
-    public static final int STALL_LIMIT = 20;
+    public static final int STALL_LIMIT = 40;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;

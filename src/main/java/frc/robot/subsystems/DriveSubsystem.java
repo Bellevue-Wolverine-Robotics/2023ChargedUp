@@ -401,6 +401,8 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
     // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
 
+    System.out.println("XSPEED " + xSpeed);
+    System.out.println("ZROT" + zRotation);
     this.m_drive.arcadeDrive(xSpeed, zRotation);
     // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
   }
