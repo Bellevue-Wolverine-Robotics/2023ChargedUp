@@ -40,8 +40,9 @@ public final class Autos {
             runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
             new WaitCommand(0.5),
-            runOnce(intakeSubsystem::extendIntake, intakeSubsystem)
-        );
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true));
     }
 
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
