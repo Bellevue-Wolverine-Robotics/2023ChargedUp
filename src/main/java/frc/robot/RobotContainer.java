@@ -181,6 +181,8 @@ public class RobotContainer {
         return Autos.oneConeChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       case BALANCE_ONLY:
         return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
+      case ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY:
+        return Autos.oneConeCommunityScoreLow(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);

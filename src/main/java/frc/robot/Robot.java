@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 
     m_autoChooser.setDefaultOption("One Cone & Leave Community", AutoEnum.ONE_CONE_LEAVE_COMMUNITY);
     m_autoChooser.addOption("One Cone & Balance Charge Station", AutoEnum.ONE_CONE_BALANCE_CHARGE_STATION);
+    m_autoChooser.addOption("Score Low & Leave Community", AutoEnum.ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY);
     // m_autoChooser.addOption("Charge Station", "ChargeStation");
     // m_autoChooser.addOption("Path Weaver", "PathWeaver");
     // m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");

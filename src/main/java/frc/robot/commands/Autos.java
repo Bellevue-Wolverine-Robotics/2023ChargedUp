@@ -44,6 +44,21 @@ public final class Autos {
         );
     }
 
+    public static Command oneConeCommunityScoreLow(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
+        return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmPickupAngle), true),
+            new WaitCommand(0.5),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.COMMUNITY),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new WaitCommand(0.2),
+            new RotateDrivestationAbsoluteDegreesCommand(driveSubsystem, 180)
+        );
+    }
+
     public static Command oneConeChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
     {
         return new SequentialCommandGroup(

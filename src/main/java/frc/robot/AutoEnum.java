@@ -3,6 +3,6 @@ package frc.robot;
 public enum AutoEnum {
     ONE_CONE_LEAVE_COMMUNITY,
     ONE_CONE_BALANCE_CHARGE_STATION,
-    
+    ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY,
     BALANCE_ONLY, 
 }

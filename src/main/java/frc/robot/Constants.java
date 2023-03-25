@@ -196,7 +196,7 @@ public final class Constants {
 
     public static final int kArmHomeAngle = 10;
     public static final int kArmPickupAngle = 60;
-    public static final int kArmScoringAngle = 100;
+    public static final int kArmScoringAngle = 105;
   }
   
   public static class PIDConstants {
