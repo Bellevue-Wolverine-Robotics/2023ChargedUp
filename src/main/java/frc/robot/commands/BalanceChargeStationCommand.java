@@ -43,10 +43,8 @@ public class BalanceChargeStationCommand extends CommandBase {
         double speed = m_pid.calculate(-Math.sin(pitchRadians), 0);
 
 
-       if (pitchDegrees < 0) speed *= 1.6;
+        if (pitchDegrees < 0) speed *= 1.4;
         
-       System.out.println("DEGREES " + pitchDegrees);
-       System.out.println("CHARGE STATION " + speed);
         m_driveSubsystem.tankDrive(speed, speed);
     }
 
