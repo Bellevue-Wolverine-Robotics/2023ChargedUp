@@ -29,6 +29,21 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public final class Autos {
   /** Example static factory for an autonomous command. */
 
+    public static Command doNothing()
+    {
+        return new WaitCommand(15);
+    }
+
+    public static Command scoreMidNoMove(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
+            new WaitCommand(0.5),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem)
+        );
+    }
+
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
             runOnce(intakeSubsystem::retractIntake, intakeSubsystem),

@@ -183,6 +183,10 @@ public class RobotContainer {
         return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
       case ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY:
         return Autos.oneConeCommunityScoreLow(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case DO_NOTHING:
+        return Autos.doNothing();
+      case SCORE_MID_DO_NOTHING:
+        return Autos.scoreMidNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
