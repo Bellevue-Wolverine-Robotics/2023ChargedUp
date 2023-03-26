@@ -151,9 +151,9 @@ public final class Constants {
     public static final double ROTATION_PRESET_2 = (double)3 / 8;
 
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
-    public static final double ROTATION_PRESET_3 = (double)1 / 4;
+    public static final double ROTATION_PRESET_3 = (double)3/8;
 
-    public static final int STALL_LIMIT = 20
+    public static final int STALL_LIMIT = 30
     ;
     public static final int FREE_LIMIT = 20;
 
