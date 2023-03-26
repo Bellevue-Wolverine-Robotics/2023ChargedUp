@@ -45,6 +45,17 @@ public final class Autos {
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true));
     }
 
+    public static Command scoreLowNoMove(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmPickupAngle), true),
+            new WaitCommand(0.5),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true));
+    }
+
     public static Command oneConeCommunity(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem) {
         return new SequentialCommandGroup(
             runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
@@ -80,6 +91,21 @@ public final class Autos {
         return new SequentialCommandGroup(
             runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
             new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmScoringAngle), true),
+            new WaitCommand(0.5),
+            runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
+            new WaitCommand(0.5),
+            new ParallelCommandGroup(
+                new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION),
+                new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmHomeAngle), true)),
+            new BalanceChargeStationCommand(driveSubsystem)
+        );
+    }
+
+    public static Command scoreLowChargeStation(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ArmSubsystem armSubsystem)
+    {
+        return new SequentialCommandGroup(
+            runOnce(intakeSubsystem::retractIntake, intakeSubsystem),
+            new RotateArmAbsoluteRadiansCommand(armSubsystem, Units.degreesToRadians(ArmConstants.kArmPickupAngle), true),
             new WaitCommand(0.5),
             runOnce(intakeSubsystem::extendIntake, intakeSubsystem),
             new WaitCommand(0.5),

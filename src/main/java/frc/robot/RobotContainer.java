@@ -187,6 +187,10 @@ public class RobotContainer {
         return Autos.doNothing();
       case SCORE_MID_DO_NOTHING:
         return Autos.scoreMidNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case SCORE_LOW_DO_NOTHING:
+        return Autos.scoreLowNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case ONE_CONE_SCORE_LOW_CHARGE_STATION:
+        return Autos.scoreLowChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
