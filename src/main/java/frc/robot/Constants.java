@@ -181,6 +181,10 @@ public final class Constants {
     public static final double kDStraight = 0;
 
     public static final double BALANCE_CHARGESTATION_HARDCODE_TUNE = 0.05;
+
+    public static final double SPEED_SCALE_OUTREACH = 0.3;
+    public static final double SPEED_SCALE_COMP = 1;
+
   }
 
   public static class ArmConstants {

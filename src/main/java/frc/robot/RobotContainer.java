@@ -29,7 +29,6 @@ import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.RotateDrivestationAbsoluteDegreesCommand;
 import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
 import frc.robot.commands.teleopDrives.CurvatureDriveCommand;
-import frc.robot.commands.teleopDrives.SemiConstantCurvatureDriveCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;

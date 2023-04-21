@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -107,6 +108,8 @@ public class DriveSubsystem extends SubsystemBase {
   // private AHRS m_imu 
 
   /** Creates a new ExampleSubsystem. */
+  SendableChooser<Double> m_speedScale = new SendableChooser<>();
+
   public DriveSubsystem() {
     this.m_leftFront.restoreFactoryDefaults();
     this.m_leftBack.restoreFactoryDefaults();
@@ -159,9 +162,12 @@ public class DriveSubsystem extends SubsystemBase {
     
     SmartDashboard.putData("Field", m_field);
 
-
-
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
+
+    m_speedScale.setDefaultOption("Outreach", DriveConstants.SPEED_SCALE_OUTREACH);
+    m_speedScale.addOption("Competition", DriveConstants.SPEED_SCALE_COMP);
+
+    SmartDashboard.putData("Set Speed Scaling", m_speedScale);
   }
   
   public void simulationInit(){
@@ -398,40 +404,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {
-    // SmartDashboard.putNumber("Arcade Drive xSpeed", xSpeed);
-    // SmartDashboard.putNumber("Arcade Drive zRotation", zRotation);
-
-    System.out.println("XSPEED " + xSpeed);
-    System.out.println("ZROT" + zRotation);
-    this.m_drive.arcadeDrive(xSpeed, zRotation);
-    // m_drive.arcadeDrive(m_slewRateLimiter.calculate(xSpeed), m_slewRateLimiter.calculate(zRotation), m_squareInputs);
+    this.m_drive.arcadeDrive(xSpeed * m_speedScale.getSelected(), zRotation * m_speedScale.getSelected());
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean squareInputs)
   {
-    m_drive.curvatureDrive(xSpeed, zRotation, squareInputs);
+    m_drive.curvatureDrive(xSpeed * m_speedScale.getSelected(), zRotation * m_speedScale.getSelected(), squareInputs);
   }
 
-  // https://ewpratten.com/blog/joystick-to-voltage/
-  public void semiConstantCurvatureDrive(double xSpeed, double zRotation)
-  {
-    double leftSpeed = 12 * (((xSpeed + Math.abs(xSpeed) * zRotation) + (xSpeed + zRotation)) / 2);
-    double rightSpeed = 12 * (((xSpeed - Math.abs(xSpeed) * zRotation) + (xSpeed - zRotation)) / 2);
-
-    double maxOutput = Math.max(Math.abs(xSpeed), Math.abs(zRotation));
-
-    if (maxOutput > 1.0)
-    {
-      leftSpeed /= maxOutput;
-      rightSpeed /= maxOutput;
-
-    }
-    
-    tankDrive(leftSpeed, rightSpeed);
-  }
-
-  public void tankDrive(double leftSpeed, double rightSpeed){
-    this.m_drive.tankDrive(leftSpeed, rightSpeed);
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    this.m_drive.tankDrive(leftSpeed * m_speedScale.getSelected(), rightSpeed * m_speedScale.getSelected());
   }
 
   public void setMode(IdleMode mode) {
