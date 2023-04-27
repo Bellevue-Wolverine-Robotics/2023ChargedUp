@@ -151,9 +151,10 @@ public final class Constants {
     public static final double ROTATION_PRESET_2 = (double)3 / 8;
 
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
-    public static final double ROTATION_PRESET_3 = (double)1 / 4;
+    public static final double ROTATION_PRESET_3 = (double)3/8;
 
-    public static final int STALL_LIMIT = 20;
+    public static final int STALL_LIMIT = 30
+    ;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;
@@ -180,6 +181,10 @@ public final class Constants {
     public static final double kDStraight = 0;
 
     public static final double BALANCE_CHARGESTATION_HARDCODE_TUNE = 0.05;
+
+    public static final double SPEED_SCALE_OUTREACH = 0.3;
+    public static final double SPEED_SCALE_COMP = 1;
+
   }
 
   public static class ArmConstants {
@@ -196,7 +201,7 @@ public final class Constants {
 
     public static final int kArmHomeAngle = 10;
     public static final int kArmPickupAngle = 60;
-    public static final int kArmScoringAngle = 100;
+    public static final int kArmScoringAngle = 105;
   }
   
   public static class PIDConstants {

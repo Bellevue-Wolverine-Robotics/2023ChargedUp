@@ -29,7 +29,6 @@ import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.RotateDrivestationAbsoluteDegreesCommand;
 import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
 import frc.robot.commands.teleopDrives.CurvatureDriveCommand;
-import frc.robot.commands.teleopDrives.SemiConstantCurvatureDriveCommand;
 import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -71,8 +70,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureDefaultCommands();
-    // configureBindings();
-    configureBindingsMatthew();
+    configureBindings();
+    // configureBindingsMatthew();
 
     configureSmartDashboardCommands();
   }
@@ -181,6 +180,16 @@ public class RobotContainer {
         return Autos.oneConeChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       case BALANCE_ONLY:
         return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
+      case ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY:
+        return Autos.oneConeCommunityScoreLow(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case DO_NOTHING:
+        return Autos.doNothing();
+      case SCORE_MID_DO_NOTHING:
+        return Autos.scoreMidNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case SCORE_LOW_DO_NOTHING:
+        return Autos.scoreLowNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case ONE_CONE_SCORE_LOW_CHARGE_STATION:
+        return Autos.scoreLowChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
@@ -189,7 +198,7 @@ public class RobotContainer {
    // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
-    return Autos.FastBalanceChargeStationCommand(m_driveSubsystem);
+    return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
