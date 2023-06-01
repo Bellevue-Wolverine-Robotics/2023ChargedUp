@@ -108,7 +108,6 @@ public class DriveSubsystem extends SubsystemBase {
   // private AHRS m_imu 
 
   /** Creates a new ExampleSubsystem. */
-  SendableChooser<Double> m_speedScale = new SendableChooser<>();
 
   public DriveSubsystem() {
     this.m_leftFront.restoreFactoryDefaults();
@@ -164,10 +163,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
 
-    m_speedScale.setDefaultOption("Outreach", DriveConstants.SPEED_SCALE_OUTREACH);
-    m_speedScale.addOption("Competition", DriveConstants.SPEED_SCALE_COMP);
-
-    SmartDashboard.putData("Set Speed Scaling", m_speedScale);
   }
   
   public void simulationInit(){
@@ -404,16 +399,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {
-    this.m_drive.arcadeDrive(xSpeed * m_speedScale.getSelected(), zRotation * m_speedScale.getSelected());
+    this.m_drive.arcadeDrive(xSpeed, zRotation);
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean squareInputs)
   {
-    m_drive.curvatureDrive(xSpeed * m_speedScale.getSelected(), zRotation * m_speedScale.getSelected(), squareInputs);
+    m_drive.curvatureDrive(xSpeed, zRotation, squareInputs);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    this.m_drive.tankDrive(leftSpeed * m_speedScale.getSelected(), rightSpeed * m_speedScale.getSelected());
+    this.m_drive.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void setMode(IdleMode mode) {
