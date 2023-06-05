@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
@@ -75,8 +76,6 @@ public class DriveSubsystem extends SubsystemBase {
   private Gyro m_gyro = _ADXRS450_Gyro;
   private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
 
-
-
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
   DCMotor.getNEO(2),              // 2 NEO motors on each side of the drivetrain.
   8.45,                             // 8.45:1 gearing reduction.
@@ -104,6 +103,11 @@ public class DriveSubsystem extends SubsystemBase {
   private DifferentialDriveOdometry m_odometry; 
 
   private AHRS m_imu = new AHRS(SPI.Port.kMXP);
+
+  public static enum throttles {
+    high, medium, low
+  };
+  private double throttleLimit = 1.0;
 
   // private AHRS m_imu 
 
@@ -399,7 +403,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double xSpeed, double zRotation, boolean squared) {
-    this.m_drive.arcadeDrive(xSpeed, zRotation);
+    this.m_drive.arcadeDrive(xSpeed * throttleLimit, zRotation * throttleLimit);
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean squareInputs)
@@ -408,7 +412,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    this.m_drive.tankDrive(leftSpeed, rightSpeed);
+    this.m_drive.tankDrive(leftSpeed * throttleLimit, rightSpeed * throttleLimit);
   }
 
   public void setMode(IdleMode mode) {
@@ -428,7 +432,24 @@ public class DriveSubsystem extends SubsystemBase {
     m_imu.reset();
   }
 
-public Integer add(int a, int b) {
-    return a + b;
-} 
+  public Integer add(int a, int b) {
+      return a + b;
+  } 
+
+  
+  public void setThrottleMode(throttles mode) {
+    switch(mode) {
+      case high:
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_1;
+        break;
+      case medium:
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_2;
+        break;
+      case low:
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_3;
+        break;
+    }
+  }
 }
+
+

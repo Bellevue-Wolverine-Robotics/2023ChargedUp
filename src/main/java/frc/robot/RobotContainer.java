@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -33,6 +34,8 @@ import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.DriveSubsystem.throttles;
+
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import java.util.function.BooleanSupplier;
@@ -81,6 +84,27 @@ public class RobotContainer {
     // ONLY WORK IN TELEOP
     SmartDashboard.putData("Reset Drive Pose", new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
     SmartDashboard.putData("Reset Arm Position", new InstantCommand(m_armSubsystem::resetArmEncoder, m_armSubsystem));
+    //SmartDashboard.putData("Set throttle mode", new runOnce(m_driveSubsystem::setThrottleMode, m_driveSubsystem, DriveSubsystem.throttles.high));
+    //SmartDashboard.putData("Set throttle mode high", runOnce(() -> {setHigh();}));
+   // SmartDashboard.putData("Set throttle mode high 1", runOnce(() -> {setHigh();}));
+    SmartDashboard.putData("Set throttle mode high",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem));
+    SmartDashboard.putData("Set throttle mode medium",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
+    SmartDashboard.putData("Set throttle mode low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
+    
+    /*SendableChooser chooser = new SendableChooser();
+    chooser.setDefaultOption("High(default)", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem));
+    chooser.addOption("medium", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
+    chooser.addOption("low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
+    SmartDashboard.putData("Max Speed", chooser);*/
+  }
+  private void setHigh(){
+    runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem);
+  }
+  private void setMiddle(){
+
+  }
+  private void setLow(){
+    
   }
 
   /**
@@ -95,7 +119,7 @@ public class RobotContainer {
   
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_1, false));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
   }
 
   private void configureBindings() {
@@ -106,8 +130,8 @@ public class RobotContainer {
 
     // driving
 
-    m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_2, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_2, false));
-    m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_3, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_3, false));
+    m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
+    m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
 
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
     m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
@@ -116,7 +140,7 @@ public class RobotContainer {
 
     m_driverController.button(ButtonConstants.RESET_IMU_BUTTON).onTrue(runOnce(m_driveSubsystem::resetImu, m_driveSubsystem));
 
-    m_driverController.button(ButtonConstants.IGNORE_ROTATION_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> 0, false));
+    m_driverController.button(ButtonConstants.IGNORE_ROTATION_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> 0, false));
 
     m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
@@ -140,8 +164,8 @@ public class RobotContainer {
 
     // driving
 
-    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_2, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_2, false));
-    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_3, () -> -m_driverController.getX() * DriveConstants.ROTATION_PRESET_3, false));
+    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
+    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
 
     // m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
     // m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
@@ -150,7 +174,7 @@ public class RobotContainer {
 
     // m_driverController.button(ButtonConstants.RESET_IMU_BUTTON).onTrue(runOnce(m_driveSubsystem::resetImu, m_driveSubsystem));
 
-    m_driverController.button(ButtonConstantsMatthew.IGNORE_ROTATION_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY() * DriveConstants.THROTTLE_PRESET_1, () -> 0, false));
+    m_driverController.button(ButtonConstantsMatthew.IGNORE_ROTATION_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> 0, false));
 
     m_driverController.button(ButtonConstantsMatthew.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
@@ -216,3 +240,4 @@ public class RobotContainer {
     return m_armSubsystem;
   }
 }
+

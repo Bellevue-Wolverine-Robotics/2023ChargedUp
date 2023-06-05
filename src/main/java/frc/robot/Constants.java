@@ -143,18 +143,7 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    // TODO: SYSID CHANGE LATER
-    public static final double THROTTLE_PRESET_1 = (double)1;
-    public static final double ROTATION_PRESET_1 = (double)1 / 2;
-
-    public static final double THROTTLE_PRESET_2 = (double)3 / 4;
-    public static final double ROTATION_PRESET_2 = (double)3 / 8;
-
-    public static final double THROTTLE_PRESET_3 = (double)1 / 2;
-    public static final double ROTATION_PRESET_3 = (double)3/8;
-
-    public static final int STALL_LIMIT = 30
-    ;
+    public static final int STALL_LIMIT = 30;
     public static final int FREE_LIMIT = 20;
 
     public static final double VOLTS = 0;
@@ -185,6 +174,18 @@ public final class Constants {
     public static final double SPEED_SCALE_OUTREACH = 0.3;
     public static final double SPEED_SCALE_COMP = 1;
 
+  }
+
+  public class ThrottleConstants {
+    // TODO: SYSID CHANGE LATER
+    public static final double THROTTLE_PRESET_1 = (double)1;
+    public static final double ROTATION_PRESET_1 = (double)1 / 2;
+  
+    public static final double THROTTLE_PRESET_2 = (double)3 / 4;
+    public static final double ROTATION_PRESET_2 = (double)3 / 8;
+  
+    public static final double THROTTLE_PRESET_3 = (double)1 / 2;
+    public static final double ROTATION_PRESET_3 = (double)3/8;
   }
 
   public static class ArmConstants {
