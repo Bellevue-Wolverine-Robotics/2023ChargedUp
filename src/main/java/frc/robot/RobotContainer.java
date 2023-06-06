@@ -87,15 +87,18 @@ public class RobotContainer {
     //SmartDashboard.putData("Set throttle mode", new runOnce(m_driveSubsystem::setThrottleMode, m_driveSubsystem, DriveSubsystem.throttles.high));
     //SmartDashboard.putData("Set throttle mode high", runOnce(() -> {setHigh();}));
    // SmartDashboard.putData("Set throttle mode high 1", runOnce(() -> {setHigh();}));
-    SmartDashboard.putData("Set throttle mode high",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem));
-    SmartDashboard.putData("Set throttle mode medium",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
-    SmartDashboard.putData("Set throttle mode low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
+    // SmartDashboard.putData("Set throttle mode high",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); System.out.println("setting high"); }, m_driveSubsystem));
+    // SmartDashboard.putData("Set throttle mode medium",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
+    // SmartDashboard.putData("Set throttle mode low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
     
-    /*SendableChooser chooser = new SendableChooser();
-    chooser.setDefaultOption("High(default)", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem));
-    chooser.addOption("medium", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
-    chooser.addOption("low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
-    SmartDashboard.putData("Max Speed", chooser);*/
+    SendableChooser<throttles> throttleSelection = new SendableChooser<throttles> ();
+    throttleSelection.setDefaultOption("fast", throttles.high);
+    throttleSelection.addOption("med", throttles.medium);
+    throttleSelection.addOption("slow", throttles.low);
+    SmartDashboard.putData("Max Speed", throttleSelection);
+    SmartDashboard.putData("Update Throttle Limit", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); }, m_driveSubsystem));
+
+    m_driveSubsystem.setThrottleMode(throttleSelection.getSelected());
   }
   private void setHigh(){
     runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem);

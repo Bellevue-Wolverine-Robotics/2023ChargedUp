@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -51,7 +52,7 @@ public class Robot extends TimedRobot {
     m_autoChooser.addOption("Score Mid & Don't Move", AutoEnum.SCORE_MID_DO_NOTHING);
     m_autoChooser.addOption("Score Low & Don't Move", AutoEnum.SCORE_LOW_DO_NOTHING);
     m_autoChooser.addOption("Do Nothing", AutoEnum.DO_NOTHING);
-
+    
 
     // m_autoChooser.addOption("Charge Station", "ChargeStation");
     // m_autoChooser.addOption("Path Weaver", "PathWeaver");
