@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +22,8 @@ import frc.robot.Istream.IStreamBundle;
 import frc.robot.Istream.JoysticksStream;
 import frc.robot.Istream.XboxStream;
 import frc.robot.Istream.IStreamBundle.IStreamMode;
+import frc.robot.ModesEnum.AutoEnum;
+import frc.robot.ModesEnum.Throttles;
 import frc.robot.commands.AutonomousTurnHardcodeCommand;
 import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
@@ -34,8 +37,6 @@ import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.DriveSubsystem.throttles;
-
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import java.util.function.BooleanSupplier;
@@ -56,6 +57,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
+  private Throttles prevThrottle;
+  private SendableChooser<Throttles> throttleSelection;
   public IStreamBundle GetIStream(){
     return this.istream;
   }
@@ -91,17 +94,35 @@ public class RobotContainer {
     // SmartDashboard.putData("Set throttle mode medium",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
     // SmartDashboard.putData("Set throttle mode low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
     
-    SendableChooser<throttles> throttleSelection = new SendableChooser<throttles> ();
-    throttleSelection.setDefaultOption("fast", throttles.high);
-    throttleSelection.addOption("med", throttles.medium);
-    throttleSelection.addOption("slow", throttles.low);
-    SmartDashboard.putData("Max Speed", throttleSelection);
-    SmartDashboard.putData("Update Throttle Limit", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); }, m_driveSubsystem));
+    throttleSelection = new SendableChooser<Throttles> ();
+    throttleSelection.setDefaultOption("Fast", Throttles.high);
+    throttleSelection.addOption("Medium", Throttles.medium);
+    throttleSelection.addOption("Slow", Throttles.low);
 
-    m_driveSubsystem.setThrottleMode(throttleSelection.getSelected());
+    SmartDashboard.putData("Max Speed", throttleSelection);
+    
+    /*SmartDashboard.putData("Update Throttle Limit", runOnce(() -> {
+       m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+       m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+
+    }, m_driveSubsystem));*/
+    this.prevThrottle = throttleSelection.getSelected();
+    //System.out.println(" here2");
+    
+    // ITableListener changeListener= chooser.getTable().addTableListener(changeListener);
+    /*NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("ChooserName").addEntryListener("selected", runOnce(() -> {
+      m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+      m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+
+   }), 0xFF);*/
+
+
+    //m_driveSubsystem.setThrottleMode(throttleSelection.getSelected());
+    
+
   }
   private void setHigh(){
-    runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); }, m_driveSubsystem);
+    //runOnce(() -> { m_driveSubsystem.setThrottleMode(Throttles.high); }, m_driveSubsystem);
   }
   private void setMiddle(){
 
@@ -231,6 +252,19 @@ public class RobotContainer {
   }
   
   public void onTeleop() {
+      //only gets called once
+      //System.out.println("in teleop func");
+      new Thread(() ->{
+        while(true)
+        if(throttleSelection.getSelected() != prevThrottle){
+            prevThrottle = throttleSelection.getSelected();
+            //System.out.println("Fing here");
+            m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+            m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+      
+            
+        }
+    }).start();;
   }
 
   public void onAuton()
