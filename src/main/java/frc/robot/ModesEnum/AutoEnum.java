@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.ModesEnum;
 
 public enum AutoEnum {
     ONE_CONE_LEAVE_COMMUNITY,
@@ -10,3 +10,7 @@ public enum AutoEnum {
     SCORE_MID_DO_NOTHING,
     SCORE_LOW_DO_NOTHING
 }
+
+
+
+

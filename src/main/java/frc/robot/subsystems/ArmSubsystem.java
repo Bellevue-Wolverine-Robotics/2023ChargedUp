@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.ModesEnum.Throttles;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -21,6 +22,10 @@ public class ArmSubsystem extends SubsystemBase {
     private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
 
     private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
+    
+    private double throttleLimit = 1.0;
+
+
 
     public ArmSubsystem() {
         m_armMotor.configFactoryDefault();
@@ -53,7 +58,26 @@ public class ArmSubsystem extends SubsystemBase {
         // }
 
         // System.out.println(speed);
-        m_armMotor.set(m_rateLimiter.calculate(speed));
+        m_armMotor.set(throttleLimit*m_rateLimiter.calculate(speed));
+    }
+
+    /*public void setthrottleLimit(double limit){
+        this.throttleLimit = limit;
+    }*/
+
+    public void setThrottleMode(Throttles throttle){
+        switch(throttle){
+            case high:
+                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_1;
+                break;
+            case medium:
+                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_2;
+                break;
+            case low:
+                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_3;
+                break;
+        }
+        
     }
 
     public void setArmVoltage(double outputVolts)
@@ -95,7 +119,7 @@ public class ArmSubsystem extends SubsystemBase {
     {
         SmartDashboard.putNumber("Arm Rotation Degrees", getArmRotationDegrees());
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
-
+ 
     }
 
 }

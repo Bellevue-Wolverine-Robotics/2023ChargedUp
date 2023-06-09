@@ -46,6 +46,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.ModesEnum.Throttles;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
@@ -104,9 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private AHRS m_imu = new AHRS(SPI.Port.kMXP);
 
-  public static enum throttles {
-    high, medium, low
-  };
+
   private double throttleLimit = 1.0;
 
   // private AHRS m_imu 
@@ -437,7 +436,7 @@ public class DriveSubsystem extends SubsystemBase {
   } 
 
   
-  public void setThrottleMode(throttles mode) {
+  public void setThrottleMode(Throttles mode) {
     switch(mode) {
       case high:
         throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_1;

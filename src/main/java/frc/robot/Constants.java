@@ -179,13 +179,13 @@ public final class Constants {
   public class ThrottleConstants {
     // TODO: SYSID CHANGE LATER
     public static final double THROTTLE_PRESET_1 = (double)1;
-    public static final double ROTATION_PRESET_1 = (double)1 / 2;
+    public static final double ROTATION_PRESET_1 = (double)1;
   
     public static final double THROTTLE_PRESET_2 = (double)3 / 4;
-    public static final double ROTATION_PRESET_2 = (double)3 / 8;
+    public static final double ROTATION_PRESET_2 = (double)1 / 2;
   
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
-    public static final double ROTATION_PRESET_3 = (double)3/8;
+    public static final double ROTATION_PRESET_3 = (double)1 / 4;
   }
 
   public static class ArmConstants {
