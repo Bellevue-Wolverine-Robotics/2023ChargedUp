@@ -37,13 +37,21 @@ public class ArmSubsystem extends SubsystemBase {
 
 
     public ArmSubsystem() {
+        System.out.println("Neo motor ArmSubsystem() 0.0");
+
         //m_armMotor.configFactoryDefault();
         this.m_neoArmMotor.restoreFactoryDefaults();
+
+        System.out.println("Neo motor ArmSubsystem() 0.2");
+
         //this.m_neoArmMotor.setNeutralMode(NeutralMode.Brake);
         this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-        
+        System.out.println("Neo motor ArmSubsystem() 0.5");
+
         this.m_neoArmMotorEncoder.setPosition(0);
         
+        System.out.println("Neo motor ArmSubsystem() 1.0");
+
         // m_armMotor.setSensorPhase(true);
 
         // m_armMotor.config_kF(0, 0);
@@ -57,6 +65,8 @@ public class ArmSubsystem extends SubsystemBase {
     
     
     public void rotateArm(double speed) {
+        System.out.println("Rotate arm @ " + speed);
+
         // if(this.m_safety){
         //     if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
         //         speed = speed < 0.0 ? 0 : speed;                
