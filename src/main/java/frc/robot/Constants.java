@@ -59,9 +59,18 @@ public final class Constants {
     public static final int TALON_PULSES_PER_ROTATION = 4096;
     // TODO: FIX THE GEARING LATER ONCE THE ENCODER GETS FIXED
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
+    
     public static final double STRIKE_GROUND_ANGLE = 150;
-    public static final double STRIKE_ROBOT_ANGLE = 5;
+    public static final double STRIKE_ROBOT_ANGLE = 5;//WHAT
+
+    public static final double Neo_TO_ARM_RATIO = (double)15/44;
+    public static final double NEO_PULSES_PER_ROTATION = 4096; //GUESS, adjust later.
+
+    
   }
+
+
+
 
   public static class ButtonConstants {
     // DRIVING
