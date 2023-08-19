@@ -39,7 +39,7 @@ public final class Constants {
       public static final int ARM_SPARKMAX = 5;
       //public static final int ARM_TALON = 6;
 
-      public static final int ARM_NEO_MOTOR = 6;
+      public static final int ARM_NEO_MOTOR = 5;
   }
 
   public static class IntakeConstants {
