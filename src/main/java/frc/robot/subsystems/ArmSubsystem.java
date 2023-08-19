@@ -3,6 +3,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -17,7 +22,11 @@ import frc.robot.ModesEnum.Throttles;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 public class ArmSubsystem extends SubsystemBase {
-    private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
+    //private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
+    private CANSparkMax m_neoArmMotor = new CANSparkMax(CANConstants.ARM_NEO_MOTOR, MotorType.kBrushless);
+    private RelativeEncoder m_neoArmMotorEncoder =  m_neoArmMotor.getEncoder();
+    //private SparkMaxPIDController m_pidController = m_neoArmMotor.getPIDController();s
+
     private boolean m_safety = true;
     private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
 
@@ -28,10 +37,27 @@ public class ArmSubsystem extends SubsystemBase {
 
 
     public ArmSubsystem() {
-        m_armMotor.configFactoryDefault();
+        System.out.println("Neo motor ArmSubsystem() 0.0");
+
+        //m_armMotor.configFactoryDefault();
+        this.m_neoArmMotor.restoreFactoryDefaults();
+
+        System.out.println("Neo motor ArmSubsystem() 0.2");
+
+        //this.m_neoArmMotor.setNeutralMode(NeutralMode.Brake);
+        this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
+        System.out.println("Neo motor ArmSubsystem() 0.5");
+
+        this.m_neoArmMotorEncoder.setPosition(0);
+        ///this.m_neoArmMotorEncoder.setPositionConversionFactor(throttleLimit)
         
-        m_armMotor.setSelectedSensorPosition(0);
-        m_armMotor.setNeutralMode(NeutralMode.Brake);
+        System.out.println("Neo motor ArmSubsystem() 1.0");
+
+        //Set stupid brake
+        this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
+
+
+        //this.m_neoArmMotorEncoder.setInverted(true);
         // m_armMotor.setSensorPhase(true);
 
         // m_armMotor.config_kF(0, 0);
@@ -41,13 +67,12 @@ public class ArmSubsystem extends SubsystemBase {
 
     }
     
-    public void setArmPosition(double pos)
-    {
-        m_armMotor.set(ControlMode.Position, pos);
-    }
+
     
     
     public void rotateArm(double speed) {
+        System.out.println("Rotate arm @ " + speed);
+
         // if(this.m_safety){
         //     if(getArmRotationDegrees() > Constants.PhysicalConstants.STRIKE_GROUND_ANGLE) {
         //         speed = speed < 0.0 ? 0 : speed;                
@@ -58,7 +83,7 @@ public class ArmSubsystem extends SubsystemBase {
         // }
 
         // System.out.println(speed);
-        m_armMotor.set(throttleLimit*m_rateLimiter.calculate(speed));
+        this.m_neoArmMotor.set(throttleLimit*m_rateLimiter.calculate(speed));
     }
 
     /*public void setthrottleLimit(double limit){
@@ -82,7 +107,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setArmVoltage(double outputVolts)
     {
-        m_armMotor.setVoltage(outputVolts);
+        m_neoArmMotor.setVoltage(outputVolts);
     }
 
     public void toggleSaftey(){
@@ -90,12 +115,23 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void resetArmEncoder() {
-        this.m_armMotor.setSelectedSensorPosition(0);
+        this.m_neoArmMotorEncoder.setPosition(0);
     }
 
     public double getArmRotationDegrees() {
-        double rotationDeg = (m_armMotor.getSelectedSensorPosition() * PhysicalConstants.TALON_TO_ARM_RATIO * 360) / PhysicalConstants.TALON_PULSES_PER_ROTATION;
+        double tempNeoMotorRotation = -m_neoArmMotorEncoder.getPosition();
+        //double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO * 360) / PhysicalConstants.NEO_PULSES_PER_ROTATION;
+        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_DEGREES);
+        //double rotationDeg = (tempNeoMotorRotation * (44/15*60));
 
+        
+       
+       
+        System.out.println("Neo motor rotations: " + tempNeoMotorRotation + " rotationDeg" + rotationDeg);
+
+        
+        
+        //double
         return rotationDeg;
     }
 
@@ -106,7 +142,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void stopArmMotor()
     {
-        m_armMotor.stopMotor();
+        m_neoArmMotor.stopMotor();
     }
 
     public boolean isSwitchClosed()
