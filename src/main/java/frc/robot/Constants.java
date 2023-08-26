@@ -66,9 +66,6 @@ public final class Constants {
     public static final double NEO_TO_ARM_DEGREES = NEO_TO_ARM_RATIO*360;    
   }
 
-
-
-
   public static class ButtonConstants {
     // DRIVING
     public static final int DRIVE_PRESET_2 = 1;
