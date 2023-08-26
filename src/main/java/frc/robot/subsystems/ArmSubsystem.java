@@ -22,19 +22,13 @@ import frc.robot.ModesEnum.Throttles;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 public class ArmSubsystem extends SubsystemBase {
-    //private WPI_TalonSRX m_armMotor = new WPI_TalonSRX(CANConstants.ARM_TALON);
     private CANSparkMax m_neoArmMotor = new CANSparkMax(CANConstants.ARM_NEO_MOTOR, MotorType.kBrushless);
     private RelativeEncoder m_neoArmMotorEncoder =  m_neoArmMotor.getEncoder();
-    //private SparkMaxPIDController m_pidController = m_neoArmMotor.getPIDController();s
-
     private boolean m_safety = true;
     private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
-
     private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
-    
+
     private double throttleLimit = 1.0;
-
-
 
     public ArmSubsystem() {
         System.out.println("Neo motor ArmSubsystem() 0.0");
