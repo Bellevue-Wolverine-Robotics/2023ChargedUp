@@ -38,33 +38,10 @@ public class ArmSubsystem extends SubsystemBase {
 
     public ArmSubsystem() {
         System.out.println("Neo motor ArmSubsystem() 0.0");
-
-        //m_armMotor.configFactoryDefault();
         this.m_neoArmMotor.restoreFactoryDefaults();
-
-        System.out.println("Neo motor ArmSubsystem() 0.2");
-
-        //this.m_neoArmMotor.setNeutralMode(NeutralMode.Brake);
         this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-        System.out.println("Neo motor ArmSubsystem() 0.5");
-
         this.m_neoArmMotorEncoder.setPosition(0);
-        ///this.m_neoArmMotorEncoder.setPositionConversionFactor(throttleLimit)
-        
-        System.out.println("Neo motor ArmSubsystem() 1.0");
-
-        //Set stupid brake
         this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-
-
-        //this.m_neoArmMotorEncoder.setInverted(true);
-        // m_armMotor.setSensorPhase(true);
-
-        // m_armMotor.config_kF(0, 0);
-        // m_armMotor.config_kP(0, ArmConstants.kP);
-        // m_armMotor.config_kI(0, ArmConstants.kI);
-        // m_armMotor.config_kD(0, ArmConstants.kD);
-
     }
     
 
@@ -82,7 +59,6 @@ public class ArmSubsystem extends SubsystemBase {
         //     }
         // }
 
-        // System.out.println(speed);
         this.m_neoArmMotor.set(throttleLimit*m_rateLimiter.calculate(speed));
     }
 
@@ -120,18 +96,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getArmRotationDegrees() {
         double tempNeoMotorRotation = -m_neoArmMotorEncoder.getPosition();
-        //double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO * 360) / PhysicalConstants.NEO_PULSES_PER_ROTATION;
-        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_DEGREES);
-        //double rotationDeg = (tempNeoMotorRotation * (44/15*60));
-
-        
-       
-       
-        System.out.println("Neo motor rotations: " + tempNeoMotorRotation + " rotationDeg" + rotationDeg);
-
-        
-        
-        //double
+        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_DEGREES);       
         return rotationDeg;
     }
 
@@ -155,7 +120,6 @@ public class ArmSubsystem extends SubsystemBase {
     {
         SmartDashboard.putNumber("Arm Rotation Degrees", getArmRotationDegrees());
         // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
- 
     }
 
 }
