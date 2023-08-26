@@ -37,7 +37,7 @@ public final class Constants {
       public static final int RIGHT_FRONT = 3;
       public static final int RIGHT_BACK = 4;
       public static final int ARM_SPARKMAX = 5;
-      public static final int ARM_TALON = 6;
+      public static final int ARM_NEO_MOTOR = 5;
   }
 
   public static class IntakeConstants {
@@ -55,10 +55,13 @@ public final class Constants {
     public static final double WHEEEL_CIRCUMFERENCE_INCHES = 18.875;
     public static final double WHEEL_CIRCUMFERENCE_METERS =  Units.inchesToMeters(WHEEEL_CIRCUMFERENCE_INCHES);
     public static final int TALON_PULSES_PER_ROTATION = 4096;
-    // TODO: FIX THE GEARING LATER ONCE THE ENCODER GETS FIXED
     public static final double TALON_TO_ARM_RATIO = (double)15/44;
+    
     public static final double STRIKE_GROUND_ANGLE = 150;
     public static final double STRIKE_ROBOT_ANGLE = 5;
+
+    public static final double NEO_TO_ARM_RATIO = ((double)(15.0/44)) / 60;
+    public static final double NEO_TO_ARM_DEGREES = NEO_TO_ARM_RATIO*360;    
   }
 
   public static class ButtonConstants {
@@ -189,7 +192,7 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final double kP = 15;
+    public static final double kP = 10;
     public static final double kI = 0;
     public static final double kD = 0.15;
     public static final double kG = 10;
@@ -209,10 +212,9 @@ public final class Constants {
     public static final double kPChargeStation = 1.2;
     public static final double kIChargeStation = 0;
     public static final double kDChargeStation = 0.015;
-    
   }
     //   // Inputs
-    // public static final int QUICKTURN_BUTTON = 1;
+    // public static final int QUgICKTURN_BUTTON = 1;
   
     //   // Calculations        
     //   public static final int WHEEL_SIZE = 6;
