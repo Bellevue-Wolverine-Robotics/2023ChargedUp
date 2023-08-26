@@ -121,8 +121,9 @@ public class ArmSubsystem extends SubsystemBase {
     public double getArmRotationDegrees() {
         double tempNeoMotorRotation = -m_neoArmMotorEncoder.getPosition();
         //double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO * 360) / PhysicalConstants.NEO_PULSES_PER_ROTATION;
-        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO);
-       
+        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_DEGREES);
+        //double rotationDeg = (tempNeoMotorRotation * (44/15*60));
+
         
        
        

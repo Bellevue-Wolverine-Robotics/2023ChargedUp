@@ -29,5 +29,6 @@
   "githubPullRequests.ignoredPullRequestBranches": [
     "main"
   ],
-  "wpilib.stopSimulationOnEntry": true
+  "wpilib.stopSimulationOnEntry": true,
+  "wpilib.autoStartRioLog": false
 }

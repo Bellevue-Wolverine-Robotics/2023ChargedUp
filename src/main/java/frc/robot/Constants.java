@@ -63,7 +63,9 @@ public final class Constants {
     public static final double STRIKE_GROUND_ANGLE = 150;
     public static final double STRIKE_ROBOT_ANGLE = 5;//WHAT
 
-    public static final double NEO_TO_ARM_RATIO = (double)15/44;
+    public static final double NEO_TO_ARM_RATIO = ((double)(15.0/44)) / 60;
+    public static final double NEO_TO_ARM_DEGREES = NEO_TO_ARM_RATIO*360;
+
     public static final int NEO_PULSES_PER_ROTATION = 4096; //GUESS, adjust later.
 
     
@@ -200,7 +202,7 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final double kP = 15;
+    public static final double kP = 10;
     public static final double kI = 0;
     public static final double kD = 0.15;
     public static final double kG = 10;
