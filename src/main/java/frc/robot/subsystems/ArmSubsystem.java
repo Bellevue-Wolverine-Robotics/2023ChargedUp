@@ -49,9 +49,15 @@ public class ArmSubsystem extends SubsystemBase {
         System.out.println("Neo motor ArmSubsystem() 0.5");
 
         this.m_neoArmMotorEncoder.setPosition(0);
+        ///this.m_neoArmMotorEncoder.setPositionConversionFactor(throttleLimit)
         
         System.out.println("Neo motor ArmSubsystem() 1.0");
 
+        //Set stupid brake
+        this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
+
+
+        //this.m_neoArmMotorEncoder.setInverted(true);
         // m_armMotor.setSensorPhase(true);
 
         // m_armMotor.config_kF(0, 0);
@@ -113,7 +119,17 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getArmRotationDegrees() {
-        double rotationDeg = (m_neoArmMotorEncoder.getPosition() * PhysicalConstants.NEO_TO_ARM_RATIO * 360) / PhysicalConstants.NEO_PULSES_PER_ROTATION;
+        double tempNeoMotorRotation = -m_neoArmMotorEncoder.getPosition();
+        //double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO * 360) / PhysicalConstants.NEO_PULSES_PER_ROTATION;
+        double rotationDeg = (tempNeoMotorRotation * PhysicalConstants.NEO_TO_ARM_RATIO);
+       
+        
+       
+       
+        System.out.println("Neo motor rotations: " + tempNeoMotorRotation + " rotationDeg" + rotationDeg);
+
+        
+        
         //double
         return rotationDeg;
     }
