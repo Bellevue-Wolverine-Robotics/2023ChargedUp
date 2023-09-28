@@ -3,43 +3,31 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
+
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ButtonConstants;
 import frc.robot.Constants.ButtonConstantsMatthew;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Istream.IStreamBundle;
-import frc.robot.Istream.JoysticksStream;
-import frc.robot.Istream.XboxStream;
-import frc.robot.Istream.IStreamBundle.IStreamMode;
 import frc.robot.ModesEnum.AutoEnum;
-import frc.robot.ModesEnum.Throttles;
-import frc.robot.commands.AutonomousTurnHardcodeCommand;
-import frc.robot.commands.RelativeStraightDriveCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
-import frc.robot.commands.InitArmPositionCommand;
+import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.commands.RotateArmSpeedCommand;
 import frc.robot.commands.RotateDrivestationAbsoluteDegreesCommand;
 import frc.robot.commands.teleopDrives.ArcadeDriveCommand;
-import frc.robot.commands.teleopDrives.CurvatureDriveCommand;
-import frc.robot.commands.RotateArmAbsoluteRadiansCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import static edu.wpi.first.wpilibj2.command.Commands.*;
-
-import java.util.function.BooleanSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,19 +37,9 @@ import java.util.function.BooleanSupplier;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final JoysticksStream m_joysticksStream = new JoysticksStream();
-  private final XboxStream m_xboxStream = new XboxStream();
-  private final IStreamBundle istream = new IStreamBundle(m_xboxStream, m_joysticksStream, IStreamMode.JoysticksMode);
-
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-
-  private Throttles prevThrottle;
-  private SendableChooser<Throttles> throttleSelection;
-  public IStreamBundle GetIStream(){
-    return this.istream;
-  }
 
 //GrabRotateCommand
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -87,60 +65,8 @@ public class RobotContainer {
     // ONLY WORK IN TELEOP
     SmartDashboard.putData("Reset Drive Pose", new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
     SmartDashboard.putData("Reset Arm Position", new InstantCommand(m_armSubsystem::resetArmEncoder, m_armSubsystem));
-    //SmartDashboard.putData("Set throttle mode", new runOnce(m_driveSubsystem::setThrottleMode, m_driveSubsystem, DriveSubsystem.throttles.high));
-    //SmartDashboard.putData("Set throttle mode high", runOnce(() -> {setHigh();}));
-   // SmartDashboard.putData("Set throttle mode high 1", runOnce(() -> {setHigh();}));
-    // SmartDashboard.putData("Set throttle mode high",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.high); System.out.println("setting high"); }, m_driveSubsystem));
-    // SmartDashboard.putData("Set throttle mode medium",  runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.medium); }, m_driveSubsystem));
-    // SmartDashboard.putData("Set throttle mode low", runOnce(() -> { m_driveSubsystem.setThrottleMode(throttles.low); }, m_driveSubsystem));
-    
-    throttleSelection = new SendableChooser<Throttles> ();
-    throttleSelection.setDefaultOption("Fast", Throttles.high);
-    throttleSelection.addOption("Medium", Throttles.medium);
-    throttleSelection.addOption("Slow", Throttles.low);
-
-    SmartDashboard.putData("Max Speed", throttleSelection);
-    
-    /*SmartDashboard.putData("Update Throttle Limit", runOnce(() -> {
-       m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-       m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-
-    }, m_driveSubsystem));*/
-    this.prevThrottle = throttleSelection.getSelected();
-    //System.out.println(" here2");
-    
-    // ITableListener changeListener= chooser.getTable().addTableListener(changeListener);
-    /*NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("ChooserName").addEntryListener("selected", runOnce(() -> {
-      m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-      m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-
-   }), 0xFF);*/
-
-
-    //m_driveSubsystem.setThrottleMode(throttleSelection.getSelected());
-    
-
-  }
-  private void setHigh(){
-    //runOnce(() -> { m_driveSubsystem.setThrottleMode(Throttles.high); }, m_driveSubsystem);
-  }
-  private void setMiddle(){
-
-  }
-  private void setLow(){
-    
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-  //  */
-  
   private void configureDefaultCommands()
   {
     m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
@@ -178,7 +104,6 @@ public class RobotContainer {
     m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
     m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
     m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
-  
   }
 
   public void configureBindingsMatthew()
@@ -247,34 +172,27 @@ public class RobotContainer {
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
     return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
-  
-  public void onTeleop() {
-      //only gets called once
-      //System.out.println("in teleop func");
-      new Thread(() ->{
-        while(true)
-        if(throttleSelection.getSelected() != prevThrottle){
-            prevThrottle = throttleSelection.getSelected();
-            //System.out.println("Fing here");
-            m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-            m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
-      
-            
-        }
-    }).start();;
-  }
 
-  public void onAuton()
+  /**
+   * Returns arcade drive speeds based on throttles and squaring selected
+   * @return A pair of the x speed and the z rotation
+   */
+  private Pair getArcadeDriveSpeeds()
+  {
+    double xSpeed = 0;
+    double zRot = 0;
+    
+    Pair<Double, Double> arcadeDriveSpeedsPair = new Pair<Double, Double>(xSpeed, zRot);
+    
+    return arcadeDriveSpeedsPair;
+ }
+  
+  public void resetRobotState()
   {
     m_driveSubsystem.resetPose();
     m_armSubsystem.resetArmEncoder();
-  }
-
-  public ArmSubsystem getArmSubsystem() {
-    return m_armSubsystem;
   }
 }
 

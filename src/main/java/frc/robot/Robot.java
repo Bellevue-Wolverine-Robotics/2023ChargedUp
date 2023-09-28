@@ -5,23 +5,18 @@
 package frc.robot;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.vision.VisionPipeline;
-import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.ModesEnum.AutoEnum;
-import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,15 +49,7 @@ public class Robot extends TimedRobot {
     m_autoChooser.addOption("Score Low & Don't Move", AutoEnum.SCORE_LOW_DO_NOTHING);
     m_autoChooser.addOption("Do Nothing", AutoEnum.DO_NOTHING);
     
-
-    // m_autoChooser.addOption("Charge Station", "ChargeStation");
-    // m_autoChooser.addOption("Path Weaver", "PathWeaver");
-    // m_autoChooser.addOption("Calibrate Arm", "CalibrateArm");
-
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-
-
-
 
     m_visionThread =
     new Thread(
@@ -118,10 +105,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
 
@@ -135,7 +118,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.onAuton();
+    m_robotContainer.resetRobotState();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(m_autoChooser.getSelected());
 
@@ -147,24 +130,13 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-
-
   }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    // if (m_testCommand != null) {
-    //   m_testCommand.cancel();
-    // }
-    m_robotContainer.onTeleop();
   }
 
   /** This function is called periodically during operator control. */
@@ -175,22 +147,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    // System.out.println("test init");
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-
-    teleopInit();
-
-    // m_testCommand = m_robotContainer.getTestCommand();
-    // m_testCommand.schedule();
-
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    teleopPeriodic();
-    if (m_robotContainer.getArmSubsystem().isSwitchClosed()) m_robotContainer.getArmSubsystem().resetArmEncoder();
   }
 
   /** This function is called once when the robot is first started up. */

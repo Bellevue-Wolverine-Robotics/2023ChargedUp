@@ -1,45 +1,28 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.ModesEnum.Throttles;
-
-import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 public class ArmSubsystem extends SubsystemBase {
     private CANSparkMax m_neoArmMotor = new CANSparkMax(CANConstants.ARM_NEO_MOTOR, MotorType.kBrushless);
     private RelativeEncoder m_neoArmMotorEncoder =  m_neoArmMotor.getEncoder();
     private boolean m_safety = true;
-    private DigitalInput m_armCalibrationSwitch = new DigitalInput(ArmConstants.kArmCalibrationDIO);
     private SlewRateLimiter m_rateLimiter = new SlewRateLimiter(2);
 
-    private double throttleLimit = 1.0;
-
     public ArmSubsystem() {
-        System.out.println("Neo motor ArmSubsystem() 0.0");
         this.m_neoArmMotor.restoreFactoryDefaults();
         this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-        this.m_neoArmMotorEncoder.setPosition(0);
-        this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-    }
-    
 
-    
+        this.m_neoArmMotorEncoder.setPosition(0);
+    }
     
     public void rotateArm(double speed) {
         System.out.println("Rotate arm @ " + speed);
@@ -53,26 +36,7 @@ public class ArmSubsystem extends SubsystemBase {
         //     }
         // }
 
-        this.m_neoArmMotor.set(throttleLimit*m_rateLimiter.calculate(speed));
-    }
-
-    /*public void setthrottleLimit(double limit){
-        this.throttleLimit = limit;
-    }*/
-
-    public void setThrottleMode(Throttles throttle){
-        switch(throttle){
-            case high:
-                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_1;
-                break;
-            case medium:
-                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_2;
-                break;
-            case low:
-                this.throttleLimit = Constants.ThrottleConstants.ROTATION_PRESET_3;
-                break;
-        }
-        
+        this.m_neoArmMotor.set(m_rateLimiter.calculate(speed));
     }
 
     public void setArmVoltage(double outputVolts)
@@ -104,16 +68,10 @@ public class ArmSubsystem extends SubsystemBase {
         m_neoArmMotor.stopMotor();
     }
 
-    public boolean isSwitchClosed()
-    {
-        return m_armCalibrationSwitch.get();
-    }
-
     @Override
     public void periodic()
     {
         SmartDashboard.putNumber("Arm Rotation Degrees", getArmRotationDegrees());
-        // SmartDashboard.putBoolean("Calibration Switched", m_armCalibrationSwitch.get());
     }
 
 }
