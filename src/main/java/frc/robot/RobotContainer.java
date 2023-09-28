@@ -73,7 +73,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands()
   {
-    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(m_driveSubsystem, () -> getArcadeDriveSpeeds().getFirst(), () -> getArcadeDriveSpeeds().getSecond(), false));
   }
 
   private void configureBindings() {
@@ -83,10 +83,6 @@ public class RobotContainer {
     new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
 
     // driving
-
-    m_driverController.button(ButtonConstants.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
-    m_driverController.button(ButtonConstants.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
-
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
     m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
     m_driverController.button(ButtonConstants.FACE_LEFT_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 90));
@@ -183,7 +179,7 @@ public class RobotContainer {
    * Returns arcade drive speeds based on throttles and squaring selected
    * @return A pair of the x speed and the z rotation
    */
-  private Pair getArcadeDriveSpeeds()
+  private Pair<Double, Double> getArcadeDriveSpeeds()
   {
     double xSpeed = -m_driverController.getY();
     double zRotation = -m_driverController.getX();
