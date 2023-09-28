@@ -7,7 +7,10 @@ import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 import java.util.function.BooleanSupplier;
 
+import javax.lang.model.util.ElementScanner14;
+
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +21,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ButtonConstants;
 import frc.robot.Constants.ButtonConstantsMatthew;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ThrottleConstants;
 import frc.robot.ModesEnum.AutoEnum;
 import frc.robot.commands.Autos;
 import frc.robot.commands.BalanceChargeStationCommand;
@@ -181,10 +185,26 @@ public class RobotContainer {
    */
   private Pair getArcadeDriveSpeeds()
   {
-    double xSpeed = 0;
-    double zRot = 0;
+    double xSpeed = -m_driverController.getY();
+    double zRotation = -m_driverController.getX();
+
+    if (DriverStation.getStickButton(OperatorConstants.DRIVER_CONTROLLER_PORT, ButtonConstants.DRIVE_PRESET_3))
+    {
+      xSpeed *= ThrottleConstants.THROTTLE_PRESET_3;
+      zRotation *= ThrottleConstants.ROTATION_PRESET_3;
+    }
+    else if (DriverStation.getStickButton(OperatorConstants.DRIVER_CONTROLLER_PORT, ButtonConstants.DRIVE_PRESET_2))
+    {
+      xSpeed *= ThrottleConstants.THROTTLE_PRESET_2;
+      zRotation *= ThrottleConstants.ROTATION_PRESET_2;
+    }
+    else
+    {
+      xSpeed *= ThrottleConstants.THROTTLE_PRESET_1;
+      zRotation *= ThrottleConstants.ROTATION_PRESET_1;
+    }
     
-    Pair<Double, Double> arcadeDriveSpeedsPair = new Pair<Double, Double>(xSpeed, zRot);
+    Pair<Double, Double> arcadeDriveSpeedsPair = new Pair<Double, Double>(xSpeed, zRotation);
     
     return arcadeDriveSpeedsPair;
  }
