@@ -45,6 +45,10 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot  {
   private Command m_autonomousCommand;
   Thread m_visionThread;
+  
+  private static final String defaultAuto = "Default";
+  private static final String customAuto = "My Auto";
+  private final LoggedDashboardChooser<String> chooser = new LoggedDashboardChooser<>("Auto Choices");
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
@@ -90,6 +94,9 @@ public class Robot extends LoggedRobot  {
 
     // Start AdvantageKit logger
     logger.start();
+    // Initialize auto chooser
+    chooser.addDefaultOption("Default Auto", defaultAuto);
+    chooser.addOption("My Auto", customAuto);
 
 
     m_robotContainer = new RobotContainer();
