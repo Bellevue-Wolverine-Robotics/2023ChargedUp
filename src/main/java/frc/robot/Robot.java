@@ -15,6 +15,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -36,6 +37,14 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+
+
+import frc.robot.Utils.Alert;
+import frc.robot.Utils.Alert.AlertType;
+
+  
+
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -52,6 +61,22 @@ public class Robot extends LoggedRobot  {
 
   private RobotContainer m_robotContainer;
   SendableChooser<AutoEnum> m_autoChooser = new SendableChooser<>();
+  private final Alert logNoFileAlert =
+      new Alert("No log path set for current robot. Data will NOT be logged.",
+          AlertType.WARNING);
+  private final Alert logReceiverQueueAlert =
+      new Alert("Logging queue exceeded capacity, data will NOT be logged.",
+          AlertType.ERROR);
+  private final Alert logOpenFileAlert = new Alert(
+      "Failed to open log file. Data will NOT be logged.", AlertType.ERROR);
+  private final Alert logWriteAlert =
+      new Alert("Failed write to the log file. Data will NOT be logged.",
+          AlertType.ERROR);
+  private final Alert sameBatteryAlert =
+      new Alert("The battery has not been changed since the last match.",
+          AlertType.WARNING);
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -80,7 +105,7 @@ public class Robot extends LoggedRobot  {
 
     // Set up data receivers & replay source
     if (isReal()) {
-      logger.addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+      logger.addDataReceiver(new WPILOGWriter("C:\\Users\\team9\\OneDrive\\Desktop\\Log Telemetry")); // Log to a USB stick
       logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     } else {
       setUseTiming(false); // Run as fast as possible
@@ -178,6 +203,15 @@ public class Robot extends LoggedRobot  {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    Logger.getInstance().recordOutput("ActiveCommands/Scheduler",
+    NetworkTableInstance.getDefault()
+      .getEntry("/LiveWindow/Ungrouped/Scheduler/Names")
+      .getStringArray(new String[] {}));
+
+    // Check logging faults
+
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
