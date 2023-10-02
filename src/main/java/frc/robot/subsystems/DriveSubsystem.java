@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -197,6 +199,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     Pose2d pose = m_odometry.update(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
+
+    double poseX = pose.getX();
+    double poseY = pose.getY();
+
+    double roll = getRoll();
+    double getYaw = getYaw();
+    double pitch = getPitchDegrees();
+
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
@@ -204,6 +214,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Roll", getRoll());
     SmartDashboard.putNumber("Robot Heading", getYaw());
     SmartDashboard.putNumber("Robot Pitch", getPitchDegrees());
+
+    Logger.getInstance().recordOutput("Drive/Robot-X", poseX);
+    Logger.getInstance().recordOutput("Drive/Robot-y", poseY);
+
+    Logger.getInstance().recordOutput("Drive/getRoll", roll);
+    Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
+    Logger.getInstance().recordOutput("Drive/getPitch", pitch);
+
+
   }
 
   public double getPitchDegrees()
