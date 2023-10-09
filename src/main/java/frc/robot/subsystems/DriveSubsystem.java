@@ -4,49 +4,37 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.filter.LinearFilter;
-import edu.wpi.first.math.filter.MedianFilter;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
-import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.ModesEnum.Throttles;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
@@ -61,18 +49,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   private DifferentialDrive m_drive = new DifferentialDrive(m_leftGroup, m_rightGroup);
 
-
   REVPhysicsSim _revSimulation = new REVPhysicsSim();
   private RelativeEncoder m_leftEncoder =  m_leftFront.getEncoder();
   private RelativeEncoder m_rightEncoder = m_rightFront.getEncoder();
-
-
 
   //Sketchy sim stuff
   private EncoderSim m_leftEncoderSim = new EncoderSim(new Encoder(CANConstants.LEFT_BACK, CANConstants.LEFT_FRONT));
   private EncoderSim m_rightEncoderSim = new EncoderSim(new Encoder(CANConstants.RIGHT_FRONT, CANConstants.RIGHT_BACK));
   
-
   private ADXRS450_Gyro _ADXRS450_Gyro = new ADXRS450_Gyro();
   private Gyro m_gyro = _ADXRS450_Gyro;
   private ADXRS450_GyroSim m_gyroSim = new ADXRS450_GyroSim(_ADXRS450_Gyro);
@@ -92,23 +76,12 @@ public class DriveSubsystem extends SubsystemBase {
   // l and r position: 0.005 m
   VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 
-  
-  
-
-  private Accelerometer m_accelerometer = new BuiltInAccelerometer();
-
-  private MedianFilter m_accelZFilter = new MedianFilter(50);
-  private LinearFilter m_accelPitchFilter = LinearFilter.movingAverage(80);
-  private MedianFilter m_accelYFilter = new MedianFilter(50);
-
   private DifferentialDriveOdometry m_odometry; 
 
   private AHRS m_imu = new AHRS(SPI.Port.kMXP);
 
 
   private double throttleLimit = 1.0;
-
-  // private AHRS m_imu 
 
   /** Creates a new ExampleSubsystem. */
 
@@ -141,14 +114,12 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
     m_rightEncoder.setVelocityConversionFactor((PhysicalConstants.WHEEL_CIRCUMFERENCE_METERS / PhysicalConstants.DRIVE_GEAR_RATIO) / 60);
 
-
     float stallTorque = (float) 3.35;
     float freeSpeed = (float) 5874.0;
     _revSimulation.addSparkMax(m_leftBack, stallTorque, freeSpeed);
     _revSimulation.addSparkMax(m_rightBack, stallTorque, freeSpeed);
     _revSimulation.addSparkMax(m_leftFront, stallTorque, freeSpeed);
     _revSimulation.addSparkMax(m_rightFront, stallTorque, freeSpeed);
-
 
     m_imu.calibrate();
 
@@ -166,10 +137,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putData("Reset Drive Pose", runOnce(this::resetPose));
 
-  }
-  
-  public void simulationInit(){
-    //some bs
   }
 
   public void simulationPeriodic() {
@@ -198,8 +165,6 @@ public class DriveSubsystem extends SubsystemBase {
     
   }
 
-  
-
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
@@ -221,13 +186,6 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_leftEncoder.setPosition(0);
     m_rightEncoder.setPosition(0);
-
-    /* 
-    shouldnt reset
-    m_leftEncoderSim.setDistance(0);
-    m_rightEncoderSim.setDistance(0);
-    m_driveSim.setPose(new Pose2d());
-    */
   }
 
   public double getX(){
@@ -237,122 +195,18 @@ public class DriveSubsystem extends SubsystemBase {
     return getPose().getY();
   }
 
-  public double getGyroDegrees()
-  {
-    return m_gyro.getAngle();
-  }
-
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public CommandBase exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
-  public double getPitchDegreesYWeightedZ (){
-    // double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
-
-    //int ySign = (int) Math.signum(m_accelerometer.getY());
-  
-    int ySign = (int) Math.signum(m_accelYFilter.calculate(m_accelerometer.getY()));
-
-    
-    //int ySign = picthUp()? 1: -1;
-
-    double zAccel = MathUtil.clamp(getZAccelWeighted(), -1, 1);
-
-    double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
-
-    double pitchDegrees = -Math.toDegrees(pitchRadians);
-
-
-    pitchDegrees = m_accelPitchFilter.calculate(pitchDegrees);
-
-    return pitchDegrees;
-  }
-
-  
-
-
-  /*  deal with later
-  private Deque<Boolean> previous_pitches;
-  private int cur_avg = 0;
-
-  public boolean picthUp(){
-    Boolean positive = Math.signum(m_accelerometer.getY()) == 1.0;
-    previous_pitches.addFirst(positive);
-
-    if(previous_pitches.size() > 100){
-      if(previous_pitches.removeLast()){
-        cur_avg--;
-      }
-      else{
-        cur_avg++;
-      }
-    }
-
-
-    if(positive){
-      cur_avg++;
-    }
-    else{
-      cur_avg--;
-    }
-
-
-    if(cur_avg > 0){
-      return true;
-    }
-    else{
-      return false;
-    }
-  
-  }*/
-  public double getPitchDegreesY() {
-    // double pitchDegrees = -Math.atan(m_accelerometer.getY() / m_accelerometer.getZ()) * 180/Math.PI;
-
-    int ySign = (int) Math.signum(m_accelerometer.getY());
-    //int ySign = picthUp()? 1: -1;
-
-
-    double zAccel = MathUtil.clamp(m_accelerometer.getZ(), -1, 1);
-
-
-    double pitchRadians = ySign * Math.atan(Math.sqrt(1 - Math.pow(zAccel, 2)) / zAccel);
-
-    double pitchDegrees = -Math.toDegrees(pitchRadians);
-
-    return pitchDegrees;
-  }
-
-  public double getZAccelWeighted() {
-    double zAccel = m_accelZFilter.calculate(m_accelerometer.getZ());
-
-    return zAccel;
-  }
-
-
   @Override
   public void periodic() {
     Pose2d pose = m_odometry.update(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+
+
+    double poseX = pose.getX();
+    double poseY = pose.getY();
+
+    double roll = getRoll();
+    double getYaw = getYaw();
+    double pitch = getPitchDegrees();
+
     SmartDashboard.putNumber("Robot X", pose.getX());
     SmartDashboard.putNumber("Robot Y", pose.getY());
 
@@ -361,10 +215,13 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Heading", getYaw());
     SmartDashboard.putNumber("Robot Pitch", getPitchDegrees());
 
-    //m_field.setRobotPose(m_odometry.getPoseMeters());
+    Logger.getInstance().recordOutput("Drive/Robot-X", poseX);
+    Logger.getInstance().recordOutput("Drive/Robot-y", poseY);
 
+    Logger.getInstance().recordOutput("Drive/getRoll", roll);
+    Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
+    Logger.getInstance().recordOutput("Drive/getPitch", pitch);
 
-    //m_fieldApproximation.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
   }
 
@@ -390,7 +247,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_imu.reset();
 
     m_odometry.resetPosition(m_imu.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), new Pose2d());
-
   }
   
   public void resetOdometry(Pose2d initialPose)
@@ -414,13 +270,6 @@ public class DriveSubsystem extends SubsystemBase {
     this.m_drive.tankDrive(leftSpeed * throttleLimit, rightSpeed * throttleLimit);
   }
 
-  public void setMode(IdleMode mode) {
-    m_leftFront.setIdleMode(mode);
-    m_leftBack.setIdleMode(mode);
-    m_rightFront.setIdleMode(mode);
-    m_rightBack.setIdleMode(mode);
-  }
-
   public void stopDriveTrain()
   {
     m_drive.tankDrive(0, 0);
@@ -434,21 +283,6 @@ public class DriveSubsystem extends SubsystemBase {
   public Integer add(int a, int b) {
       return a + b;
   } 
-
-  
-  public void setThrottleMode(Throttles mode) {
-    switch(mode) {
-      case high:
-        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_1;
-        break;
-      case medium:
-        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_2;
-        break;
-      case low:
-        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_3;
-        break;
-    }
-  }
 }
 
 
