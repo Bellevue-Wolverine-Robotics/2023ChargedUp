@@ -4,31 +4,6 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.vision.VisionPipeline;
-import edu.wpi.first.vision.VisionThread;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.ModesEnum.AutoEnum;
-import frc.robot.subsystems.DriveSubsystem;
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggedSystemStats;
-
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -36,9 +11,19 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
-
-
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.ModesEnum.AutoEnum;
 import frc.robot.Utils.Alert;
 import frc.robot.Utils.Alert.AlertType;
 
@@ -50,7 +35,7 @@ import frc.robot.Utils.Alert.AlertType;
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
- */
+sl */
 public class Robot extends LoggedRobot  {
   private Command m_autonomousCommand;
   Thread m_visionThread;
@@ -105,7 +90,7 @@ public class Robot extends LoggedRobot  {
 
     // Set up data receivers & replay source
     if (isReal()) {
-      logger.addDataReceiver(new WPILOGWriter("C:\\Users\\team9\\OneDrive\\Desktop\\Log Telemetry")); // Log to a USB stick
+      logger.addDataReceiver(new WPILOGWriter("C:\\Users\\team9\\OneDrive\\Desktop\\Log Telemetry")); 
       logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
     } else {
       setUseTiming(false); // Run as fast as possible
@@ -231,6 +216,7 @@ public class Robot extends LoggedRobot  {
     }
   }
 
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
@@ -247,11 +233,6 @@ public class Robot extends LoggedRobot  {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    // if (m_testCommand != null) {
-    //   m_testCommand.cancel();
-    // }
-   // m_robotContainer.teleop();
   }
 
   /** This function is called periodically during operator control. */
@@ -262,22 +243,16 @@ public class Robot extends LoggedRobot  {
 
   @Override
   public void testInit() {
-    // System.out.println("test init");
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
 
     teleopInit();
-
-    // m_testCommand = m_robotContainer.getTestCommand();
-    // m_testCommand.schedule();
-
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
     teleopPeriodic();
-    //if (m_robotContainer.getArmSubsystem().isSwitchClosed()) m_robotContainer.getArmSubsystem().resetArmEncoder();
   }
 
   /** This function is called once when the robot is first started up. */

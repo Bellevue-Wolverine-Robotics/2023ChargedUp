@@ -87,10 +87,6 @@ public final class Constants {
 
     public static final int RESET_POSE_BUTTON = 8;
 
-    public static final int ARM_LOW_BUTTON = 4;
-    public static final int ARM_HIGH_BUTTON = 6;
-    public static final int TOGGLE_SAFTEY = 3;
-
     public static final int kHomePositionButton = 6;
     public static final int kPickupPositionButton = 7;
     public static final int kScoringPositionButton = 8;
