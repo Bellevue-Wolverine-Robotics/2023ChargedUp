@@ -80,7 +80,7 @@ public class RobotContainer {
     // default commands
 
     BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> getArmSpeed()));
 
     // driving
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
@@ -203,6 +203,11 @@ public class RobotContainer {
     Pair<Double, Double> arcadeDriveSpeedsPair = new Pair<Double, Double>(xSpeed, zRotation);
     
     return arcadeDriveSpeedsPair;
+ }
+
+ private double getArmSpeed()
+ {
+  return m_operatorController.getY() * ThrottleConstants.ARM_SPEED_SCALING;
  }
   
   public void resetRobotState()

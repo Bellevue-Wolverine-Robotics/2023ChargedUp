@@ -173,7 +173,6 @@ public final class Constants {
   }
 
   public class ThrottleConstants {
-    // TODO: SYSID CHANGE LATER
     public static final double THROTTLE_PRESET_1 = (double)1;
     public static final double ROTATION_PRESET_1 = (double)1;
   
@@ -182,6 +181,8 @@ public final class Constants {
   
     public static final double THROTTLE_PRESET_3 = (double)1 / 2;
     public static final double ROTATION_PRESET_3 = (double)1 / 4;
+
+    public static final double ARM_SPEED_SCALING = 0.4;
   }
 
   public static class ArmConstants {
@@ -199,6 +200,8 @@ public final class Constants {
     public static final int kArmHomeAngle = 10;
     public static final int kArmPickupAngle = 60;
     public static final int kArmScoringAngle = 105;
+
+    public static final double kSpeedScale = 0.5;
   }
   
   public static class PIDConstants {
