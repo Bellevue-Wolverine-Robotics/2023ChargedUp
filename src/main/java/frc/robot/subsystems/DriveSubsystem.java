@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.Enums.Throttles;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
@@ -284,7 +285,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Integer add(int a, int b) {
       return a + b;
-  } 
+  }
+
+public void setThrottleMode(Throttles selected) {
+} 
 }
 
 
