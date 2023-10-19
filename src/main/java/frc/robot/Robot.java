@@ -170,8 +170,8 @@ public class Robot extends LoggedRobot  {
             outputStream.putFrame(m_output);
           }
         });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+   // m_visionThread.setDaemon(true);
+   // m_visionThread.start();
   }
 
   /**
