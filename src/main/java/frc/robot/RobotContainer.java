@@ -80,7 +80,7 @@ public class RobotContainer {
     // default commands
 
     BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY() * 0.4));
 
     // driving
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
@@ -163,6 +163,9 @@ public class RobotContainer {
         return Autos.scoreLowNoMove(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
       case ONE_CONE_SCORE_LOW_CHARGE_STATION:
         return Autos.scoreLowChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+      case LEAVE_COMMUNITY_ONLY:
+        return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+
 
     }
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);

@@ -222,6 +222,8 @@ public class DriveSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
     Logger.getInstance().recordOutput("Drive/getPitch", pitch);
 
+    //System.out.println("Position:   " + getX() + " " + getY());
+
 
   }
 
