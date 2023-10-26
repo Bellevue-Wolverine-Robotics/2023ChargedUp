@@ -242,6 +242,8 @@ public class RobotContainer {
           prevThrottle = throttleSelection.getSelected();
 
           m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+          m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+
           // m_intakeSubsystem.setThrottleMode(throttleSelection.getSelected()); 
           //TODO: Maybe Armsubsystem throttle
         }
