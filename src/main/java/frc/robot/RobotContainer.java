@@ -118,7 +118,7 @@ public class RobotContainer {
     // default commands
 
     BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()*0.4));
 
     // driving
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));

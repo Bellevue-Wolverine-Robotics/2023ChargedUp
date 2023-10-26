@@ -20,7 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         this.m_neoArmMotor.restoreFactoryDefaults();
         this.m_neoArmMotor.setIdleMode(IdleMode.kBrake);
-
+        this.m_neoArmMotor.setSmartCurrentLimit(7);
         this.m_neoArmMotorEncoder.setPosition(0);
     }
     
