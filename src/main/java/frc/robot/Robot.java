@@ -127,6 +127,9 @@ public class Robot extends LoggedRobot  {
 
 
     
+    
+
+
 
     // m_autoChooser.addOption("Charge Station", "ChargeStation");
     // m_autoChooser.addOption("Path Weaver", "PathWeaver");
@@ -217,6 +220,8 @@ public class Robot extends LoggedRobot  {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.resetRobotState(); // keep robot state deterministic before auton
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(m_autoChooser.getSelected());
 
     if (m_autonomousCommand != null) {

@@ -33,6 +33,10 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
+import frc.robot.Enums.Throttles;
+import frc.robot.Enums.Presets;
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -45,6 +49,13 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
 
+
+  private SendableChooser<Throttles> throttleSelection;
+  private SendableChooser<Presets> presetSelection;
+
+  private Throttles prevThrottle;
+  private Presets prevPresets;
+
 //GrabRotateCommand
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandJoystick m_driverController =
@@ -56,12 +67,11 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
+    configureSmartDashboardCommands();
+
     configureDefaultCommands();
     configureBindings();
-    // configureBindingsMatthew();
 
-    configureSmartDashboardCommands();
   }
 
   private void configureSmartDashboardCommands()
@@ -69,6 +79,34 @@ public class RobotContainer {
     // ONLY WORK IN TELEOP
     SmartDashboard.putData("Reset Drive Pose", new InstantCommand(m_driveSubsystem::resetPose, m_driveSubsystem));
     SmartDashboard.putData("Reset Arm Position", new InstantCommand(m_armSubsystem::resetArmEncoder, m_armSubsystem));
+
+
+
+    throttleSelection = new SendableChooser<Throttles> ();
+    throttleSelection.setDefaultOption("Fast", Throttles.FAST);
+    throttleSelection.addOption("Medium", Throttles.MEDIUM);
+    throttleSelection.addOption("Slow", Throttles.SLOW);
+
+    SmartDashboard.putData("Max Speed", throttleSelection);
+    
+    /*SmartDashboard.putData("Update Throttle Limit", runOnce(() -> {
+       m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+       m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+
+    }, m_driveSubsystem));*/
+    this.prevThrottle = throttleSelection.getSelected();
+
+
+
+
+    
+    presetSelection = new SendableChooser<Presets> ();
+    presetSelection.setDefaultOption("ENABLED", Presets.ENABLED);
+    presetSelection.addOption("DISABLED", Presets.DISABLED);  
+    SmartDashboard.putData("Arm Presets ", presetSelection);
+    this.prevPresets = presetSelection.getSelected();
+
+    
   }
 
   private void configureDefaultCommands()
@@ -80,7 +118,8 @@ public class RobotContainer {
     // default commands
 
     BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY() * 0.4));
+    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()*0.4));
+
 
     // driving
     m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
@@ -95,48 +134,36 @@ public class RobotContainer {
     m_driverController.button(ButtonConstants.TEST_CHARGE_BALANCE).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
 
     // OPERATORS
-    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
-  
-    m_operatorController.button(ButtonConstants.kHomePositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
-    m_operatorController.button(ButtonConstants.kPickupPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
-    m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
-   
-    m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
-    m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
-    m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
+    configureOperator();
+
   }
 
-  public void configureBindingsMatthew()
-  {
-    BooleanSupplier outsideDeadbandArm = () -> { return Math.abs(m_operatorController.getY()) > OperatorConstants.controllerDeadband;};
-    new Trigger(outsideDeadbandArm).whileTrue(new RotateArmSpeedCommand(m_armSubsystem, () -> m_operatorController.getY()));
 
-    // driving
 
-    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_2).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
-    m_driverController.button(ButtonConstantsMatthew.DRIVE_PRESET_3).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> -m_driverController.getX(), false));
 
-    // m_driverController.button(ButtonConstants.FACE_FORWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 0));
-    // m_driverController.button(ButtonConstants.FACE_BACKWARDS_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 180));
-    // m_driverController.button(ButtonConstants.FACE_LEFT_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, 90));
-    // m_driverController.button(ButtonConstants.FACE_RIGHT_BUTTON).whileTrue(new RotateDrivestationAbsoluteDegreesCommand(m_driveSubsystem, -90));
 
-    // m_driverController.button(ButtonConstants.RESET_IMU_BUTTON).onTrue(runOnce(m_driveSubsystem::resetImu, m_driveSubsystem));
+  public void configureOperator(){     
+    m_operatorController.button(ButtonConstants.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
 
-    m_driverController.button(ButtonConstantsMatthew.IGNORE_ROTATION_BUTTON).whileTrue(new ArcadeDriveCommand(m_driveSubsystem, () -> -m_driverController.getY(), () -> 0, false));
-
-    m_driverController.button(ButtonConstantsMatthew.TEST_CHARGE_BALANCE_BUTTON).whileTrue(new BalanceChargeStationCommand(m_driveSubsystem));
-
-    // OPERATORS
-    m_operatorController.button(ButtonConstantsMatthew.INTAKE_TOGGLE_BUTTON).onTrue(runOnce(m_intakeSubsystem::toggleIntake, m_intakeSubsystem));
+    if (prevPresets == Presets.ENABLED){
   
-    m_operatorController.button(ButtonConstantsMatthew.kHomePositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
-    m_operatorController.button(ButtonConstantsMatthew.kPickupPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
-    m_operatorController.button(ButtonConstantsMatthew.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
-
-    m_operatorController.button(ButtonConstantsMatthew.kHomePositionButtonAlt).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
-    m_operatorController.button(ButtonConstantsMatthew.kPickupPositionButtonAlt).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
-    m_operatorController.button(ButtonConstantsMatthew.kScoringPositionButtonAlt).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
+      m_operatorController.button(ButtonConstants.kHomePositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+      m_operatorController.button(ButtonConstants.kPickupPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+      m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
+     
+      m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmHomeAngle), false));
+      m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmPickupAngle), false));
+      m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(new RotateArmAbsoluteRadiansCommand(m_armSubsystem, Math.toRadians(ArmConstants.kArmScoringAngle), false));
+    }
+    else{
+      m_operatorController.button(ButtonConstants.kHomePositionButton).onTrue(runOnce(() -> {}));
+      m_operatorController.button(ButtonConstants.kPickupPositionButton).onTrue(runOnce(() -> {}));
+      m_operatorController.button(ButtonConstants.kScoringPositionButton).onTrue(runOnce(() -> {}));
+     
+      m_operatorController.button(ButtonConstants.kHomePositionButtonLH).onTrue(runOnce(() -> {}));
+      m_operatorController.button(ButtonConstants.kPickupPositionButtonLH).onTrue(runOnce(() -> {}));
+      m_operatorController.button(ButtonConstants.kScoringPositionButtonLH).onTrue(runOnce(() -> {}));
+    }
 
   }
   /**
@@ -177,7 +204,7 @@ public class RobotContainer {
     return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
-
+ 
   /**
    * Returns arcade drive speeds based on throttles and squaring selected
    * @return A pair of the x speed and the z rotation
@@ -207,6 +234,31 @@ public class RobotContainer {
     
     return arcadeDriveSpeedsPair;
  }
+
+ public void onTeleop() {
+  //only gets called once
+  new Thread(() ->{
+    while(true){
+        if(throttleSelection.getSelected() != prevThrottle){
+          prevThrottle = throttleSelection.getSelected();
+
+          m_driveSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+          m_armSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+
+          // m_intakeSubsystem.setThrottleMode(throttleSelection.getSelected()); 
+          //TODO: Maybe Armsubsystem throttle
+        }
+        if(presetSelection.getSelected() != prevPresets){
+          prevPresets = presetSelection.getSelected();
+          configureOperator();
+
+        }
+    }
+       
+  }).start();;
+  }
+
+
   
   public void resetRobotState()
   {
