@@ -9,12 +9,21 @@ import java.util.function.BooleanSupplier;
 
 import javax.lang.model.util.ElementScanner14;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
+
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
@@ -48,6 +57,7 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); 
   private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+
 
 
   private SendableChooser<Throttles> throttleSelection;
@@ -171,6 +181,32 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+      return new SequentialCommandGroup(
+          new InstantCommand(() -> {
+            // Reset odometry for the first path you run during auto
+            if(isFirstPath){
+                m_driveSubsystem.resetOdometry(traj.getInitialPose());
+            }
+          }),
+          new PPRamseteCommand(
+              traj, 
+              m_driveSubsystem::getPose, // Pose supplier
+              new RamseteController(),
+              new SimpleMotorFeedforward(1.0, 0, 0),
+              m_driveSubsystem.kinematics, // DifferentialDriveKinematics
+              m_driveSubsystem::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
+              new PIDController(1, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+              new PIDController(1, 0, 0), // Right controller (usually the same values as left controller)
+              m_driveSubsystem::tankDriveVolts, // Voltage biconsumer
+              true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+              m_driveSubsystem // Requires this drive subsystem
+          )
+      );
+
+  }
+
+
   public Command getAutonomousCommand(AutoEnum autoEnum) {
     switch (autoEnum)
     {
@@ -201,7 +237,8 @@ public class RobotContainer {
    // return Autos.oneConeTouch(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
-    return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    //return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
+    return followTrajectoryCommand(PathPlanner.loadPath("Example Path", new PathConstraints(4, 3)), true);
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
  

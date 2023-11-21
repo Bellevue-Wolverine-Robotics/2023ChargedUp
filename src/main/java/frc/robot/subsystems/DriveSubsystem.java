@@ -5,10 +5,12 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.ConstantBootstraps;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,6 +19,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -86,6 +89,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   private double throttleLimit = 1.0;
+
+  public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23.0));
+  
 
   /** Creates a new ExampleSubsystem. */
 
@@ -169,9 +175,18 @@ public class DriveSubsystem extends SubsystemBase {
     
   }
 
+
+  
+
+
+
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+
+  public Supplier<Pose2d> poseSupplier = () -> {
+    return getPose();
+  };
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds()
   {
