@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.lang.invoke.ConstantBootstraps;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -32,9 +34,11 @@ import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.CANConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.Enums.Throttles;
 
 public class DriveSubsystem extends SubsystemBase {
   private Field2d m_field = new Field2d();
@@ -222,6 +226,8 @@ public class DriveSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
     Logger.getInstance().recordOutput("Drive/getPitch", pitch);
 
+    //System.out.println("Position:   " + getX() + " " + getY());
+
 
   }
 
@@ -282,6 +288,29 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Integer add(int a, int b) {
       return a + b;
+  }
+
+  public void setThrottleMode(Throttles selected) {
+    switch(selected){
+      case FAST:{
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_1;
+        break;
+      }
+      case MEDIUM:{
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_2;
+        break;
+      }
+      case SLOW:{
+        throttleLimit = Constants.ThrottleConstants.THROTTLE_PRESET_3;
+        break;
+      }
+      default:{
+        System.out.println("Should abort");
+        throttleLimit = 1.0;
+        break;
+      }
+
+    }
   } 
 }
 

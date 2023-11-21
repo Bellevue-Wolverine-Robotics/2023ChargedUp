@@ -113,12 +113,23 @@ public class Robot extends LoggedRobot  {
 
     m_autoChooser.setDefaultOption("Score Mid & Leave Community", AutoEnum.ONE_CONE_LEAVE_COMMUNITY);
     m_autoChooser.addOption("Score Mid & Balance Charge Station", AutoEnum.ONE_CONE_BALANCE_CHARGE_STATION);
+
     m_autoChooser.addOption("Score Low & Leave Community", AutoEnum.ONE_CONE_SCORE_LOW_LEAVE_COMMUNITY);
     m_autoChooser.addOption("Score Low & Balance Charge Station", AutoEnum.ONE_CONE_SCORE_LOW_CHARGE_STATION);
+
     m_autoChooser.addOption("Score Mid & Don't Move", AutoEnum.SCORE_MID_DO_NOTHING);
     m_autoChooser.addOption("Score Low & Don't Move", AutoEnum.SCORE_LOW_DO_NOTHING);
+
+    m_autoChooser.addOption("Balance Only (No Score)", AutoEnum.LEAVE_COMMUNITY_ONLY);
+    m_autoChooser.addOption("Leave Community Only (No Score)", AutoEnum.BALANCE_ONLY);
+
     m_autoChooser.addOption("Do Nothing", AutoEnum.DO_NOTHING);
+
+
     
+    
+
+
 
     // m_autoChooser.addOption("Charge Station", "ChargeStation");
     // m_autoChooser.addOption("Path Weaver", "PathWeaver");
@@ -170,8 +181,8 @@ public class Robot extends LoggedRobot  {
             outputStream.putFrame(m_output);
           }
         });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+    //m_visionThread.setDaemon(true);
+    //m_visionThread.start();
   }
 
   /**
