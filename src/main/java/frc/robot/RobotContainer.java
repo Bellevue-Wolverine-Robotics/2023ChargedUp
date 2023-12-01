@@ -180,9 +180,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-      System.out.println("**********!*!* !* !* !*! FUCKING HEREEEEE AGAIIIINNN in followTrajectoryCommand");
-
-      System.out.println("FUCKING HEREEEEE AGAIIIINNN -------- " + traj == null? "NULL COMMAND": "not null");
+      System.out.println(traj.fromGUI);
       //
 
       return new SequentialCommandGroup(
@@ -214,8 +212,15 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand(AutoEnum autoEnum) {
-    System.out.println("FUCKING HEREEEEE");
-    return followTrajectoryCommand(PathPlanner.loadPath("ExamplePath", new PathConstraints(1, 1)), true);
+    PathPlannerTrajectory traj = PathPlanner.loadPath("ExamplePath", new PathConstraints(1, 1));
+    if (traj == null)
+    {
+      System.out.println("null");
+      return null;
+    }
+    System.out.println("reached point 2");
+
+    return followTrajectoryCommand(traj, true);
 
     /*switch (autoEnum)
     {

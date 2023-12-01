@@ -31,8 +31,11 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Arm Presets ": "String Chooser",
+      "/SmartDashboard/Auto Choices": "String Chooser",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Max Speed": "String Chooser",
       "/SmartDashboard/Reset Arm Position": "Command",
       "/SmartDashboard/Reset Drive Pose": "Command",
       "/SmartDashboard/SendableChooser[1]": "String Chooser"
@@ -45,10 +48,8 @@
       },
       "/SmartDashboard/Field": {
         "Robot": {
-          "arrowSize": 61,
-          "image": "/Users/justin/Desktop/photo_shop/cow.png"
+          "arrowSize": 61
         },
-        "image": "/Users/justin/Downloads/2023-field.png",
         "window": {
           "name": "config1",
           "visible": true
