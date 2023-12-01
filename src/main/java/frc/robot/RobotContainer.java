@@ -6,9 +6,6 @@ package frc.robot;
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 import java.util.function.BooleanSupplier;
-
-import javax.lang.model.util.ElementScanner14;
-
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -18,6 +15,7 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -182,13 +180,21 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+      System.out.println("**********!*!* !* !* !*! FUCKING HEREEEEE AGAIIIINNN in followTrajectoryCommand");
+
+      System.out.println("FUCKING HEREEEEE AGAIIIINNN -------- " + traj == null? "NULL COMMAND": "not null");
+      //
+
       return new SequentialCommandGroup(
           new InstantCommand(() -> {
             // Reset odometry for the first path you run during auto
             if(isFirstPath){
+                System.out.println("isFirstPath entered");
                 m_driveSubsystem.resetOdometry(traj.getInitialPose());
+                //m_driveSubsystem.resetOdometry(Pose2d(0, 0));
             }
           }),
+
           new PPRamseteCommand(
               traj, 
               m_driveSubsystem::getPose, // Pose supplier
@@ -208,7 +214,10 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand(AutoEnum autoEnum) {
-    switch (autoEnum)
+    System.out.println("FUCKING HEREEEEE");
+    return followTrajectoryCommand(PathPlanner.loadPath("ExamplePath", new PathConstraints(1, 1)), true);
+
+    /*switch (autoEnum)
     {
       case ONE_CONE_LEAVE_COMMUNITY:
         return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
@@ -230,7 +239,7 @@ public class RobotContainer {
         return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
 
 
-    }
+    }*/
     // return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
     // return Autos.brokenArmCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return Autos.hardCodedOneConeCommunityMidScoring(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
@@ -238,7 +247,7 @@ public class RobotContainer {
    // return Autos.brokenArmChargeStation(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
    // return new SequentialCommandGroup(new RelativeStraightDriveCommand(m_driveSubsystem, 10), new AutonomousTurnHardcodeCommand(m_driveSubsystem, 90), new WaitCommand(2), new RelativeStraightDriveCommand(m_driveSubsystem, 5)); 
     //return Autos.oneConeCommunity(m_driveSubsystem, m_intakeSubsystem, m_armSubsystem);
-    return followTrajectoryCommand(PathPlanner.loadPath("Example Path", new PathConstraints(4, 3)), true);
+    //return followTrajectoryCommand(PathPlanner.loadPath("Example Path", new PathConstraints(4, 3)), true);
     //return new RelativeStraightDriveCommand(m_driveSubsystem, 10);
   }
  
