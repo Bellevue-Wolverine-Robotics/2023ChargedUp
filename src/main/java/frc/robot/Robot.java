@@ -7,6 +7,7 @@ package frc.robot;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
@@ -90,8 +91,9 @@ public class Robot extends LoggedRobot  {
 
     // Set up data receivers & replay source
     if (isReal()) {
-      logger.addDataReceiver(new WPILOGWriter("C:\\Users\\team9\\OneDrive\\Desktop\\Log Telemetry")); 
+      logger.addDataReceiver(new WPILOGWriter("/media/sda1")); 
       logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      LoggedPowerDistribution.getInstance();
     } else {
       // setUseTiming(false); // Run as fast as possible
       // String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)

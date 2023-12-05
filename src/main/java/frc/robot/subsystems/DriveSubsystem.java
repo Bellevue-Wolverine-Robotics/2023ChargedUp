@@ -172,7 +172,13 @@ public class DriveSubsystem extends SubsystemBase {
     //so PID using odometry in commands are udpated.
     m_leftEncoder.setPosition(m_driveSim.getLeftPositionMeters());
     m_rightEncoder.setPosition(m_driveSim.getRightPositionMeters());
-    
+
+    m_odometry.update(m_gyro.getRotation2d(),
+                    m_leftEncoder.getPosition(),
+                    m_rightEncoder.getPosition());
+
+    m_field.setRobotPose(m_odometry.getPoseMeters());
+
   }
 
 
@@ -241,8 +247,13 @@ public class DriveSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
     Logger.getInstance().recordOutput("Drive/getPitch", pitch);
 
-    //System.out.println("Position:   " + getX() + " " + getY());
+    //System.out.println("Distance traversed verticle:   " + getX() + " Heading towards: " + getPose().getRotation());
+    Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
 
+    Logger.getInstance().recordOutput("Odometry/RobotNoGyro", pose);
+
+   
+    m_field.setRobotPose(m_odometry.getPoseMeters());
 
   }
 
