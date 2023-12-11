@@ -5,6 +5,8 @@
 package frc.robot;
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -16,7 +18,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -180,8 +185,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-      System.out.println(traj.fromGUI);
+      //System.out.println(traj.fromGUI);
       //
+      System.out.println("......*********!*!*!*!***********Loading Trajectory Path");
+
 
       return new SequentialCommandGroup(
           new InstantCommand(() -> {
@@ -200,7 +207,7 @@ public class RobotContainer {
               new SimpleMotorFeedforward(1.0, 0, 0),
               m_driveSubsystem.kinematics, // DifferentialDriveKinematics
               m_driveSubsystem::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
-              new PIDController(1, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+              new PIDController( 1,0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
               new PIDController(1, 0, 0), // Right controller (usually the same values as left controller)
               m_driveSubsystem::tankDriveVolts, // Voltage biconsumer
               true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
@@ -213,6 +220,25 @@ public class RobotContainer {
 
   public Command getAutonomousCommand(AutoEnum autoEnum) {
     PathPlannerTrajectory traj = PathPlanner.loadPath("ExamplePath", new PathConstraints(1, 1));
+    
+     
+    /*String trajectoryJSON = "PathWeaver/pathweaver.json";
+    Trajectory trajectory = new Trajectory();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      System.out.println("*******!*!** Didn't crash when loading path ");
+
+    } catch (IOException ex) {
+        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        System.out.println("*******!*!**Failed to get trajectory ");
+
+    }
+    System.out.println("*******!*!** Didn't crash when loading path ");
+
+    return Autos.pathWeaverCommand(m_driveSubsystem, trajectory);
+    */
+    
     if (traj == null)
     {
       System.out.println("null");
@@ -222,6 +248,9 @@ public class RobotContainer {
 
     return followTrajectoryCommand(traj, true);
 
+
+
+    
     /*switch (autoEnum)
     {
       case ONE_CONE_LEAVE_COMMUNITY:

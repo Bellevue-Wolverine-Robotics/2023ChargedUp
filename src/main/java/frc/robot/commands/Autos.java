@@ -13,6 +13,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -193,8 +194,9 @@ public final class Autos {
         return new RelativeStraightDriveCommand(driveSubsystem, FieldConstants.CHARGE_STATION);
     }
 
-    public static Command pathWeaverCommand(DriveSubsystem driveSubsystem)
+    public static Command pathWeaverCommand(DriveSubsystem driveSubsystem, Trajectory trajectory)
     {
+        System.out.println("******************!!!!******Enter pathplanner");
         var autoVoltageConstraint =
             new DifferentialDriveVoltageConstraint(
                 new SimpleMotorFeedforward(
@@ -203,8 +205,8 @@ public final class Autos {
                     DriveConstants.VOLTS_SECONDS_SQUARED_PER_METER),
                 DriveConstants.DRIVE_KINEMATICS,
                 DriveConstants.MAX_VOLTAGE);
-
-        Trajectory trajectory = new Trajectory();
+        
+        System.out.println("******************!!!!******Finished setting voltage constrain");
 
         RamseteCommand ramseteCommand =
             new RamseteCommand(
@@ -217,17 +219,21 @@ public final class Autos {
                     DriveConstants.VOLTS_SECONDS_SQUARED_PER_METER),
                 DriveConstants.DRIVE_KINEMATICS,
                 driveSubsystem::getWheelSpeeds,
-                new PIDController(DriveConstants.KP_DRIVE_VEL, 0, 0),
-                new PIDController(DriveConstants.KP_DRIVE_VEL, 0, 0),
+                new PIDController(1, 0, 0),
+                new PIDController(1, 0, 0),
                 // RamseteCommand passes volts to the callback
                 driveSubsystem::tankDriveVolts,
                 driveSubsystem);
+    
+        System.out.println("******************!!!!******Finished defining ramesete command");
 
-        // Reset odometry to the starting pose of the trajectory.
+        // Reset odometry to the starting pose of the trajector fy.
         driveSubsystem.resetOdometry(trajectory.getInitialPose());
 
+        System.out.println("******************!!!!******Finished reseting odometry");
+
         // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> driveSubsystem.tankDriveVolts(0, 0));
+        return ramseteCommand.andThen(Commands.runOnce(() -> driveSubsystem.tankDriveVolts(0, 0)));
     }
 
     public static Command FastBalanceChargeStationCommand(DriveSubsystem driveSubsystem){

@@ -203,6 +203,9 @@ public class DriveSubsystem extends SubsystemBase {
   {
     m_leftGroup.setVoltage(leftVolts);
     m_rightGroup.setVoltage(rightVolts);
+  
+
+    System.out.println("*******!*!*!*!************ left: " + leftVolts + " right: " + rightVolts);
 
     m_drive.feed();
   }
@@ -240,6 +243,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Robot Heading", getYaw());
     SmartDashboard.putNumber("Robot Pitch", getPitchDegrees());
 
+
+    //System.out.println("Data dump " + poseX + ".." + poseY + ".." + roll + ".." + getYaw + ".." + pitch);
+
     Logger.getInstance().recordOutput("Drive/Robot-X", poseX);
     Logger.getInstance().recordOutput("Drive/Robot-y", poseY);
 
@@ -248,11 +254,11 @@ public class DriveSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Drive/getPitch", pitch);
 
     //System.out.println("Distance traversed verticle:   " + getX() + " Heading towards: " + getPose().getRotation());
-    Logger.getInstance().recordOutput("Drive/getHeading", getYaw);
-
     Logger.getInstance().recordOutput("Odometry/RobotNoGyro", pose);
 
-   
+    
+
+
     m_field.setRobotPose(m_odometry.getPoseMeters());
 
   }

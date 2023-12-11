@@ -30,5 +30,6 @@
     "main"
   ],
   "wpilib.stopSimulationOnEntry": true,
-  "wpilib.autoStartRioLog": false
+  "wpilib.autoStartRioLog": false,
+  "java.debug.settings.onBuildFailureProceed": true
 }
